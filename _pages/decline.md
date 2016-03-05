@@ -6,7 +6,8 @@ category: "(Once Upon A Time I Played The) Guitar"
 permalink: /decline/
 ---
 
-![](/images/decline/silhouette.png)
+![](/images/decline/silhouette.png)  
+*Drench yourself in first-class paranoia*
 
 [Decline] was recorded with my band *Submareen* during the better
 parts of 2011-2012. This album undoubtedly contains my best electric
@@ -24,15 +25,22 @@ You can immediately listen to [Decline] in its entirety by following
 the link. You can download it in any format (including lossless) free
 of charge. The lyrics are available over there, too.
 
-Trivia: I used just one electric guitar, the [Excalibur], on the whole
-album. It was recorded through a TSL-100 amplifier with dual micing
-and minimal effects. Before the guitar solo recordings to finish the
-last track ([Avoiding the 9-to-5 society], which turned out to be my
-favourite on the album) the TSL broke down, caused by a runaway
-overheating issue. I needed to service the amp and change all four
-power tubes just to be able to finish recording the solos that would
-complete the guitar parts of the album.
+Trivia 1: I used just one electric guitar, the [Excalibur], on the
+whole album. It was recorded through a TSL-100 amplifier with dual
+micing and minimal effects. Before the guitar solo recordings to
+finish the last track ([Avoiding the 9-to-5 society], which turned out
+to be my favourite on the album) the TSL broke down, caused by a
+runaway overheating issue. I needed to service the amp and change all
+four power tubes just to be able to finish recording the solos that
+would complete the guitar parts of the album.
 
-[Decline]: https://submareen.bandcamp.com
-[Excalibur]: /excalibur/
+Trivia 2: we not only built our own [bunker studio] to rehearse and
+record this album, I also wrote [IR.lv2], a convolution reverb plugin
+for Linux, with the primary purpose of supporting the mixing works of
+Decline.
+
+[Decline]:          https://submareen.bandcamp.com
+[Excalibur]:        /excalibur/
 [Avoiding the 9-to-5 society]: https://submareen.bandcamp.com/track/avoiding-the-9-to-5-society
+[bunker studio]:    /tachyon-studio
+[IR.lv2]:           /plugins/ir.lv2
