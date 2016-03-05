@@ -16,8 +16,8 @@ have a handful of posts written out of personal interest.
 As an industrial software engineer, most of my professional output
 cannot be made available to the general public.
 
-You can reach me by [email]. You are encouraged to make use of my [PGP
-public key].
+You can reach me by [email]. You are encouraged to use my [PGP public
+key].
 
 
 [public repos]:     https://github.com/tomszilagyi
