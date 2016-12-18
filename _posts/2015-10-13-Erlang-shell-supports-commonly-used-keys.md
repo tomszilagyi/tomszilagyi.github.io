@@ -15,7 +15,7 @@ of *four lines* to the codebase -- on the 16th of June, mind you).
 
 Anyway, there it is. One more pain point for me regarding this shell
 is that when I delete from inside a parenthesized section of a command
-line (ie. the cursor is before the closing paren) the line after the
+line (i.e. the cursor is before the closing paren) the line after the
 closing paren tends to get garbled. This is fixable by hitting Ctrl-L
 to redraw the line. I only learned about this capability by looking at
 the Erlang terminal driver source, so it seems a bit hidden.

@@ -74,7 +74,7 @@ Here follows the bulk of the callback module defining this
 problem. The less interesting parts are omitted; please check
 `src/example_string.erl`. It should also be noted that the DiGenO
 utility module `utils` contains several useful facilities for writing
-functions that operate in a probabilistic manner (eg. use random
+functions that operate in a probabilistic manner (e.g. use random
 selection).
 
 {% highlight Erlang %}

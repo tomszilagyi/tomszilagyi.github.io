@@ -76,7 +76,7 @@ Available versions
 Two versions are available for download. **Version 1.2.x** (contained
 in git branch `zero-latency`) is absolutely zero-latency, however
 its run() should only be called with the same power-of-two buffer
-sizes (eg. always 512 samples, or always 2048, etc) during the
+sizes (e.g. always 512 samples, or always 2048, etc) during the
 plugin's lifecycle, otherwise bad things happen. In practice this
 means that you should NEVER EVER use this version with its parameters
 automated (even those listed as suitable for automation). Otherwise it
@@ -85,7 +85,7 @@ works as you would expect.
 **Version 1.3.x** (in git branch `automatable`) uses additional
 internal buffering so automation and the seemingly random buffer sizes
 that occur when automating the plugin (calling run() with buffer
-lengths eg. 1785, 263, 761, 1287 etc.) is not an issue anymore. It
+lengths e.g. 1785, 263, 761, 1287 etc.) is not an issue anymore. It
 works with automation (*but see the note about parameters suitable for
 automation below*), at the expense of introducing extra buffering. The
 resulting latency is reported to the host via standard LV2
@@ -122,11 +122,11 @@ Known issues
   (This applies to IR 1.3. You don't want to automate IR 1.2 at all.)
 
 * Currently Ardour does not have latency compensation on busses. If
-  you use IR 1.3, and use it on eg. your drum bus, you may not get
+  you use IR 1.3, and use it on e.g. your drum bus, you may not get
   exactly what you want.
 
 * When using a version with zita-convolver 2, you may or may not run
-  into issues while freewheeling (eg. Ardour session export). In
+  into issues while freewheeling (e.g. Ardour session export). In
   effect, zita-convolver does not wait for its worker threads to
   complete, so if the library is called too often (not in realtime),
   there may be "soft xruns" in the plugin's output. Please listen to
@@ -215,7 +215,7 @@ after a session reload).
 
 The problem is solved by saving a 64-bit hash of the filename across
 three floating point control ports. The corresponding hash-table
-(along with global IR configuration data, eg. bookmarks) is stored in
+(along with global IR configuration data, e.g. bookmarks) is stored in
 the user's home directory in a file called `~/.ir_save` in human
 readable form (however, modify it only if you know what you are doing,
 and make sure to back it up first).

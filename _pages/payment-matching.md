@@ -113,7 +113,7 @@ When parsing a new transaction, scan the descriptor into tokens. Based
 on the presence of each token, a vector of probabilities of the
 transaction belonging to each possible account is calculated. Let
 ![P_belong(t,a)](/images/payment-matching/eq3.png) be the probability that a
-transaction with the token t belongs to account a.
+transaction with the token *t* belongs to account *a*.
 
 We define ![P_belong(t,a)](/images/payment-matching/eq3.png) as:
 
@@ -161,7 +161,7 @@ One interesting point I want to make here is the way tokenizing is
 done.  It is super simple but improves the quality of the matches
 quite a bit.  When breaking the transaction's description string into
 tokens, by default every substring separated by spaces
-(ie. conventional words) will be a token. (The tokens are not case
+(i.e. conventional words) will be a token. (The tokens are not case
 sensitive, so everything is converted to uppercase.) The comma `,` and
 the slash `/` are also taken as token separators.
 
@@ -188,7 +188,7 @@ file, any pipe character terminates the line.
 
 Each month I download the account history CSV (or XLS) from all the
 banks I have accounts with. I save all these files according to simple
-naming conventions (ie. `bankname_YYYY_MM.csv`) and archive them
+naming conventions (i.e. `bankname_YYYY_MM.csv`) and archive them
 indefinitely for further reference.
 
 After downloading the account files for the recently closed month, I
