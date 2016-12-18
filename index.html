@@ -4,7 +4,8 @@ layout: default
 
 <div class="home">
 
-  <div class="keep">
+  <table class="layout">
+  <tr><td class="layout">
     <h1 class="page-heading">Posts</h1>
     <ul class="post-list">
       {% for post in site.posts %}
@@ -15,11 +16,11 @@ layout: default
       {% endfor %}
     </ul>
     <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-  </div>
+  </td>
 
+  <td class="layout col2">
   {% assign categories = "Software|(Once Upon A Time I Played The) Guitar" | split: "|" %}
   {% for cat in categories %}
-  <div class="keep">
     <h1 class="page-heading">{{ cat }}</h1>
     <ul class="post-list">
       <div class="trigger">
@@ -31,7 +32,7 @@ layout: default
       </div>
     </ul>
     <br>
-  </div>
   {% endfor %}
+  </td></tr></table>
 
 </div>
