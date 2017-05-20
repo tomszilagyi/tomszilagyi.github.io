@@ -11,6 +11,7 @@ permalink: /svhu1972/hu/
 
 - Szerezd be a [Google Play] áruházban (ingyenes)!
 - Forráskód itt: [GitHub]
+- Bővebben a fejlesztésről (angolul): [Resurrecting an old dictionary][resurrecting]
 
 ## Rövid leírás
 
@@ -105,6 +106,6 @@ annyi bizonyos, hogy nem helyhiány volt az oka.
 [English]:          /svhu1972
 [Google Play]:      https://play.google.com/store/apps/details?id=io.github.tomszilagyi.svhu1972
 [GitHub]:           https://github.com/tomszilagyi/svhu1972
-[resurrecting]:     /2017/03/Resurrecting-an-old-dictionary
+[resurrecting]:     /2017/05/Resurrecting-an-old-dictionary
 [pdf-version]:      https://github.com/tomszilagyi/svenska/tree/master/SV-HU_ordbok
 [Project Runeberg]: http://runeberg.org/svhu1972/
