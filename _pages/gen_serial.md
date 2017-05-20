@@ -18,11 +18,15 @@ and with some relevant C programming experience on Linux, I could
 quickly complete the task.
 
 Shawn kindly gave me his blessing of me taking over his project. So
-[here it is]: a generic serial port interface for Erlang, working on
+here it is: a generic serial port interface for Erlang, working on
 both Linux and Windows.
+
+Please find the source on [GitHub]. The [API documentation] is also
+available online.
 
 Enjoy!
 
 
-[Shawn's 0.1]:      http://blog.spearce.org/2004/02/genserial-01-released.html
-[here it is]:       https://github.com/tomszilagyi/gen_serial
+[Shawn's 0.1]:        http://blog.spearce.org/2004/02/genserial-01-released.html
+[GitHub]:             https://github.com/tomszilagyi/gen_serial
+[API documentation]:  api/gen_serial.html
