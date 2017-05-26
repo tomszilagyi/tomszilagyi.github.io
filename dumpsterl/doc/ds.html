@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module ds</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module ds</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>The public user and API interface module of dumpsterl.
+
+
+<h2><a name="description">Description</a></h2><p>The public user and API interface module of dumpsterl.</p>
+ 
+  <p>All usage of dumpsterl, both programmatic and user-initiated,  
+should be done via this module.</p>
+ 
+  This module exports three API-s, from highest to lowest level:
+  <ul>
+  <li><b>User API</b>: Launch interactive user interface components
+      (the dumpsterl shell and gui).</li>
+  <li><b>Probe API</b>: Run the probe and obtain a spec.
+      These functions are invoked by the dumpsterl shell (see User
+      API) but might also be used manually from the Erlang shell, or
+      called directly by third-party code.</li>
+  <li><b>Spec API</b>: Low level spec manipulations, or adding terms
+      to a spec "by hand".</li>
+  </ul>
+ 
+  Each function is marked with the API it belongs to. For API usage
+  examples, please see the User Guide, section <a href="guide/book.html#api-examples">API examples</a>.
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-attr_spec">attr_spec()</a></h3>
+<p><tt>attr_spec() = {AttrName::atom(), <a href="#type-field_spec">field_spec()</a>}</tt></p>
+<p><p>  Specify attributes to be attached to each spec'd term. <code>AttrName</code>  
+may be arbitrary, but the following receive special attention from  
+the GUI:</p>
+ 
+  <ul>
+  <li><code>key</code>: The primary key from the raw record. This is useful to
+      be able to pull the complete, original record from the table in
+      case you find an oddball value while browsing the spec in the
+      GUI.</li>
+  <li><code>ts</code>: Timestamp from the record (creation or modification time).
+      The only restriction the probe places on this is that its
+      Erlang term ordering must correspond to temporal order (later
+      timestamps must compare larger than earlier ones) in order to
+      be useful. However, for the GUI to understand them, timestamps
+      must be in one of the supported formats as listed in the User
+      Guide, section <a href="guide/book.html#timestamp-formats">Timestamp format
+      support</a>.</li>
+  </ul></p>
+
+<h3 class="typedecl"><a name="type-field_spec">field_spec()</a></h3>
+<p><tt>field_spec() = [] | non_neg_integer() | fun((Record::term()) -&gt; Field::term()) | [<a href="#type-field_spec">field_spec()</a>]</tt></p>
+<p><p>  The field spec is used to select the data that is to be taken and
+  spec'd from the raw terms fed to the probe. Normally, the raw term
+  is a <code>Record</code> from a database table, and the field spec selects a
+  certain <code>Field</code>. However, more elaborate scemes are also possible:</p>
+ 
+  <ul>
+  <li><code>[]</code> or <code>0</code>: select whole record (or term)</li>
+  <li><code>N</code> where <code>N</code> &gt; 0: select the field <code>N</code>.</li>
+  <li><code>fun()</code>: User-defined selection. The fun takes the record as its
+      single argument and returns the selected value.</li>
+  <li>List of accessors: multiple accessors may be chained and supplied
+      in a list. The accessors are applied from left to right, always
+      taking the result of the previous one as their input. E.g.,
+      <code>[3,2]</code> is interpreted as: "Take the third field from the record
+      read from the table, then take the second field of the result,
+      and spec that."</li>
+  </ul>
+ 
+  Any runtime error within the accessor will cause the record to be
+  skipped, so a <code>fun()</code> accessor can also act as a filter via deliberate
+  <code>throw()</code>-ing. Even if a record is skipped, it still counts toward the
+  probe limit and shows up in the output count.</p>
+
+<h3 class="typedecl"><a name="type-options">options()</a></h3>
+<p><tt>options() = [<a href="proplists.html#type-property">proplists:property()</a>]</tt></p>
+<p><p>  Options to influence dumpsterl's behaviour.</p>
+ 
+  The easiest way to get a full reference (including commands, params
+  and options) is to start the dumpsterl shell via <code>ds:shell()</code> and
+  then enter <code>help all</code>.  The resulting listing is also available as
+  the <a href="shell_ref.txt">shell reference</a>.</p>
+
+<h3 class="typedecl"><a name="type-probe_spec">probe_spec()</a></h3>
+<p><tt>probe_spec() = <a href="#type-field_spec">field_spec()</a> | {<a href="#type-field_spec">field_spec()</a>, [<a href="#type-attr_spec">attr_spec()</a>]}</tt></p>
+<p>  The probe specification tells the probe what to spec from the raw
+  records read, and what attributes to associate with it. The
+  attributes are optional, and reference the whole, raw record read
+  from the table, even if the field spec selects a part of that.
+  Hence, it is possible to have parts of the original record stored
+  as attributes that are <b>not</b> part of the spec'd data.</p>
+
+<h3 class="typedecl"><a name="type-spec">spec()</a></h3>
+<p><b>abstract datatype</b>: <tt>spec()</tt></p>
+<p><p>  The spec data structure created by the probe and consumed by the GUI.</p>
+ 
+  This should be treated primarily as an opaque data structure.
+  However, for those wishing to understand the internals of
+  dumpsterl, a high-level description is available in the User Guide,
+  <a href="guide/book.html#spec">The spec</a>.</p>
+
+<h3 class="typedecl"><a name="type-table_id">table_id()</a></h3>
+<p><tt>table_id() = atom() | <a href="ets.html#type-tid">ets:tid()</a> | <a href="dets.html#type-tab_name">dets:tab_name()</a> | <a href="file.html#type-filename">file:filename()</a></tt></p>
+<p>  The table to read. Its accepted format depends on the <code>type</code> setting:
+  <ul>
+  <li> mnesia or ets table name (atom);</li>
+  <li> ets table id (integer);</li>
+  <li> dets table name (any term) for an already opened dets table;</li>
+  <li> filename of a dets table file or disk_log file.</li>
+  </ul></p>
+
+<h3 class="typedecl"><a name="type-table_type">table_type()</a></h3>
+<p><tt>table_type() = mnesia | ets | dets | disk_log</tt></p>
+<p>  The type of table to read. This selects the table iterator functions
+  for the probe.</p>
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#add-2">add/2</a></td><td><b>[Spec API]</b> Add a term (without attributes) to the spec.</td></tr>
+<tr><td valign="top"><a href="#add-3">add/3</a></td><td><b>[Spec API]</b> Add a term (with attributes) to the spec.</td></tr>
+<tr><td valign="top"><a href="#gui-0">gui/0</a></td><td><b>[User API]</b> Start the GUI on the default dump file.</td></tr>
+<tr><td valign="top"><a href="#gui-1">gui/1</a></td><td><b>[User API]</b> Start the GUI on the supplied Spec.</td></tr>
+<tr><td valign="top"><a href="#join-2">join/2</a></td><td><b>[Spec API]</b> Join two specs into one.</td></tr>
+<tr><td valign="top"><a href="#new-0">new/0</a></td><td><b>[Spec API]</b> Create a new spec.</td></tr>
+<tr><td valign="top"><a href="#postproc-1">postproc/1</a></td><td><b>[Spec API]</b> Postprocess a spec.</td></tr>
+<tr><td valign="top"><a href="#pretty_print-1">pretty_print/1</a></td><td><b>[Spec API]</b> Pretty-print a spec.</td></tr>
+<tr><td valign="top"><a href="#probe-3">probe/3</a></td><td><b>[Probe API]</b> Launch the probe to run in the background, using  
+default options.</td></tr>
+<tr><td valign="top"><a href="#probe-4">probe/4</a></td><td> <b>[Probe API]</b> Like <code>probe/3</code>, but also specify options.</td></tr>
+<tr><td valign="top"><a href="#shell-0">shell/0</a></td><td><b>[User API]</b> Start the interactive probe shell.</td></tr>
+<tr><td valign="top"><a href="#spec-3">spec/3</a></td><td><b>[Probe API]</b> Run the probe to create a spec, using
+  default options.</td></tr>
+<tr><td valign="top"><a href="#spec-4">spec/4</a></td><td><b>[Probe API]</b> Like <code>spec/3</code>, but also specify options.</td></tr>
+<tr><td valign="top"><a href="#spec_to_form-1">spec_to_form/1</a></td><td><b>[Spec API]</b> Convert a spec to Erlang abstract from.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="add-2">add/2</a></h3>
+<div class="spec">
+<p><tt>add(Term::term(), Spec::<a href="#type-spec">spec()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p>Equivalent to <a href="#add-3"><tt>add(Term, [], Spec)</tt></a>.</p>
+<p><b>[Spec API]</b> Add a term (without attributes) to the spec.
+  Due to the order of the arguments, this function can be directly
+  passed to <code>lists:foldl/3</code>.</p>
+
+<h3 class="function"><a name="add-3">add/3</a></h3>
+<div class="spec">
+<p><tt>add(Term::term(), Attrs::[{AttrName::atom(), AttrValue::term()}], Spec::<a href="#type-spec">spec()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><b>[Spec API]</b> Add a term (with attributes) to the spec.
+  The attributes must be passed directly as a list of key-value
+  tuples.</p>
+
+<h3 class="function"><a name="gui-0">gui/0</a></h3>
+<div class="spec">
+<p><tt>gui() -&gt; <a href="wx.html#type-wx_object">wx:wx_object()</a> | {error, term()}</tt><br></p>
+</div><p><b>[User API]</b> Start the GUI on the default dump file.
+  This is "ds.bin" in the current directory.</p>
+
+<h3 class="function"><a name="gui-1">gui/1</a></h3>
+<div class="spec">
+<p><tt>gui(Spec::<a href="#type-spec">spec()</a> | <a href="file.html#type-filename">file:filename()</a>) -&gt; <a href="wx.html#type-wx_object">wx:wx_object()</a> | {error, term()}</tt><br></p>
+</div><p><b>[User API]</b> Start the GUI on the supplied Spec.
+  Spec might be a spec data structure or a dump filename.</p>
+
+<h3 class="function"><a name="join-2">join/2</a></h3>
+<div class="spec">
+<p><tt>join(Spec1::<a href="#type-spec">spec()</a>, Spec2::<a href="#type-spec">spec()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><p><b>[Spec API]</b> Join two specs into one.  
+This is useful in case the set of terms to be spec'd was partitioned  
+into subsets that were independently spec'd. By joining these specs,  
+the spec for the whole set of terms can be obtained.</p>
+ 
+  NB. joining must be done on the "raw" spec tree, one that was
+  created only via <code>new/0</code> and <code>add/2,3</code>. In such a tree, all the
+  abstract nodes starting from the root 'term' are always present.
+  See <code>postproc/1</code> for a tree that does not qualify for this condition.</p>
+
+<h3 class="function"><a name="new-0">new/0</a></h3>
+<div class="spec">
+<p><tt>new() -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><b>[Spec API]</b> Create a new spec.</p>
+
+<h3 class="function"><a name="postproc-1">postproc/1</a></h3>
+<div class="spec">
+<p><tt>postproc(Spec::<a href="#type-spec">spec()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><p><b>[Spec API]</b> Postprocess a spec. This is performed as a  
+pre-load step in the GUI, but could be useful in other scenarios.  
+It has a few separate steps:</p>
+ 
+  <ul>
+  <li>compact the tree by cutting empty abstract types;</li>
+  <li>propagating and joining metadata up from the leaf nodes;</li>
+  <li>sorting the children of unions by decreasing count.</li>
+  </ul>
+ 
+  NB. The result of this function generally cannot be passed to the
+  <code>add/2-3</code> and <code>join/2</code> functions.</p>
+
+<h3 class="function"><a name="pretty_print-1">pretty_print/1</a></h3>
+<div class="spec">
+<p><tt>pretty_print(Spec::<a href="#type-spec">spec()</a>) -&gt; string()</tt><br></p>
+</div><p><p><b>[Spec API]</b> Pretty-print a spec.  
+Returns a string produced via converting the spec to the Erlang  
+abstract form of the type definition and pretty-printing that  
+with the Erlang pretty-printer.</p>
+ 
+  Naturally, this only contains a type definition and does not show
+  anything of the samples and statistics contained in the spec.</p>
+
+<h3 class="function"><a name="probe-3">probe/3</a></h3>
+<div class="spec">
+<p><tt>probe(Type::<a href="#type-table_type">table_type()</a>, Tab::<a href="#type-table_id">table_id()</a>, ProbeSpec::<a href="#type-probe_spec">probe_spec()</a>) -&gt; {pid(), reference()}</tt><br></p>
+</div><p><p><b>[Probe API]</b> Launch the probe to run in the background, using  
+default options. The call returns (almost) immediately with a value that  
+can be used to stop the probe before completion:</p>
+ 
+  <pre>      {Pid, _} = ds:probe(...).
+      ...
+      Pid ! finish.</pre>
+ 
+  <p>The second value in the returned tuple is a monitor reference;  
+the probe will be monitored by the caller. This means that the  
+caller will receive a message when the probe completes:</p>
+ 
+  <pre>      {Pid, MonitorRef} = ds:probe(...),
+      receive
+          {'DOWN', MonitorRef, process, Pid, Info} -&gt;
+              io:format("probe done: ~p~n", [Info])
+      end.</pre></p>
+
+<h3 class="function"><a name="probe-4">probe/4</a></h3>
+<div class="spec">
+<p><tt>probe(Type, Tab, ProbeSpec, Opts) -&gt; any()</tt></p>
+</div><p> <b>[Probe API]</b> Like <code>probe/3</code>, but also specify options.</p>
+
+<h3 class="function"><a name="shell-0">shell/0</a></h3>
+<div class="spec">
+<p><tt>shell() -&gt; ok</tt><br></p>
+</div><p><b>[User API]</b> Start the interactive probe shell.
+  The function returns only when the user quits the shell.</p>
+
+<h3 class="function"><a name="spec-3">spec/3</a></h3>
+<div class="spec">
+<p><tt>spec(Type::<a href="#type-table_type">table_type()</a>, Tab::<a href="#type-table_id">table_id()</a>, ProbeSpec::<a href="#type-probe_spec">probe_spec()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><b>[Probe API]</b> Run the probe to create a spec, using
+  default options. The function blocks the caller while the probe is
+  running. The result spec is returned as a return value (but might
+  also be dumped to file according to the options; the default is to
+  dump to "ds.bin").</p>
+
+<h3 class="function"><a name="spec-4">spec/4</a></h3>
+<div class="spec">
+<p><tt>spec(Type::<a href="#type-table_type">table_type()</a>, Tab::<a href="#type-table_id">table_id()</a>, ProbeSpec::<a href="#type-probe_spec">probe_spec()</a>, Opts::<a href="#type-options">options()</a>) -&gt; <a href="#type-spec">spec()</a></tt><br></p>
+</div><p><b>[Probe API]</b> Like <code>spec/3</code>, but also specify options.</p>
+
+<h3 class="function"><a name="spec_to_form-1">spec_to_form/1</a></h3>
+<div class="spec">
+<p><tt>spec_to_form(Spec::<a href="#type-spec">spec()</a>) -&gt; <a href="erl_parse.html#type-abstract_form">erl_parse:abstract_form()</a></tt><br></p>
+</div><p><b>[Spec API]</b> Convert a spec to Erlang abstract from.  The
+  abstract form contains a type definition equivalent to the spec
+  tree. Its primary use is passing it to the Erlang pretty-printer
+  to obtain a nicely formatted spec type definition. If that is your
+  end goal, you should use the function <code>pretty_print/1</code> instead.</p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, May 25 2017, 20:32:21.</i></p>
+</body>
+</html>
