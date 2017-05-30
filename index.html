@@ -5,20 +5,7 @@ layout: default
 <div class="home">
 
   <table class="layout">
-  <tr><td class="layout">
-    <h1 class="page-heading">Posts</h1>
-    <ul class="post-list">
-      {% for post in site.posts %}
-        <li>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          <span class="post-meta">{{ post.date | date: "%b %Y" }}</span>
-        </li>
-      {% endfor %}
-    </ul>
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-  </td>
-
-  <td class="layout col2">
+  <tr><td class="layout col1">
   {% assign categories = "Software|(Once Upon A Time I Played The) Guitar" | split: "|" %}
   {% for cat in categories %}
     <h1 class="page-heading">{{ cat }}</h1>
@@ -33,6 +20,19 @@ layout: default
     </ul>
     <br>
   {% endfor %}
+  </td>
+
+  <td class="layout col2">
+    <h1 class="page-heading">Posts</h1>
+    <ul class="post-list">
+      {% for post in site.posts %}
+        <li>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <span class="post-meta">{{ post.date | date: "%b %Y" }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
   </td></tr></table>
 
 </div>
