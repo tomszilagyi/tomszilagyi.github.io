@@ -19,11 +19,11 @@ the majority of its words was collected and most of its articles
 written from 1958 up to its publication. As you might correctly guess,
 judging by today's standards this volume is ridiculously outdated.
 It has no mention of several modern words of today's everyday
-conversational Swedish, such as *schyst* or *kolla*.  Nor does it
-offer the informal, everyday, "real" meaning of others, such as
-*fika*. Fifty years is a long time, especially when you consider the
-sweeping cultural changes of the last half century, and the linguistic
-ones that inevitably came with those.
+conversational Swedish, such as *mysig*, *schyst* or even *kolla*.
+Nor does it offer the informal, everyday, "real" meaning of others,
+such as *fika*. Fifty years is a long time, especially when you
+consider the sweeping cultural changes of the last half century, and
+the linguistic ones that inevitably came with those.
 
 The dictionary has been reprinted several times. I have a copy of the
 sixth edition from 1992 on my bookshelf, and there are even later
@@ -108,8 +108,10 @@ actually having to write Java and XML code. Or rather, copy-pasting
 different solutions together -- due to the sheer size of the
 community, it was very rare that I did not immediately find something
 along the lines of what I wanted. Still, dealing with these languages
-was mind-numbing. It felt more like chopping the woods rather than an
-intellectual exercise.
+in their rawest form was mind-numbing.  I went for the bare-bones
+experience: I did not use the customized Android IDE so I would be
+forced to see and understand everything in the source. But it felt
+more like chopping the woods rather than an intellectual exercise.
 
 Ingenuity was needed, though. The raw OCR I extracted from the pages
 published by Project Runeberg had a tremendous amount of errors, which
@@ -194,7 +196,8 @@ I learned quite a few things on the way.
   slow. I feel this alone is enough to keep me from doing more
   Android development in my free time.
 
-- Java and XML. Not my cup of tea.
+- It is probably worth using the Android IDE instead of the bare-bones
+  approach that I took.
 
 - Gradle? I like my hand-written Makefiles, thank you. They work, I
   know how they work, and they are very fast. I also prefer to type
