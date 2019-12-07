@@ -89,42 +89,22 @@ Let *N(t,a)* be the number of occurrences of token *t* in account *a*.
 
 ### Step 2
 
-For each token in the global set, calculate a vector of probabilities
-stating what the odds are, for each of the accounts, that this token
-occurs in the transactions of the individual account.
+When parsing a new transaction, scan the descriptor into tokens. Based
+on the presence of each token, a vector of probabilities of the
+transaction belonging to each possible account is calculated. Let
+![P_belong(t,a)](/images/payment-matching/eq1.png) be the probability that a
+transaction with the token *t* belongs to account *a*.
 
-Let ![](/images/payment-matching/eq1.png) be the probability of token
-*t* among all tokens occurring in the descriptors for all transactions
-of account *a*. We define
+We define ![P_belong(t,a)](/images/payment-matching/eq1.png) as:
 
 {% comment %}
-  P_{occur}(t,a) = \frac{N(t,a)}{N(a)}
+  P_{belong}(t,a) = \frac{ N(t,a) }{ \sum_{a \in A} N(t,a) }
   Font: Modern; Font size: 18
   http://www.sciweavers.org/free-online-latex-equation-editor
 {% endcomment %}
 ![](/images/payment-matching/eq2.png)
 
-where *N(a)* is the number of total tokens found when parsing entries
-for account *a*.
-
-### Step 3
-
-When parsing a new transaction, scan the descriptor into tokens. Based
-on the presence of each token, a vector of probabilities of the
-transaction belonging to each possible account is calculated. Let
-![P_belong(t,a)](/images/payment-matching/eq3.png) be the probability that a
-transaction with the token *t* belongs to account *a*.
-
-We define ![P_belong(t,a)](/images/payment-matching/eq3.png) as:
-
-{% comment %}
-  P_{belong}(t,a) = \frac{ P_{occur}(t,a) }{ \sum_{a \in A} P_{occur}(t,a) }
-  Font: Modern; Font size: 18
-  http://www.sciweavers.org/free-online-latex-equation-editor
-{% endcomment %}
-![](/images/payment-matching/eq4.png)
-
-Then, after we have ![P_belong(t,a)](/images/payment-matching/eq3.png)
+Then, after we have ![P_belong(t,a)](/images/payment-matching/eq1.png)
 for all tokens in the descriptor for all accounts, we use the Bayes
 theorem to calculate the combined probability of the transaction to
 belong to the accounts.
@@ -138,14 +118,14 @@ Let *P(a)* be the probability of the descriptor to correspond to account
   Font: Modern; Font size: 18
   http://www.sciweavers.org/free-online-latex-equation-editor
 {% endcomment %}
-![](/images/payment-matching/eq5.png)
+![](/images/payment-matching/eq3.png)
 
 Then, the account with the greatest *P(a)* should be chosen.
 
-Note that steps 1 and 2 do not depend on the transaction to be decided
-on, just the current ledger file. The result of these may be
-precomputed and then only the remaining part of the algorithm needs to
-be carried out on a per transaction basis.
+Note that step 1 does not depend on the transaction to be decided on,
+just the current ledger file. The results of reading the ledger file
+may thus be precomputed and then only the remaining part of the
+algorithm needs to be carried out on a per transaction basis.
 
 ## The implementation
 
