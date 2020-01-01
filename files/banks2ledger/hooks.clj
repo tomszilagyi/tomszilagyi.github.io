@@ -62,9 +62,9 @@
                  :currency currency}]]
     (print-ledger-entry (conj entry [:verifs verifs]))))
 
-(add-entry-hook {:predicate #(salary-hook-predicate %1)
-                 :formatter #(advanced-salary-hook-formatter %1)})
-                              ;; ... or use the simple variant above
+(add-entry-hook {:predicate salary-hook-predicate
+                 :formatter advanced-salary-hook-formatter})
+                            ;; ... or use the simple variant above
 
 
 ;; Discard matching transactions
@@ -72,5 +72,12 @@
 (defn ignore-hook-predicate [entry]
   (= (:counter-acc entry) "Assets:Bank:Other"))
 
-(add-entry-hook {:predicate #(ignore-hook-predicate %1)
-                 :formatter nil})
+(defn commented-entry-formatter [entry]
+  (let [orig-out
+        (with-out-str
+          (print-ledger-entry (add-default-verifications entry)))]
+    (print (clojure.string/replace orig-out #"([^\n]+\n)" "# $1"))))
+
+(add-entry-hook {:predicate ignore-hook-predicate
+                 :formatter commented-entry-formatter})
+                            ;; ... or nil to silently discard entry

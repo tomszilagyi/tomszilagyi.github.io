@@ -319,9 +319,9 @@ register a hook with **banks2ledger**, you call the `add-entry-hook`
 function with a map argument that defines the hook:
 
 {% highlight Clojure %}
-(add-entry-hook {:predicate #(salary-hook-predicate %1)
-                 :formatter #(advanced-salary-hook-formatter %1)})
-                              ;; ... or use the simple variant above
+(add-entry-hook {:predicate salary-hook-predicate
+                 :formatter advanced-salary-hook-formatter})
+                            ;; ... or use the simple variant above
 {% endhighlight %}
 
 The values in the map are constructed in this manner for clarity only;
@@ -362,8 +362,37 @@ these transfers.
 (defn ignore-hook-predicate [entry]
   (= (:counter-acc entry) "Assets:Bank:Other"))
 
-(add-entry-hook {:predicate #(ignore-hook-predicate %1)
+(add-entry-hook {:predicate ignore-hook-predicate
                  :formatter nil})
+{% endhighlight %}
+
+This works really nice, but there is a small detail that might come to
+bite you: it might (very rarely) happen that the program will,
+erroneously, infer the ignored counter-account on an otherwise
+innocent (but perhaps unique) transaction, triggering the ignore
+hook. This will cause the transaction to be discarded without any
+trace. You will be left wondering why your account balances (as
+reported by ledger) do not match reality (as reported by your bank).
+
+To protect against this possibility, I recommend having an ignore hunk
+that prints the original transaction, just as it would have appeared
+by default, but commented out. This way, it is easy to see that the
+transaction is in fact a duplicate (it should be next to its pair,
+once you do the merge-sort of all account outputs to your main ledger
+file). If it is, just remove it by hand.
+
+The code to create a hook that "comments out" matching entries is
+fairly simple:
+
+{% highlight Clojure %}
+(defn commented-entry-formatter [entry]
+  (let [orig-out
+        (with-out-str
+          (print-ledger-entry (add-default-verifications entry)))]
+    (print (clojure.string/replace orig-out #"([^\n]+\n)" "# $1"))))
+
+(add-entry-hook {:predicate ignore-hook-predicate
+                 :formatter commented-entry-formatter})
 {% endhighlight %}
 
 ## Putting it all together
