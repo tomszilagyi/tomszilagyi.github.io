@@ -9,7 +9,7 @@ permalink: /svhu1972/hu/
 
 **Svéd-magyar kéziszótár. Teljesen offline, gyors keresés, hasznos könyvjelzők.**
 
-- Szerezd be a [Google Play] áruházban (ingyenes)!
+- ~~Szerezd be a Google Play áruházban (ingyenes)!~~
 - Forráskód itt: [GitHub]
 - Bővebben a fejlesztésről (angolul): [Resurrecting an old dictionary][resurrecting]
 
@@ -104,7 +104,6 @@ annyi bizonyos, hogy nem helyhiány volt az oka.
 
 
 [English]:          /svhu1972
-[Google Play]:      https://play.google.com/store/apps/details?id=io.github.tomszilagyi.svhu1972
 [GitHub]:           https://github.com/tomszilagyi/svhu1972
 [resurrecting]:     /2017/05/Resurrecting-an-old-dictionary
 [pdf-version]:      https://github.com/tomszilagyi/svenska/tree/master/SV-HU_ordbok

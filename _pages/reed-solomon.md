@@ -57,8 +57,11 @@ The following freely downloadable publications are available for this product.
 
 ## Availability
 
-The Reed-Solomon decoder IP core is my sole intellectual property, and
-is available for licensing. Please [get in touch] if you are interested.
+The Reed-Solomon decoder IP core is my sole intellectual property.
+
+At the moment I do not accept new requests for licensing the RS core
+for a number of private reasons. This is in effect until further
+notice (watch this space but don't hold your breath).
 
 
 ## Screenshots
@@ -82,4 +85,3 @@ Output settings
 
 [Product datasheet]:          /files/reed-solomon/datasheet.pdf
 [Table of field polynomials]: /files/reed-solomon/fieldpolys.pdf
-[get in touch]:               mailto:tomszilagyi@gmail.com

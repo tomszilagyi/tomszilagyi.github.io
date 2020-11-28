@@ -8,10 +8,10 @@ permalink: /plugins/ir.lv2/
 
 ![Screenshot](/images/ir.lv2/sshot.png)
 
-Author: Tom Szilagyi (tomszilagyi gmail com)  
+Author: Tom Szilagyi  
 License: GNU GPL v2  
 Format: LV2 audio processing plugin  
-Homepage: <http://tomszilagyi.github.io/plugins/ir.lv2>  
+Homepage: <https://tomscii.sig7.se/plugins/ir.lv2>  
 Source: <https://github.com/tomszilagyi/ir.lv2>
 
 
