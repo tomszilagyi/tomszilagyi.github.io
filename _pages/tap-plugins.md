@@ -3,7 +3,7 @@ layout: page
 title:  "TAP-plugins"
 location: main-area
 category: Software
-permalink: /tap-plugins/
+permalink: /tap-plugins/about/
 ---
 
 Back in summer 2004, [TAP-plugins] started as some small-ish
@@ -56,11 +56,11 @@ question is still: *How do I get Ardour and my multi-channel audio
 hardware to reliably work with low latency?*
 
 
-[TAP-plugins]:        http://tap-plugins.sourceforge.net/
+[TAP-plugins]:        /tap-plugins/
 [Ardour]:             http://ardour.org
-[Reverb Editor]:      http://tap-plugins.sourceforge.net/reverbed/manual.html
-[TAP Reverberator]:   http://tap-plugins.sourceforge.net/ladspa/reverb.html
-[Scaling Limiter]:    http://tap-plugins.sourceforge.net/ladspa/limiter.html
-[Tubewarmth]:         http://tap-plugins.sourceforge.net/ladspa/tubewarmth.html
+[Reverb Editor]:      /tap-plugins/reverbed/manual.html
+[TAP Reverberator]:   /tap-plugins/ladspa/reverb.html
+[Scaling Limiter]:    /tap-plugins/ladspa/limiter.html
+[Tubewarmth]:         /tap-plugins/ladspa/tubewarmth.html
 [IR]:                 /plugins/ir.lv2
 [git repo]:           https://github.com/tomszilagyi/tap-plugins
