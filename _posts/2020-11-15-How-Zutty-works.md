@@ -11,8 +11,8 @@ Somewhat surprisingly, after trying both of these programs, none of
 them turned out to be the technological facelift I was looking for --
 and none of them work on my low-spec single-board computer, since they
 require "desktop" OpenGL while my ARM Mali GPU only supports OpenGL
-ES. The critique of these programs is for a later post; here I want to
-talk about something more fundamental.
+ES. The critique of these programs is for a [later post]; here I want
+to talk about something more fundamental.
 
 If you would set out to create the theoretically most efficient way of
 rendering the content of a text terminal to a window image, how would
@@ -113,8 +113,8 @@ To prove that this is possible, I wrote my own terminal emulator built
 on exactly this architecture. It is called [Zutty] and here comes a
 high-level overview of how its GPU-based rendering works. (Mind you,
 Zutty is actually much more than a bare proof of concept for this
-idea: it is a fairly capable terminal emulator in its own right, so if
-it fits your bill, feel free to start using it for your daily work
+idea: it is a [fairly capable] terminal emulator in its own right, so
+if it fits your bill, feel free to start using it for your daily work
 right now.)
 
 Zutty employs the [Compute Shader], which is a really efficient way to
@@ -187,12 +187,19 @@ separately rendered on top. But the above tiny pseudo-code is the
 essence of it, and the complete truth is in fact not much more
 complicated.
 
+If you are interested in how this architecture allows Zutty to perform
+in comparison to other terminal emulators, read my follow-up post
+[A totally biased comparison of Zutty].
+
 
 [Alacritty]:          https://en.wikipedia.org/wiki/Alacritty
 [Kitty]:              https://sw.kovidgoyal.net/kitty/
-[Zutty]:              https://github.com/tomszilagyi/zutty
+[Zutty]:              /zutty
 [online]:             http://lazyfoo.net/tutorials/OpenGL/20_bitmap_fonts/index.php
 [tutorials]:          https://learnopengl.com/In-Practice/Text-Rendering
 [Shader Storage Buffer Object]: https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object
 [Compute Shader]:     https://www.khronos.org/opengl/wiki/Compute_Shader
 [DispatchCompute]:    https://www.khronos.org/opengl/wiki/GLAPI/glDispatchCompute
+[later post]:         /2020/12/A-totally-biased-comparison-of-Zutty
+[fairly capable]:     /2020/12/A-totally-biased-comparison-of-Zutty
+[A totally biased comparison of Zutty]: /2020/12/A-totally-biased-comparison-of-Zutty

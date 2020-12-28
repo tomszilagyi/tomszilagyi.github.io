@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zutty key mapping sequences</title>
+<meta name="generator" content="Org mode" />
+<link rel="stylesheet" type="text/css" href="org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Zutty key mapping sequences</h1>
+<p>
+This is a summary of the character sequences Zutty emits in response
+to various special keys, and how this mapping depends on the state of
+the terminal.
+</p>
+
+<div id="outline-container-Mode%20settings%20affecting%20the%20emitted%20sequences" class="outline-2">
+<h2 id="Mode%20settings%20affecting%20the%20emitted%20sequences">Mode settings affecting the emitted sequences</h2>
+<div class="outline-text-2" id="text-Mode%20settings%20affecting%20the%20emitted%20sequences">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Mode</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">DECANM</td>
+<td class="org-left">VT52 Mode</td>
+<td class="org-left">CSI ? 2 l</td>
+</tr>
+
+<tr>
+<td class="org-left">DECANM</td>
+<td class="org-left">VT100 mode</td>
+<td class="org-left">CSI ? 2 h</td>
+</tr>
+
+<tr>
+<td class="org-left">DECCKM/N</td>
+<td class="org-left">Cursor Key Mode: Normal/Cursor</td>
+<td class="org-left">CSI ? 1 l</td>
+</tr>
+
+<tr>
+<td class="org-left">DECAKM/A</td>
+<td class="org-left">Cursor Key Mode: Application</td>
+<td class="org-left">CSI ? 1 h</td>
+</tr>
+
+<tr>
+<td class="org-left">DECKPNM</td>
+<td class="org-left">Normal/Numeric Keypad Mode</td>
+<td class="org-left">ESC &gt;</td>
+</tr>
+
+<tr>
+<td class="org-left">DECKPAM</td>
+<td class="org-left">Alternate/Application Keypad Mode</td>
+<td class="org-left">ESC =</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-Effect%20of%20modifier%20keys" class="outline-2">
+<h2 id="Effect%20of%20modifier%20keys">Effect of modifier keys</h2>
+<div class="outline-text-2" id="text-Effect%20of%20modifier%20keys">
+<p>
+In case of modifiers being held while a key is pressed, a derived
+sequence is sent that includes a Modifier Code as an additional (last)
+parameter of the original sequence. If the original sequence did not
+start with CSI, the start is changed to CSI (with the exception of
+keypad keys). If there were no original parameters in the sequence, a
+first default parameter of 1 is added before appending the Modifier
+Code.
+</p>
+
+<p>
+Modifier codes:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Modifier(s)</th>
+<th scope="col" class="org-right">Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Shift</td>
+<td class="org-right">2</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt</td>
+<td class="org-right">3</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt + Shift</td>
+<td class="org-right">4</td>
+</tr>
+
+<tr>
+<td class="org-left">Control</td>
+<td class="org-right">5</td>
+</tr>
+
+<tr>
+<td class="org-left">Control + Shift</td>
+<td class="org-right">6</td>
+</tr>
+
+<tr>
+<td class="org-left">Control + Alt</td>
+<td class="org-right">7</td>
+</tr>
+
+<tr>
+<td class="org-left">Control + Alt + Shift</td>
+<td class="org-right">8</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+To make it clearer, in each section we will include some examples of
+what sequences will result when some modifiers are applied.
+</p>
+
+<p>
+Modifiers are generally not applicable to VT52 mode, but are uniform
+across ANSI and keypad modes.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Sequences%20that%20are%20the%20same%20regardless%20of%20state" class="outline-2">
+<h2 id="Sequences%20that%20are%20the%20same%20regardless%20of%20state">Sequences that are the same regardless of state</h2>
+<div class="outline-text-2" id="text-Sequences%20that%20are%20the%20same%20regardless%20of%20state">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Key</th>
+<th scope="col" class="org-left">Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Insert, KP_Insert</td>
+<td class="org-left">CSI 2 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Delete, KP_Delete</td>
+<td class="org-left">CSI 3 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Prior (PageUp), KP_Prior</td>
+<td class="org-left">CSI 5 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Next (PageDown), KP_Next</td>
+<td class="org-left">CSI 6 ~</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Modifier examples:
+</p>
+<ul class="org-ul">
+<li>Shift + Insert: CSI 2 ; 2 ~</li>
+<li>Control + PageUp: CSI 5 ; 5 ~</li>
+</ul>
+
+<p>
+Modifiers work even in VT52 mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Function%20keys" class="outline-2">
+<h2 id="Function%20keys">Function keys</h2>
+<div class="outline-text-2" id="text-Function%20keys">
+<p>
+These are independent of cursor key and numeric keypad modes.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Key</th>
+<th scope="col" class="org-left">VT100</th>
+<th scope="col" class="org-left">VT52</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">F1, KP_F1</td>
+<td class="org-left">SS3 P</td>
+<td class="org-left">ESC P</td>
+</tr>
+
+<tr>
+<td class="org-left">F2, KP_F2</td>
+<td class="org-left">SS3 Q</td>
+<td class="org-left">ESC Q</td>
+</tr>
+
+<tr>
+<td class="org-left">F3, KP_F3</td>
+<td class="org-left">SS3 R</td>
+<td class="org-left">ESC R</td>
+</tr>
+
+<tr>
+<td class="org-left">F4, KP_F4</td>
+<td class="org-left">SS3 S</td>
+<td class="org-left">ESC S</td>
+</tr>
+
+<tr>
+<td class="org-left">F5</td>
+<td class="org-left">CSI 1 5 ~</td>
+<td class="org-left">CSI 1 5 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">F6</td>
+<td class="org-left">CSI 1 7 ~</td>
+<td class="org-left">CSI 1 7 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">F7</td>
+<td class="org-left">CSI 1 8 ~</td>
+<td class="org-left">&#x2026;</td>
+</tr>
+
+<tr>
+<td class="org-left">F8</td>
+<td class="org-left">CSI 1 9 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F9</td>
+<td class="org-left">CSI 2 0 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F10</td>
+<td class="org-left">CSI 2 1 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F11</td>
+<td class="org-left">CSI 2 3 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F12</td>
+<td class="org-left">CSI 2 4 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F13</td>
+<td class="org-left">CSI 2 5 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F14</td>
+<td class="org-left">CSI 2 6 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F15</td>
+<td class="org-left">CSI 2 8 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F16</td>
+<td class="org-left">CSI 2 9 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F17</td>
+<td class="org-left">CSI 3 1 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F18</td>
+<td class="org-left">CSI 3 2 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F19</td>
+<td class="org-left">CSI 3 3 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F20</td>
+<td class="org-left">CSI 3 4 ~</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Modifier examples:
+</p>
+<ul class="org-ul">
+<li>Shift + F1: CSI 1 ; 2 P</li>
+<li>Alt + F4: CSI 1 ; 3 S</li>
+<li>Shift + F5: CSI 1 5 ; 2 ~</li>
+<li>Control + Shift + F10: CSI 21 ; 6 ~</li>
+</ul>
+
+<p>
+Modifiers are not applied in VT52 mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Sequences%20dependent%20on%20cursor%20key%20mode%20setting" class="outline-2">
+<h2 id="Sequences%20dependent%20on%20cursor%20key%20mode%20setting">Sequences dependent on cursor key mode setting</h2>
+<div class="outline-text-2" id="text-Sequences%20dependent%20on%20cursor%20key%20mode%20setting">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Key</th>
+<th scope="col" class="org-left">VT100 Normal</th>
+<th scope="col" class="org-left">VT100 App</th>
+<th scope="col" class="org-left">VT52</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Up, KP_Up</td>
+<td class="org-left">CSI A</td>
+<td class="org-left">SS3 A</td>
+<td class="org-left">ESC A</td>
+</tr>
+
+<tr>
+<td class="org-left">Down, KP_Down</td>
+<td class="org-left">CSI B</td>
+<td class="org-left">SS3 B</td>
+<td class="org-left">ESC B</td>
+</tr>
+
+<tr>
+<td class="org-left">Right, KP_Right</td>
+<td class="org-left">CSI C</td>
+<td class="org-left">SS3 C</td>
+<td class="org-left">ESC C</td>
+</tr>
+
+<tr>
+<td class="org-left">Left, KP_Left</td>
+<td class="org-left">CSI D</td>
+<td class="org-left">SS3 D</td>
+<td class="org-left">ESC D</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Begin</td>
+<td class="org-left">CSI E</td>
+<td class="org-left">SS3 E</td>
+<td class="org-left">ESC E</td>
+</tr>
+
+<tr>
+<td class="org-left">Home, KP_Home</td>
+<td class="org-left">CSI H</td>
+<td class="org-left">SS3 H</td>
+<td class="org-left">ESC H</td>
+</tr>
+
+<tr>
+<td class="org-left">End, KP_End</td>
+<td class="org-left">CSI F</td>
+<td class="org-left">SS3 F</td>
+<td class="org-left">ESC F</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Examples (apply both in Normal and App mode):
+</p>
+<ul class="org-ul">
+<li>Alt + Left: CSI 1 ; 3 D</li>
+<li>Control + Home: CSI 1 ; 5 H</li>
+</ul>
+
+<p>
+Modifiers are not applied in VT52 mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Sequences%20dependent%20on%20keypad%20mode%20setting" class="outline-2">
+<h2 id="Sequences%20dependent%20on%20keypad%20mode%20setting">Sequences dependent on keypad mode setting</h2>
+<div class="outline-text-2" id="text-Sequences%20dependent%20on%20keypad%20mode%20setting">
+<p>
+This only affects the keypad. The corresponding non-keypad keys always
+send the characters in the Normal column. Normal mode is shared
+between VT100 and VT52:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Key</th>
+<th scope="col" class="org-left">Normal</th>
+<th scope="col" class="org-left">VT100 App</th>
+<th scope="col" class="org-left">VT52 App</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">KP_Space</td>
+<td class="org-left">SP</td>
+<td class="org-left">SS3 SP</td>
+<td class="org-left">ESC ? SP</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Tab</td>
+<td class="org-left">TAB</td>
+<td class="org-left">SS3 I</td>
+<td class="org-left">ESC ? I</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Enter</td>
+<td class="org-left">CR</td>
+<td class="org-left">SS3 M</td>
+<td class="org-left">ESC ? M</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Multiply</td>
+<td class="org-left">*</td>
+<td class="org-left">SS3 j</td>
+<td class="org-left">ESC ? j</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Add</td>
+<td class="org-left">+</td>
+<td class="org-left">SS3 k</td>
+<td class="org-left">ESC ? k</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Separator</td>
+<td class="org-left">,</td>
+<td class="org-left">SS3 l</td>
+<td class="org-left">ESC ? l</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Subtract</td>
+<td class="org-left">-</td>
+<td class="org-left">SS3 m</td>
+<td class="org-left">ESC ? m</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Period</td>
+<td class="org-left">.</td>
+<td class="org-left">SS3 n</td>
+<td class="org-left">ESC ? n</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Divide</td>
+<td class="org-left">/</td>
+<td class="org-left">SS3 o</td>
+<td class="org-left">ESC ? o</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_0</td>
+<td class="org-left">0</td>
+<td class="org-left">SS3 p</td>
+<td class="org-left">ESC ? p</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_1</td>
+<td class="org-left">1</td>
+<td class="org-left">SS3 q</td>
+<td class="org-left">ESC ? q</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_2</td>
+<td class="org-left">2</td>
+<td class="org-left">SS3 r</td>
+<td class="org-left">ESC ? r</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_3</td>
+<td class="org-left">3</td>
+<td class="org-left">SS3 s</td>
+<td class="org-left">ESC ? s</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_4</td>
+<td class="org-left">4</td>
+<td class="org-left">SS3 t</td>
+<td class="org-left">ESC ? t</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_5</td>
+<td class="org-left">5</td>
+<td class="org-left">SS3 u</td>
+<td class="org-left">ESC ? u</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_6</td>
+<td class="org-left">6</td>
+<td class="org-left">SS3 v</td>
+<td class="org-left">ESC ? v</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_7</td>
+<td class="org-left">7</td>
+<td class="org-left">SS3 w</td>
+<td class="org-left">ESC ? w</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_8</td>
+<td class="org-left">8</td>
+<td class="org-left">SS3 x</td>
+<td class="org-left">ESC ? x</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_9</td>
+<td class="org-left">9</td>
+<td class="org-left">SS3 y</td>
+<td class="org-left">ESC ? y</td>
+</tr>
+
+<tr>
+<td class="org-left">KP_Equal</td>
+<td class="org-left">=</td>
+<td class="org-left">SS3 X</td>
+<td class="org-left">ESC ? X</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Zutty is generally implemented to be a drop-in replacement for
+xterm. However, there are some subtle differences. One of these is
+that in xterm, the numeric keypad digits KP_0 to KP_9 (generated by X
+when Num Lock is on) seem to always work like the digits on the "main"
+keyboard (at least this author has not found a way to make xterm send
+e.g., 'SS3 t' instead of the digit '4'). This is rather puzzling, as
+other non-numeric keypad keys make xterm send the "correct" sequence
+(e.g., 'SS3 j' for KP_Multiply). Zutty, on the other hand, generates
+all the sequences according to the above table.
+</p>
+
+<p>
+In VT100 App mode, modifier keys do NOT cause the SS3 to change to
+CSI. This is how xterm behaves, and Zutty emulates that behaviour.
+</p>
+
+<p>
+Examples:
+</p>
+<ul class="org-ul">
+<li>Control + KP_Enter: SS3 5 M</li>
+<li>Control + KP_Plus: SS3 5 k</li>
+<li>Alt + KP_Minus: SS3 3 m</li>
+</ul>
+
+<p>
+Modifiers are not applied in VT52 mode.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Alt%20sends%20Escape" class="outline-2">
+<h2 id="Alt%20sends%20Escape">Alt sends Escape</h2>
+<div class="outline-text-2" id="text-Alt%20sends%20Escape">
+<p>
+Hitting any ordinary key (letters, punctuation symbols, etc.) not
+shown in the above tables while holding Alt will result in the key
+being prefixed by the ESC character. This is consistent with the "Meta
+sends Escape" setting of xterm, and allows programs such as Emacs to
+recognize keyboard bindings containing Alt (or Meta). However, this
+will probably need to be made configurable (to be able to turn it off)
+in case Zutty gains a more diverse userbase.
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

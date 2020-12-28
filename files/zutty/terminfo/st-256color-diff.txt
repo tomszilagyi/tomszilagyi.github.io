@@ -1,0 +1,44 @@
+comparing st-256color to xterm-256color.
+    comparing booleans.
+	ccc: F:T.
+	hs: T:F.
+	km: F:T.
+	mc5i: F:T.
+    comparing numbers.
+    comparing strings.
+	acsc: '+C\,D-A.B0E``aaffgghFiGjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~', '``aaffggiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~'.
+	cvvis: '\E[?25h', '\E[?12;25h'.
+	dsl: '\E]0;\007', NULL.
+	enacs: '\E)0', NULL.
+	fsl: '^G', NULL.
+	initc: NULL, '\E]4;%p1%d;rgb\:%p2%{255}%*%{1000}%/%2.2X/%p3%{255}%*%{1000}%/%2.2X/%p4%{255}%*%{1000}%/%2.2X\E\\'.
+	is2: '\E[4l\E>\E[?1034l', '\E[!p\E[?3;4l\E[4l\E>'.
+	ka1: '\E[1~', NULL.
+	ka3: '\E[5~', NULL.
+	kb2: '\EOu', '\EOE'.
+	kc1: '\E[4~', NULL.
+	kc3: '\E[6~', NULL.
+	kcbt: NULL, '\E[Z'.
+	kclr: '\E[3;5~', NULL.
+	kdl1: '\E[3;2~', NULL.
+	ked: '\E[1;5F', NULL.
+	kel: '\E[1;2F', NULL.
+	kend: '\E[4~', '\EOF'.
+	kent: NULL, '\EOM'.
+	khome: '\E[1~', '\EOH'.
+	kil1: '\E[2;5~', NULL.
+	krmir: '\E[2;2~', NULL.
+	oc: NULL, '\E]104\007'.
+	rin: NULL, '\E[%p1%dT'.
+	rmam: NULL, '\E[?7l'.
+	rmcup: '\E[?1049l', '\E[?1049l\E[23;0;0t'.
+	rmm: NULL, '\E[?1034l'.
+	rs1: '\Ec', '\Ec\E]104\007'.
+	rs2: '\E[4l\E>\E[?1034l', '\E[!p\E[?3;4l\E[4l\E>'.
+	sgr: '%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p5%t;2%;%?%p7%t;8%;m', '%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p5%t;2%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m'.
+	sgr0: '\E[0m', '\E(B\E[m'.
+	smam: NULL, '\E[?7h'.
+	smcup: '\E[?1049h', '\E[?1049h\E[22;0;0t'.
+	smm: NULL, '\E[?1034h'.
+	tsl: '\E]0;', NULL.
+	u8: '\E[?1;2c', '\E[?%[;0123456789]c'.

@@ -16,6 +16,9 @@ layout: default
             <a class="page-entry" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
           {% endif %}
         {% endfor %}
+        {% if "Software" == cat %}
+          <a class="page-entry" href="/zutty/README.html">Zutty: a high-end terminal for low-end systems</a>
+        {% endif %}
       </div>
     </ul>
     <br>

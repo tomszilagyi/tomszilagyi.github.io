@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zutty usage guide</title>
+<meta name="generator" content="Org mode" />
+<link rel="stylesheet" type="text/css" href="org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Zutty usage guide</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#Installation">Installation</a>
+<ul>
+<li><a href="#1.%20Install%20build%20dependencies">1. Install build dependencies</a></li>
+<li><a href="#2.%20Obtain%20the%20source">2. Obtain the source</a></li>
+<li><a href="#3.%20Configure%20the%20source">3. Configure the source</a></li>
+<li><a href="#4.%20Compile%20the%20source">4. Compile the source</a></li>
+<li><a href="#5.%20Install%20Zutty">5. Install Zutty</a></li>
+</ul>
+</li>
+<li><a href="#Configuration">Configuration</a>
+<ul>
+<li><a href="#Basic%20configuration%20and%20mode%20switches">Basic configuration and mode switches</a></li>
+<li><a href="#General%20appearance">General appearance</a></li>
+<li><a href="#Font%20selection">Font selection</a>
+<ul>
+<li><a href="#Recommended%20fonts">Recommended fonts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#Persistent%20configuration">Persistent configuration</a></li>
+</ul>
+</div>
+</div>
+<p>
+This document is aimed at all levels of users: experts and non-experts
+alike.
+</p>
+
+<div id="outline-container-Installation" class="outline-2">
+<h2 id="Installation">Installation</h2>
+<div class="outline-text-2" id="text-Installation">
+<p>
+You will probably need to install Zutty from source. This is not as
+scary as it might seem, because Zutty has very few dependencies and is
+a relatively small program.
+</p>
+</div>
+
+<div id="outline-container-1.%20Install%20build%20dependencies" class="outline-3">
+<h3 id="1.%20Install%20build%20dependencies">1. Install build dependencies</h3>
+<div class="outline-text-3" id="text-1.%20Install%20build%20dependencies">
+<p>
+On a recent (stable or testing) Debian, or a Debian-derivative such as
+Ubuntu, the following command will make sure everything you need to
+build Zutty is in place.
+</p>
+
+<pre class="example">
+sudo apt-get install \
+   build-essential pkg-config python3 \
+   libegl-dev libfreetype-dev libgles-dev libxmu-dev
+</pre>
+</div>
+</div>
+
+<div id="outline-container-2.%20Obtain%20the%20source" class="outline-3">
+<h3 id="2.%20Obtain%20the%20source">2. Obtain the source</h3>
+<div class="outline-text-3" id="text-2.%20Obtain%20the%20source">
+<p>
+Clone the source from git:
+</p>
+<pre class="example">
+git clone https://github.com/tomszilagyi/zutty.git
+cd zutty
+</pre>
+
+
+<p>
+Alternatively, to download a compressed tarball of a certain release
+version, go to <a href="https://github.com/tomszilagyi/zutty/releases">https://github.com/tomszilagyi/zutty/releases</a>, download
+the tarball you want (we recommend the latest one), and uncompress it.
+Further steps assume that your working directory is within the
+uncompressed directory, so <code>cd</code> into it!
+</p>
+</div>
+</div>
+
+<div id="outline-container-3.%20Configure%20the%20source" class="outline-3">
+<h3 id="3.%20Configure%20the%20source">3. Configure the source</h3>
+<div class="outline-text-3" id="text-3.%20Configure%20the%20source">
+<p>
+You are supposed to be inside the repository (or release) directory
+structure, i.e., the <code>zutty</code> directory created above should be your
+working directory. Issue this command:
+</p>
+
+<pre class="example">
+./waf configure
+</pre>
+
+
+<p>
+You should see some output with a confirmation of the Zutty version
+you are going to build, and whether you are creating a Debug build (it
+should say "no" at this point; read the <a href="./HACKING.html">Development guide</a> if you are
+interested in debugging Zutty).
+</p>
+
+<p>
+You should also see checks for the presence of the build
+dependencies. If anything is missing, the configure script will
+terminate with an error. Otherwise, the configure output will finish
+with a line like this:
+</p>
+
+<pre class="example">
+'configure' finished successfully (0.373s)
+</pre>
+
+
+<p>
+In case you will want to install the <code>zutty</code> executable to somewhere
+other than <code>/usr/local/bin</code>, use the <code>--prefix</code> option to specify the
+installation prefix (the default is <code>/usr/local</code>). For example, I
+often install stuff for my user account only, in which case I would
+issue <code>./waf configure --prefix=/home/tom/root</code> so that later on,
+<code>zutty</code> would end up installed as <code>/home/tom/root/bin/zutty</code>.
+</p>
+
+<p>
+If you would like to learn more, <code>./waf --help</code> lists a reference of
+every option you can use.
+</p>
+</div>
+</div>
+
+<div id="outline-container-4.%20Compile%20the%20source" class="outline-3">
+<h3 id="4.%20Compile%20the%20source">4. Compile the source</h3>
+<div class="outline-text-3" id="text-4.%20Compile%20the%20source">
+<p>
+Just type:
+</p>
+
+<pre class="example">
+./waf
+</pre>
+
+
+<p>
+Alternatively, if you want to specify the number of jobs to run in
+parallel, issue <code>./waf -j 4</code> (substitute your number of CPU cores in
+place of 4).
+</p>
+
+<p>
+The compilation messages should be self-explanatory (assuming you do
+not run into C++ error messages &#x2013; decoding those is an art form in its
+own right). A successful compile ends with a line like this:
+</p>
+
+<pre class="example">
+'build' finished successfully (23.524s)
+</pre>
+
+
+<p>
+At this point, the <code>zutty</code> executable is complete and ready to be run
+at <code>build/src/zutty</code> and you might want to launch it just to see if it
+works. You can run it without arguments to start it up with defaults,
+or add <code>-h</code> (or <code>-help</code>) to learn about available options. (Don't
+worry, those will be covered in detail below.)
+</p>
+</div>
+</div>
+
+<div id="outline-container-5.%20Install%20Zutty" class="outline-3">
+<h3 id="5.%20Install%20Zutty">5. Install Zutty</h3>
+<div class="outline-text-3" id="text-5.%20Install%20Zutty">
+<p>
+For regular use, it is best to copy the <code>zutty</code> executable to a
+system-wide directory for binaries where it will be found as part of
+the default executable search path. This makes it easier to launch and
+also decouples it from any local changes. You can manually copy the
+executable built in the previous step, but it might be easier to use
+the built-in install step in the <code>waf</code> script. Running it with <code>sudo</code>
+will ensure that it is able to write to protected system-wide
+locations:
+</p>
+
+<pre class="example">
+sudo ./waf install
+</pre>
+
+
+<p>
+Note that your ability to run the above command (with <code>sudo</code>) is
+contingent on the presence of <code>sudo</code>, the setup of your user account
+with respect to sudo, etc. If it does not work, please search the web
+or ask your friendly local guru. Also, if you have specified an
+install location that is actually yours (like the one I showed above)
+then of course there is no point in using <code>sudo</code>.
+</p>
+
+<p>
+At the end, you should see something like this:
+</p>
+
+<pre class="example">
+'install' finished successfully (0.135s)
+</pre>
+
+
+<p>
+Congratulations, you are now ready to start using Zutty as your
+terminal!
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-Configuration" class="outline-2">
+<h2 id="Configuration">Configuration</h2>
+<div class="outline-text-2" id="text-Configuration">
+<p>
+<code>zutty</code> has a set of configuration options, all of which have:
+</p>
+<ul class="org-ul">
+<li>a command line option;</li>
+<li>an X resource database (Xrdb) key;</li>
+<li>a sensible hard default.</li>
+</ul>
+
+<p>
+For each option, the above list defines the order of preference.  That
+is, the command line can be used to define a setting in a transient
+way; Xrdb entries may be used to persistently alter the default value
+for an option; and lastly, without any input from the user, <code>zutty</code>
+should still have a workable default.
+</p>
+
+<p>
+To view the list of options, issue <code>zutty -h</code> (short for <code>-help</code>):
+</p>
+
+<pre class="example">
+Usage:
+  zutty [-option ...] [shell]
+
+Options:
+  -altScroll   Alternate scroll mode
+  -bg          Background color (default: 000000)
+  -border      Border width in pixels (default: 2)
+  -display     Display to connect to
+  -fg          Foreground color (default: ffffff)
+  -font        Font to use (default: 9x18)
+  -fontsize    Font size (default: 16)
+  -fontpath    Font search path (default: /usr/share/fonts)
+  -geometry    Terminal size in chars (default: 80x24)
+  -glinfo      Print OpenGL information
+  -help        Print usage information
+  -rv          Reverse video
+  -selection   Selection target (default: primary)
+  -shell       Shell program to run (default: /bin/bash)
+  -title       Window title (default: Zutty)
+  -quiet       Silence logging output
+  -verbose     Output info messages
+  -e           Command line to run
+</pre>
+
+
+<p>
+All options can be abbreviated as long as they are non-ambiguous, so
+it's fine to write <code>-d</code> short for <code>-display</code>, <code>-gl</code> for <code>-glinfo</code>,
+<code>-fontp</code> for <code>-fontpath</code>, <code>-t</code> for <code>-title</code>, <code>-q</code> for <code>-quiet</code>, etc.
+</p>
+
+<p>
+Boolean options (<code>-altScroll</code>, <code>-glinfo</code>, <code>-help</code>, <code>-rv</code>, <code>-quiet</code>,
+<code>-verbose</code>) do not expect an argument; the presence of these options
+amounts to a setting of "true". Other options expect exactly one
+argument, with the exception of <code>-e</code>, which must be the last option,
+to be followed by the command line to run.
+</p>
+
+<p>
+The options are further documented below, grouped into sections by
+topic. To set up a persistent configuration (altered defaults), see
+the next section <a href="#Persistent%20configuration">Persistent configuration</a>.
+</p>
+</div>
+
+<div id="outline-container-Basic%20configuration%20and%20mode%20switches" class="outline-3">
+<h3 id="Basic%20configuration%20and%20mode%20switches">Basic configuration and mode switches</h3>
+<div class="outline-text-3" id="text-Basic%20configuration%20and%20mode%20switches">
+<pre class="example">
+-altScroll   Alternate scroll mode [boolean]
+</pre>
+
+
+<p>
+If enabled, scroll up and down events (generated by the mouse scroll
+wheel) are converted to virtual up- and down-arrow keypresses. This
+might prove to be a convenient method of moving up/down one at a
+time in programs where one usually navigates with the keyboard arrows.
+</p>
+
+<pre class="example">
+-display     Display to connect to
+</pre>
+
+
+<p>
+The X display to connect to. By default, the value of the environment
+variable DISPLAY is used.
+</p>
+
+<pre class="example">
+-glinfo      Print OpenGL information [boolean]
+</pre>
+
+
+<p>
+If enabled, Zutty will query and log some GL variables on program
+startup. These include EGL_VERSION, EGL_VENDOR, EGL_EXTENSIONS, as
+well as GL_RENDERER, GL_VERSION, GL_VENDOR, GL_EXTENSIONS, and numeric
+limits on the Compute Shader implementation. This is mostly a
+debugging aid. The output is not affected by any verbosity changes
+made via <code>-v</code> / <code>-q</code>.
+</p>
+
+<pre class="example">
+-help        Print usage information [boolean]
+</pre>
+
+
+<p>
+Print the help message containing the list of options documented here,
+and quit.
+</p>
+
+<pre class="example">
+-selection   Selection target (default: primary)
+</pre>
+
+
+<p>
+Set the X Selection to use as the target of copy (and the source of
+paste) operations. There are three options: <code>primary</code>, <code>secondary</code> and
+<code>clipboard</code>. Only the first character of the argument is used (<code>'p'</code>,
+<code>'s'</code>, <code>'c'</code>) to discriminate between these.
+</p>
+
+<pre class="example">
+-shell       Shell program to run (default: /bin/bash)
+</pre>
+
+
+<p>
+Specify the shell program to run in the terminal. As a bit of special
+syntax, this option can be passed both as a regular option (<code>-shell
+bash</code> anywhere among other options), or just the shell itself (<code>bash</code>)
+at the end of the command line, mutually exclusive with using the <code>-e</code>
+option. If both forms are present, the last item on the command line
+will take precedence over the value supplied after <code>-shell</code>.
+</p>
+
+<p>
+The algorithm to determine the actual shell program to spawn closely
+resembles Xterm behaviour and follows these steps:
+</p>
+
+<ol class="org-ol">
+<li>Start with the <code>shell</code> value (the last argument given after all
+valid options, if present, or the value supplied after <code>-shell</code>).</li>
+<li>Try to construct an absolute path taking <code>$PATH</code> into account;
+this includes resolving relative paths and trying elements of the
+list of <code>$PATH</code> entries until it resolves to an existing file.</li>
+<li>Fall back on <code>$SHELL</code>, then the user's <code>/etc/passwd</code> shell entry,
+if the above did not result in any candidate.</li>
+<li>Use <code>/bin/sh</code> as a last resort.</li>
+<li>Validate the outcome of the above steps against the permitted shell
+entries found in <code>/etc/shells</code>; proceed, but clear <code>$SHELL</code> from
+the spawned program's environment if the program is not listed as a
+valid shell.</li>
+</ol>
+
+<p>
+In accordance with the general precedence of configuration lookups, in
+case a <code>shell</code> argument is <b>not</b> given, the <code>zutty.shell</code> resource is
+consulted; if that is not set, the built-in default of <code>/bin/bash</code> is
+assumed as the result of step 0 (and then steps 1-4 carried out as
+above).
+</p>
+
+<pre class="example">
+-e           Command line to run
+</pre>
+
+
+<p>
+This option specifies the command line (program and arguments) to be
+run in the Zutty terminal window. It also sets the window title to the
+basename of the program to be executed.
+</p>
+
+<p>
+Note that this must be the last option on the command line, as
+everything after it will be passed verbatim to the spawned child
+process.
+</p>
+
+<pre class="example">
+-quiet       Silence logging output [boolean]
+-verbose     Output info messages [boolean]
+</pre>
+
+
+<p>
+These options control the verbosity of log output emitted by
+Zutty. You will only observe the effects of these if you run Zutty
+itself from another terminal (as opposed to some launcher that
+discards the program's output). In that case, you will notice output
+that looks like this:
+</p>
+
+<pre class="example">
+I [font.cc: 54] Loading /usr/share/fonts/X11/misc/9x18.pcf.gz as primary
+I [font.cc:198] Glyph size 9x18
+...
+I [main.cc:118] Window ID: 48234498 / 0x2e00002
+I [charvdev.cc:377] Resize to 935 x 771 pixels, 103 x 42 chars
+</pre>
+
+
+<p>
+The first letter is an indication of the log level or "severity"; <code>E</code>
+means Error, <code>W</code> stands for Warning, <code>I</code> is Info and <code>T</code> is Trace.
+Trace will only be output if you compile Zutty into a debug build; see
+the <a href="./HACKING.html">Development guide</a> for details. Next, the origin of the log message
+is shown in square brackets, indicating the source code location
+(filename and line number) where the message was printed. Then comes
+the actual message.
+</p>
+
+<p>
+By default (if neither <code>-quiet</code> nor <code>-verbose</code> is given), Zutty will
+print errors and warnings, but not info messages. If <code>-verbose</code> is
+given, info messages are also printed. On the other hand, if <code>-quiet</code>
+is given, nothing is printed. If both options are given, <code>-quiet</code>
+wins.
+</p>
+</div>
+</div>
+
+<div id="outline-container-General%20appearance" class="outline-3">
+<h3 id="General%20appearance">General appearance</h3>
+<div class="outline-text-3" id="text-General%20appearance">
+<pre class="example">
+-geometry    Terminal size in chars (default: 80x24)
+</pre>
+
+
+<p>
+This option defines the desired initial size of the terminal as
+measured in characters. (The pixel size of the window will be a
+function of this plus the font geometry, and cannot be specified
+directly.)
+</p>
+
+<p>
+This is just a request to the window manager; <code>zutty</code> will accept and
+work with whatever final window size it gets. Setting this will in no
+way interfere with your ability to resize <code>zutty</code> once it is up and
+running.
+</p>
+
+<pre class="example">
+-bg          Background color (default: 000000)
+-fg          Foreground color (default: ffffff)
+</pre>
+
+
+<p>
+These options accept a hexadecimal RRGGBB color specification, similar
+to how you can define a color in many other places, e.g., CSS.
+Both lower- and uppercase hexadecimals (a-f, A-F) are accepted, but
+note that names (e.g., "red" instead of "ff0000") are <b>not</b> supported.
+</p>
+
+<pre class="example">
+-rv          Reverse video [boolean]
+</pre>
+
+
+<p>
+Using this option will swap the effective foreground and background
+color, specified either via <code>-fg</code> and <code>-bg</code>, or the corresponding
+resources, or the defaults. It will <b>not</b> swap the meaning of color
+codes and such; if a program explicitly specifies the color green, it
+will be rendered green with and without <code>-rv</code>.
+</p>
+
+<pre class="example">
+-border      Border width in pixels (default: 2)
+</pre>
+
+
+<p>
+Specify the border width, specifically, the border that is part of the
+client area of the Zutty window and not part of any window decoration
+itself (this is equivalent to what Xterm calls internal border width).
+</p>
+
+<pre class="example">
+-title       Window title (default: Zutty)
+</pre>
+
+
+<p>
+Set the title of the Zutty window. This might be overridden by usage
+of the <code>-e</code> option (setting the title to the basename of the program
+to be run), or at any later time by escape sequences output by the
+shell (or any program executed by it).
+</p>
+</div>
+</div>
+
+<div id="outline-container-Font%20selection" class="outline-3">
+<h3 id="Font%20selection">Font selection</h3>
+<div class="outline-text-3" id="text-Font%20selection">
+<p>
+Zutty employs a simple but powerful model of font selection. Font
+files are located under a search path and loaded by Zutty itself
+(bypassing any infrastructure such as a font server, etc). In
+principle, any font that is supported by the Freetype font library can
+be used; in practice, only monospace fonts make sense. Both fixed size
+(bitmap) fonts and scaled (vectorized) fonts are supported.
+</p>
+
+<p>
+You specify the font to use by its name, which will be part of the
+actual filename(s) that store the font. Multiple variants of the font
+will be sought after: Zutty will try to find a Regular, a Bold, an
+Italic and a Bold Italic variant of the font you specify. It is not an
+error if these do not exist, as long as the primary variant (Regular)
+is found.
+</p>
+
+<pre class="example">
+-font        Font to use (default: 9x18)
+</pre>
+
+
+<p>
+This option specifies the font name to use. The name supplied will
+form the basis of a case-insensitive search under the font search
+path. The search will try to locate a set of files under the same
+subdirectory, starting with the supplied name and ending with the same
+extension that is one of the recognized font file extensions. If such
+a set of files is found, the full filenames (the parts after the
+specified font name) will be used to assign the files to each variant
+sought after.
+</p>
+
+<p>
+For example, the default font is <code>9x18</code>. This is one of the "misc
+fixed" fonts. After seeing that the font name is "9x18", Zutty will
+search under the font path <code>/usr/share/fonts</code> for files starting with
+"9x18". It will find <code>9x18.pcf.gz</code> and <code>9x18B.pcf.gz</code>, both under
+<code>/usr/share/fonts/X11/misc</code>. Based on the filenames, Zutty will
+recognize the first file as the regular variant, and the second file
+as the bold variant. Other variants are absent; use of text attributes
+that depend on them will result in sensible fallbacks.
+</p>
+
+<p>
+As a second example, we will load a scaled font called Liberation Mono
+by supplying <code>-font LiberationMono</code> (or <code>-font liberationmono</code>) to
+Zutty. This will result in several files found, all under
+<code>/usr/share/fonts/truetype/liberation</code>: <code>LiberationMono-Regular.ttf</code>,
+<code>LiberationMono-Bold.ttf</code>, <code>LiberationMono-Italic.ttf</code> and
+<code>LiberationMono-BoldItalic.ttf</code>. These files will be loaded as the
+respective variants of the chosen font.
+</p>
+
+<pre class="example">
+-fontsize    Font size (default: 16)
+</pre>
+
+
+<p>
+For scaled fonts, such as Liberation Mono above, this setting controls
+the height, measured in pixels, to rasterize the glyphs to. The actual
+character grid size will almost always be more, due to the fact that
+typefaces have some spacing around the actual glyphs.
+</p>
+
+<p>
+The specified size, if within one pixel of the size of a bitmap
+strike, will result in picking that strike (pre-rasterized version)
+from a scaled font with strikes. If there are no strikes, or the
+specified size is too far from any pre-rasterized sizes, Zutty falls
+back to rendering the outline at the requested size.
+</p>
+
+<p>
+In case of a fixed size font with multiple bitmap sizes, the size
+closest to the configured size will be selected.
+</p>
+
+<pre class="example">
+-fontpath    Font search path (default: /usr/share/fonts)
+</pre>
+
+
+<p>
+This option specifies the root of the directory structure where font
+files will be searched. It is seldom necessary to change this, but
+might be useful to try some new font you downloaded from the Internet
+(and have not yet installed to a system-wide location).
+</p>
+</div>
+
+<div id="outline-container-Recommended%20fonts" class="outline-4">
+<h4 id="Recommended%20fonts">Recommended fonts</h4>
+<div class="outline-text-4" id="text-Recommended%20fonts">
+<p>
+The author of Zutty prefers the so-called "misc fixed" fonts that were
+created in the '80s in an era of much inferior computer displays.
+These are the original fonts designed to be used with the X Window
+System, and their availability is universal &#x2013; you probably have them
+already installed. These fonts are highly optimized for readability at
+low resolutions. There is a convenient range of sizes, several fonts
+have bold variants and support thousands of international characters
+and symbols outside ASCII. Zutty will work best with any of misc-fixed
+6x13, 7x13, 7x14, 8x13, 9x15 and 9x18 (there are more, but the ones
+listed have a bold-face variant as well).
+</p>
+
+<p>
+If you prefer scalable fonts (e.g., because you have a high-resolution
+HiDPI display or prefer LARGE glyphs with a more modern look), Zutty
+works well with freely available scaled terminal fonts such as
+Anonymous Pro, Deja Vu Sans Mono, Free Mono, Hack, Inconsolata,
+Liberation Mono, Source Code Pro, and possibly many more.
+</p>
+
+<p>
+On Debian (and derived) distributions, the following list of package
+names might serve as a useful starting point to obtain some usable
+fonts. For each package, install it and pass the specified name(s) to
+<code>-font</code> to check them out:
+</p>
+
+<ul class="org-ul">
+<li><code>xfonts-base</code>: 6x13, 7x13, 7x14, 8x13, 9x15, 9x18</li>
+<li><code>fonts-dejavu-core</code>: DejaVuSansMono</li>
+<li><code>fonts-liberation</code>: LiberationMono</li>
+<li><code>fonts-freefont-ttf</code>: FreeMono</li>
+<li><code>fonts-hack-otf</code>: Hack</li>
+<li><code>fonts-inconsolata</code>: Inconsolata</li>
+<li><code>ttf-anonymous-pro</code>: "Anonymous Pro"</li>
+</ul>
+
+<p>
+Note that the quotation marks are required when passing an argument
+value with a space, e.g.: <code>zutty -font "Anonymous Pro"</code>
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-Persistent%20configuration" class="outline-2">
+<h2 id="Persistent%20configuration">Persistent configuration</h2>
+<div class="outline-text-2" id="text-Persistent%20configuration">
+<p>
+The configuration options documented in the previous chapter
+<a href="#Configuration">Configuration</a> can be assigned altered defaults by adding entries to
+the X resource database. Refer to the previous chapter for the list
+and semantics of all options; here we show how to add entries for them
+to your X resource database (Xrdb).
+</p>
+
+<p>
+Open the file <code>.Xresources</code> in your home directory, or create it if
+you do not have one. Use the following snippet as a starting point;
+feel free to remove any lines with options you do not want to change
+from the hard default, and add lines for any further options you do
+want to change.
+</p>
+
+<pre class="example">
+Zutty.title:                   Zero Cost TTY
+Zutty.geometry:                120x45
+Zutty.altScroll:               true
+Zutty.selection:               clipboard
+Zutty.font:                    SourceCodePro
+Zutty.fontsize:                18
+Zutty.fontpath:                /home/tom/doc/fonts
+Zutty.fg:                      00ff80
+Zutty.bg:                      203040
+</pre>
+
+
+<p>
+As you can see, the general pattern is simple: one setting per line,
+starting with a key that looks like <code>Zutty.&lt;option-name&gt;</code>, a colon,
+and the desired value in a second column. The option names are exactly
+as documented in the previous chapter.
+</p>
+
+<p>
+Note that no quoting is necessary around string values containing a
+space, and that the value <code>true</code> is explicit unlike on the command
+line.
+</p>
+
+<p>
+Once you are satisfied with your settings, save your <code>~/.Xresources</code>
+and run the command <code>xrdb -merge ~/.Xresources</code> to instruct Xrdb to
+merge the new settings from your file to the in-memory resource
+database. Alternatively, just restart your X session (log out and back
+in to your graphics desktop).
+</p>
+
+<p>
+The configured values will show up in the output of <code>zutty -h</code>, to
+confirm that your settings have taken effect. For example, if you were
+following along, you should now see
+</p>
+
+<pre class="example">
+-title       Window title (configured: Zero Cost TTY)
+</pre>
+
+
+<p>
+instead of the original version that read
+</p>
+
+<pre class="example">
+-title       Window title (default: Zutty)
+</pre>
+
+
+<p>
+Removing a configuration is a bit tricky. Even if you remove a setting
+from <code>~/.Xresources</code> and merge that into Xrdb, the previous setting
+will still persist in-memory until you restart your X session. To get
+around this, you might issue <code>xrdb -remove Zutty.title</code> (change
+<code>title</code> to the name of the option you want to reset to its default).
+</p>
+
+<p>
+Now that you have a tailored baseline of how you expect Zutty to start
+up without any explicit options, remember that you can still override
+any of these on the command line!
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

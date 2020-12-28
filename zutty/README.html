@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zutty - Zero-cost Unicode Teletype</title>
+<meta name="generator" content="Org mode" />
+<link rel="stylesheet" type="text/css" href="doc/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Zutty - Zero-cost Unicode Teletype</h1>
+<div class="org-center">
+<p>
+<b>A high-end terminal for low-end systems</b>
+</p>
+
+<p>
+Homepage: <a href="https://tomscii.sig7.se/zutty">https://tomscii.sig7.se/zutty</a> <br />
+Source: <a href="https://github.com/tomszilagyi/zutty">https://github.com/tomszilagyi/zutty</a>
+</p>
+</div>
+
+<p>
+Zutty is a terminal emulator for the X Window System, functionally
+similar to several other X terminal emulators such as <code>xterm</code>, <code>rxvt</code>
+and countless others. It is also similar to other, much more modern,
+GPU-accelerated terminal emulators such as Alacritty and Kitty. What
+really sets Zutty apart is its radically simple, yet extremely
+efficient rendering implementation, enabling it to perform seamlessly
+in resource-constrained environments where others struggle or fail.
+At the same time, Zutty aims to implement a sufficiently complete
+feature set to make it useful for a wide range of users, and strives
+to conform to relevant (actual or de-facto) standards.
+</p>
+
+<p>
+Zutty is written in straightforward C++ and only relies on OpenGL ES
+3.1 for rendering, making it trivially portable to windowing systems
+other than X and operating systems other than Linux. Zutty provides a
+clean implementation written from scratch, resulting in a minimal,
+maintainable, modern codebase unencumbered by historical baggage.
+</p>
+
+<p>
+Zutty is released under the GNU General Public License (GPL) v3 or (at
+your option) any later version. Please refer to the file LICENSE for
+the full text of the license.
+</p>
+
+<div id="outline-container-Documentation" class="outline-2">
+<h2 id="Documentation">Documentation</h2>
+<div class="outline-text-2" id="text-Documentation">
+<p>
+Core documentation (bundled with the Zutty sources):
+</p>
+
+<ul class="org-ul">
+<li><a href="./doc/USAGE.html">Usage guide</a>: guide and reference for all users</li>
+<li><a href="./doc/HACKING.html">Development guide</a>: internals, debugging, testing</li>
+<li><a href="./doc/KEYS.html">Key mapping sequences</a>: reference on keyboard-induced sequences</li>
+<li><a href="./doc/VTTEST.html">Vttest results</a>: documents the level of conformance against Vttest</li>
+</ul>
+
+<p>
+More about Zutty:
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/tomszilagyi/zutty/wiki/Screenshots">Screenshots</a>: Zutty in action</li>
+<li><a href="https://tomscii.sig7.se/2020/11/How-Zutty-works">How Zutty works</a>: Rendering a terminal with an OpenGL Compute Shader</li>
+<li><a href="https://tomscii.sig7.se/2020/12/A-totally-biased-comparison-of-Zutty">A totally biased comparison of Zutty</a> (to some better-known X terminal emulators)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-Current%20status" class="outline-2">
+<h2 id="Current%20status">Current status</h2>
+<div class="outline-text-2" id="text-Current%20status">
+<p>
+Zutty started out as a concept to prove the feasibility of using a
+GLES Compute Shader to render a fixed-width text grid entirely in
+graphics hardware. From its modest beginnings as a technological proof
+of concept, Zutty has evolved considerably and is now perfectly
+capable of serving as the main terminal emulator for heavy users of
+the command line. In particular, this author employs Zutty to run a
+workload of <code>tmux</code>, <code>emacs</code> (<code>-nw</code>), <code>tig</code>, <code>mutt</code>, <code>htop</code>, and a
+bunch of other applications making extensive use of the terminal
+(including its mouse support), with some Zutty instances running for
+months at a time, on a very resource-constrained SBC (ab)used as a
+desktop.  The correctness, performance, and stability of Zutty is
+excellent, as one would rightly expect from something as fundamental
+as a terminal emulator.
+</p>
+
+<p>
+There is, however, a long list of ancillary features that Zutty does
+not presently implement. Completing these is more or less a matter of
+straightforward implementation work within the already existing
+architecture of Zutty, and work will be spent on these in proportion
+to popular user demand.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Notable%20features" class="outline-2">
+<h2 id="Notable%20features">Notable features</h2>
+<div class="outline-text-2" id="text-Notable%20features">
+</div>
+<div id="outline-container-Radically%20simple%2C%20uniquely%20performant%20rendering%20technology" class="outline-3">
+<h3 id="Radically%20simple%2C%20uniquely%20performant%20rendering%20technology">Radically simple, uniquely performant rendering technology</h3>
+<div class="outline-text-3" id="text-Radically%20simple%2C%20uniquely%20performant%20rendering%20technology">
+<p>
+The main idea behind Zutty is the implementation of "raw" character
+video memory via OpenGL ES 3.1. This video memory is just an array of
+cells backing all character grid locations, with each cell containing
+Unicode character codes plus color and other visual attributes. This
+memory area, allocated on the GPU, is mapped to make it directly
+writable by the application.  This results in a conceptually similar
+interface as to how one could write to the screen by directly poking
+at physical video memory starting at 0xB8000 on the IBM PC. Zutty
+employs an OpenGL Compute Shader running on the GPU to read this video
+memory and render output pixels. The full name of Zutty (dubbed the
+<i>Zero-cost Unicode Teletype</i>) stands for the remarkable fact that its
+image rendering is zero-cost from the host CPU perspective.
+</p>
+
+<p>
+Zutty requires OpenGL ES 3.1 because this is precisely the lowest
+version with support for the Compute Shader, the enabling technology
+behind Zutty. We have chosen OpenGL ES over OpenGL to widen the range
+of supported hardware platforms, primarily towards small, low-cost
+Single Board Computers.  These boards are commonly built around an ARM
+SoC with a graphics core supporting OpenGL ES, but not "desktop"
+OpenGL. Zutty is the first GPU-accelerated terminal for such low-cost
+platforms.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Correct%20%28and%20fairly%20complete%29%20VT%20emulation" class="outline-3">
+<h3 id="Correct%20%28and%20fairly%20complete%29%20VT%20emulation">Correct (and fairly complete) VT emulation</h3>
+<div class="outline-text-3" id="text-Correct%20%28and%20fairly%20complete%29%20VT%20emulation">
+<p>
+Zutty substantially emulates the "commonly used" subsets of the
+protocols of VT52, VT100, VT102, VT220, VT320, VT420 and VT520
+terminals (originally manufactured by DEC) as well as some more modern
+additions defined by the de-facto standard <code>xterm</code> implementation.
+</p>
+
+<p>
+We take great care to ensure that Zutty passes the subset of VTTEST
+screens that we care about (this amounts to the overwhelming majority
+of tests concerned with actual screen rendering, and is subject to
+further extension). We have an automated regression testing setup to
+run VTTEST in Zutty and verify that the output is a pixel-perfect
+match of the pre-approved video output. You can thus expect the
+terminal output to be <i>correct</i> &#x2013; be it driven by tmux, emacs (with
+org-mode, helm, magit, etc.) or whatever else. Zutty handles several
+corner cases (escape sequences) which, sadly enough, several popular
+terminal emulators do not correctly support. Zutty also boasts mouse
+support (substantially modeled after xterm) to make the user
+experience of many terminal applications more interactive.
+</p>
+
+<p>
+In a perfect world, this should not have to be listed as such a
+prominent feature, but unfortunately, it is rather the exception
+than the norm among widely used terminal emulators (especially the
+more modern ones).
+</p>
+</div>
+</div>
+
+<div id="outline-container-Font%20handling" class="outline-3">
+<h3 id="Font%20handling">Font handling</h3>
+<div class="outline-text-3" id="text-Font%20handling">
+<p>
+Zutty supports both fixed size (bitmap) and scaled (TTF, OTF) fonts.
+Up to four variants of a font are supported (Regular, Bold, Italic /
+Oblique, plus BoldItalic) with automatic, sensible fallbacks in case
+any of these is missing. Zutty tries to locate the font files itself
+under a configured font search path, and loads them on its own
+(without any support from the windowing system).
+</p>
+</div>
+</div>
+
+<div id="outline-container-True%20color%20support" class="outline-3">
+<h3 id="True%20color%20support">True color support</h3>
+<div class="outline-text-3" id="text-True%20color%20support">
+<p>
+In each grid cell in the virtual video memory emulated via OpenGL,
+three bytes are reserved for the foreground color as well as the
+background color. As such, Zutty natively supports true color (24
+million colors) on each cell's foreground and background, completely
+independent of each other and all other cells.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Traditional%20X-clipboard%20%2F%20primary%20selection%20%2F%20copy-paste%20support" class="outline-3">
+<h3 id="Traditional%20X-clipboard%20%2F%20primary%20selection%20%2F%20copy-paste%20support">Traditional X-clipboard / primary selection / copy-paste support</h3>
+<div class="outline-text-3" id="text-Traditional%20X-clipboard%20%2F%20primary%20selection%20%2F%20copy-paste%20support">
+<p>
+Zutty supports the traditional method of "copy-paste" based on the X
+Selection API, and is accessible via the same GUI mechanisms that
+long-time <code>xterm</code> users are familiar with. Zutty can be configured to
+use whichever selection target you prefer (it defaults to the PRIMARY
+selection, but you might want to use CLIPBOARD instead).
+</p>
+
+<p>
+Zutty faithfully replicates what <code>xterm</code> has provided for a very long
+time: starting selections with the left button, adjusting them with
+the right button, and cycling between snap-to-char/word/line with
+double clicks. Compared with <code>xterm</code>, one notable difference is a
+built-in, simpler rule for word boundaries (as opposed to
+user-adjustable definitions of character classes).
+</p>
+
+<p>
+Paste the selection into the terminal via middle click or
+Shift-Insert, like in <code>xterm</code>.
+</p>
+
+<p>
+Just as with <code>xterm</code>, terminal programs might enable one of the
+supported "mouse protocols" to provide mouse interaction on their user
+interfaces; in such cases, press and hold the Shift key while
+performing the clicks and drags of the selection that you want to
+perform (both while copying and pasting). Holding Shift will cut
+through to the Zutty mouse handler instead of sending those mouse
+events to the terminal program via the mouse protocol. So, regardless
+of the program running in the terminal, you can always access the
+built-in copy-paste support in Zutty; but you can also use whatever
+mouse support your program has.
+</p>
+
+<p>
+In addition, Zutty adds a unique feature for real power users of the
+terminal: rectangular selection. This is extremely useful if working
+with a vertically split terminal (think <code>emacs</code> or <code>tmux</code>). Simply
+toggle between "regular" and "rectangular" selection mode with the
+Space key while a selection adjustment is in progress (left or right
+mouse button is held down). For your convenience, this setting
+persists over individual selections made, throughout the lifetime of a
+running Zutty terminal.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Small%2C%20clean%20codebase" class="outline-3">
+<h3 id="Small%2C%20clean%20codebase">Small, clean codebase</h3>
+<div class="outline-text-3" id="text-Small%2C%20clean%20codebase">
+<p>
+The radical simplicity of our rendering technology allows for a
+straightforward virtual terminal implementation that happens to be
+extremely performant despite the lack of any fancy optimizations on
+the source code level.  This also allows the codebase of Zutty to be
+very small (well under ten thousand lines, including comments and
+empty lines) and highly readable. Therefore, Zutty lends itself
+towards educational use and as a vehicle for hacking on terminals. If
+you've always wanted to learn how a terminal emulator works from the
+inside out, consider studying the Zutty codebase (and associated
+documentation)!
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-Omissions%20and%20limitations" class="outline-2">
+<h2 id="Omissions%20and%20limitations">Omissions and limitations</h2>
+<div class="outline-text-2" id="text-Omissions%20and%20limitations">
+<p>
+There are things that Zutty does not implement compared to other, more
+commonly used X terminal emulators (<code>xterm</code> being the gold standard of
+completeness here). The below list gives an overview of what is
+missing.  Some of them are considered out of scope for Zutty, but some
+are marked as possibly being implemented in the future.
+</p>
+
+<ul class="org-ul">
+<li>Zutty currently does not support scroll-back. It is easy and
+straightforward to use programs such as <code>screen</code> or <code>tmux</code> if you
+want persistent tty sessions with scrollback and lots of other bells
+and whistles, and Zutty supports this kind of usage very well.
+Therefore, scrollback has always been low on the list of priorities.
+However, we are not ideological about this and there might come a
+time when scroll-back will be implemented.</li>
+
+<li>Zutty is opinionated about the primacy of UTF-8, which means that
+non-UTF-8 interaction is generally not supported, not even via
+bridges such as <code>luit</code>.  DEC builtin character sets (such as the DEC
+Special Graphics, DEC Technical Characters, etc.) and the escape
+sequences to enable them are well implemented though, so users of
+any modern Linux environment should never run into trouble.</li>
+
+<li>Zutty is Unicode-based, but it is a terminal emulator, not an
+all-purpose Unicode program. Therefore it does not aim to implement
+the whole breadth and depth of glyph and language support that
+Unicode defines.  Currently not supported:
+<ul class="org-ul">
+<li>Characters with a code point above 0xFFFF (that is, outside of the
+Basic Multilingual Pane);</li>
+<li>Bidirectional (right-to-left) text;</li>
+<li>Composing characters (things that can only be represented as a
+base glyph plus one or more composing glyphs superimposed, even in
+Unicode NFC representation). This might possibly be implemented
+later if there is sufficient interest.</li>
+<li>Possibly more esoteric features.</li>
+</ul></li>
+
+<li>Double-width characters (necessary for e.g., drawing CJK glyphs) are
+not supported. Double-height lines are likewise not supported.</li>
+
+<li>Rectangular area operations (introduced by the DEC VT400 series) are
+not supported. However, this set of features is optional and the
+terminal's self-identification message clearly states the absence of
+this support, so conforming client applications should not run into
+any trouble. No fundamental technical reasons here other than the
+lack of pressing need.</li>
+
+<li>The mouse protocol implementation aims to be complete with the
+exception of highlight tracking mode that is not implemented. Mouse
+highlight tracking is a mode that requires cooperation from the
+client application; it is not clear if any software actively used in
+2020 needs this feature. Also, all events for mouse buttons above
+the conventional five (three buttons plus scroll wheel up/down) are
+discarded.</li>
+
+<li>Blinking in general (blinking text driven by the SGR attribute 5,
+and blinking cursor mode turned on/off by VT100 "private" set/reset
+mode escape sequences) are not (yet) supported. Certain more
+esoteric text attributes, such as the "concealed" bit, are also not
+implemented. This is purely due to lack of bandwidth, and will most
+likely be added in the future.</li>
+</ul>
+</div>
+</div>
+</div>
+</body>
+</html>

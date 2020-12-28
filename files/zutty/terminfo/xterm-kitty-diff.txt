@@ -1,0 +1,39 @@
+comparing xterm-kitty to xterm-256color.
+    comparing booleans.
+	bce: F:T.
+	hs: T:F.
+    comparing numbers.
+	pairs: 32767, 65536.
+    comparing strings.
+	acsc: '++\,\,--..00``aaffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~', '``aaffggiijjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~'.
+	blink: NULL, '\E[5m'.
+	dsl: '\E]2;\007', NULL.
+	fsl: '^G', NULL.
+	invis: NULL, '\E[8m'.
+	is2: NULL, '\E[!p\E[?3;4l\E[4l\E>'.
+	ka1: '', NULL.
+	ka3: '', NULL.
+	kb2: NULL, '\EOE'.
+	kc1: '', NULL.
+	kc3: '', NULL.
+	kent: NULL, '\EOM'.
+	khlp: '', NULL.
+	kund: '', NULL.
+	mc0: NULL, '\E[i'.
+	mc4: NULL, '\E[4i'.
+	mc5: NULL, '\E[5i'.
+	rep: '%p1%c\E[%p2%{1}%-%db', NULL.
+	rmcup: '\E[?1049l', '\E[?1049l\E[23;0;0t'.
+	rmkx: '\E[?1l', '\E[?1l\E>'.
+	rmm: NULL, '\E[?1034l'.
+	rs1: '\E]\E\\\Ec', '\Ec\E]104\007'.
+	rs2: NULL, '\E[!p\E[?3;4l\E[4l\E>'.
+	sgr: '%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m', '%?%p9%t\E(0%e\E(B%;\E[0%?%p6%t;1%;%?%p5%t;2%;%?%p2%t;4%;%?%p1%p3%|%t;7%;%?%p4%t;5%;%?%p7%t;8%;m'.
+	smcup: '\E[?1049h', '\E[?1049h\E[22;0;0t'.
+	smkx: '\E[?1h', '\E[?1h\E='.
+	smm: NULL, '\E[?1034h'.
+	tsl: '\E]2;', NULL.
+	u6: NULL, '\E[%i%d;%dR'.
+	u7: NULL, '\E[6n'.
+	u8: NULL, '\E[?%[;0123456789]c'.
+	u9: NULL, '\E[c'.

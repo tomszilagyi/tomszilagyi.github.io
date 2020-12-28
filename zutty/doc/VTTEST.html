@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Results of testing Zutty with Vttest</title>
+<meta name="generator" content="Org mode" />
+<link rel="stylesheet" type="text/css" href="org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Results of testing Zutty with Vttest</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#1.%20Test%20of%20cursor%20movements">1. Test of cursor movements</a></li>
+<li><a href="#2.%20Test%20of%20screen%20features">2. Test of screen features</a></li>
+<li><a href="#3.%20Test%20of%20character%20sets">3. Test of character sets</a></li>
+<li><a href="#4.%20Test%20of%20double-sized%20characters">4. Test of double-sized characters</a></li>
+<li><a href="#5.%20Test%20of%20keyboard">5. Test of keyboard</a></li>
+<li><a href="#6.%20Test%20of%20terminal%20reports">6. Test of terminal reports</a></li>
+<li><a href="#7.%20Test%20of%20VT52%20mode">7. Test of VT52 mode</a></li>
+<li><a href="#8.%20Test%20of%20VT102%20features%20%28Insert%2FDelete%20Char%2FLine%29">8. Test of VT102 features (Insert/Delete Char/Line)</a></li>
+<li><a href="#9.%20Test%20of%20known%20bugs">9. Test of known bugs</a></li>
+<li><a href="#10.%20Test%20of%20reset%20and%20self-test">10. Test of reset and self-test</a></li>
+<li><a href="#11.%20Test%20non-VT100%20%28e.g.%2C%20VT220%2C%20XTERM%29%20terminals">11. Test non-VT100 (e.g., VT220, XTERM) terminals</a></li>
+</ul>
+</div>
+</div>
+<p>
+Version of test program:
+</p>
+<pre class="example">
+VT100 test program, version 2.7 (20201225)
+</pre>
+
+
+<p>
+Section numbering reflects Vttest menu options.
+</p>
+
+<p>
+Note that auto-verification against regressions in the test results is
+done by the automated test harness (shell scripts below <code>test/</code>).
+However, not everything listed here is verified automatically as part
+of those tests (e.g., no scripted tests exist for xterm mouse protocol
+support). Also, just because we do a regression test (validating the
+screen image against a predetermined hash) does not mean that the
+output is perfect &#x2013; several instances are noted below with small
+differences mostly from (as of yet) unimplemented features. We still
+include these in the regression test suite, to notice breaking changes
+that alter the terminal output in unforeseen ways. In case Zutty is
+changed to produce output that is "more correct", the test tools have
+support to update the validation hash.
+</p>
+
+<p>
+Legend:
+</p>
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> TODO / Needs fixing / non-perfect result</li>
+<li class="on"><code>[X]</code> Perfect result (less any detail for which support is not being
+planned at all)</li>
+<li>[?] There is some ambiguity on whether result is OK; needs further
+work or attention</li>
+<li class="trans"><code>[-]</code> Support for this feature is not planned</li>
+</ul>
+
+<p>
+Meta:
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Backspace key works to allow correcting menu entries.</li>
+</ul>
+
+<div id="outline-container-1.%20Test%20of%20cursor%20movements" class="outline-2">
+<h2 id="1.%20Test%20of%20cursor%20movements">1. Test of cursor movements</h2>
+<div class="outline-text-2" id="text-1.%20Test%20of%20cursor%20movements">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> The screen should be cleared, and have an unbroken border&#x2026; (80 column mode)</li>
+<li class="on"><code>[X]</code> The screen should be cleared, and have an unbroken border&#x2026; (132 column mode)
+
+<ul class="org-ul">
+<li>We do not support terminal-initiated change of window size.
+Correctness can be confirmed by manually setting zutty to
+132 columns and re-running the test.</li>
+</ul></li>
+<li class="on"><code>[X]</code> Test of autowrap, mixing control and print characters. (80 column mode)</li>
+<li class="on"><code>[X]</code> Test of autowrap, mixing control and print characters. (132 column mode)
+
+<ul class="org-ul">
+<li>The terminal does not change size, but the pattern is correct.
+Correctness can be further confirmed by manually setting zutty
+to 132 columns and re-running the test.</li>
+</ul></li>
+<li class="on"><code>[X]</code> Test of cursor-control characters inside ESC sequences.</li>
+<li class="on"><code>[X]</code> Test of leading zeros in ESC sequences.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-2.%20Test%20of%20screen%20features" class="outline-2">
+<h2 id="2.%20Test%20of%20screen%20features">2. Test of screen features</h2>
+<div class="outline-text-2" id="text-2.%20Test%20of%20screen%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> There should be three identical lines of *'s completely filling&#x2026;</li>
+<li class="on"><code>[X]</code> Test of TAB setting/resetting.</li>
+<li class="off"><code>[&#xa0;]</code> 132 column mode, light background
+
+<ul class="org-ul">
+<li>No inverse video mode, no window size change</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> 80 column mode, light background
+
+<ul class="org-ul">
+<li>No inverse video mode</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> 132 column mode, dark background
+
+<ul class="org-ul">
+<li>No window size change</li>
+</ul></li>
+<li class="on"><code>[X]</code> 80 column mode, dark background</li>
+<li class="on"><code>[X]</code> Soft scroll down region [12..13]
+
+<ul class="org-ul">
+<li>No soft scroll, but end state is correct</li>
+</ul></li>
+<li class="on"><code>[X]</code> Soft scroll down region [1..24]
+
+<ul class="org-ul">
+<li>No soft scroll, but end state is correct</li>
+</ul></li>
+<li class="on"><code>[X]</code> Jump scroll down region [12..13]</li>
+<li class="on"><code>[X]</code> Jump scroll down region [1..24]</li>
+<li class="on"><code>[X]</code> Origin mode test; two lines at the bottom of the screen.</li>
+<li class="on"><code>[X]</code> Origin mode test; one line at the top and one at the bottom of the screen.</li>
+<li class="off"><code>[&#xa0;]</code> Graphic rendition test patterns on dark background
+
+<ul class="org-ul">
+<li>Blinking is not supported</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> Graphic rendition test patterns on light background
+
+<ul class="org-ul">
+<li>Blinking is not supported; inverse video mode is not supported</li>
+</ul></li>
+<li class="on"><code>[X]</code> Test of SAVE/RESTORE CURSOR feature.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-3.%20Test%20of%20character%20sets" class="outline-2">
+<h2 id="3.%20Test%20of%20character%20sets">3. Test of character sets</h2>
+<div class="outline-text-2" id="text-3.%20Test%20of%20character%20sets">
+<p>
+Zutty is first and foremost a Unicode terminal, with native support
+for UTF-8 encoded input. Hoewever, it implements support for the
+following "hard" character sets that have been introduced at various
+points of the DEC terminal product history:
+</p>
+
+<ul class="org-ul">
+<li>US ASCII</li>
+<li>DEC Special Graphics (Character and Line Drawing) Set</li>
+<li>DEC Supplemental Graphics Set</li>
+<li>DEC Technical Character Set</li>
+<li>ISO Latin-1 (ISO-8859-1)</li>
+<li>United Kingdom (UK)</li>
+</ul>
+
+<p>
+Adding support for more (e.g., NRCs other than the British one) is
+trivial, but should not be necessary in the age of Unicode.
+</p>
+
+<p>
+Note: Because of simultaneous support for both UTF-8 and the above
+user-selectable charsets, some aspects of operation had to be changed
+when compared to specifications of the original DEC terminals.  In
+particular, the default state (after initialization and reset) is
+UTF-8 for both GL and GR, and not ASCII for GL and DEC Supplemental /
+Latin-1 for G2.
+</p>
+
+<p>
+Further, in case an application moves away from using UTF-8, it is
+necessary to re-activate a mapping of both GL and GR to UTF-8 in order
+to resume correct interpretation of multi-byte UTF-8 characters.
+There are two ways to do this: either map them to one of G0-G3
+designated as ASCII (UTF-8 is an alias of this, and corresponds to the
+final character 'B' in the designator sequence), or by activating
+UTF-8 mode on the terminal (via <code>ESC % G</code>).
+</p>
+
+<p>
+A possible example of the former designator plus mapper sequence (in
+accordance with the DEC VT420 Programmer Reference Manual):
+</p>
+<ul class="org-ul">
+<li><code>ESC ( B</code> (designate ASCII as G0) followed by <code>SI</code> [0x0f] (map G0 into GL).</li>
+<li><code>ESC * B</code> (designate ASCII as G2) followed by <code>ESC }</code> (map G2 into GR).</li>
+</ul>
+<p>
+Of course, GL and GR can also be both mapped to e.g., G0.
+</p>
+
+<p>
+A third option is to send the sequence for set/reset private mode 2
+(setting the terminal either to VT52 or VT100 compatibility mode) via
+<code>ESC [ ? 2 h</code> or <code>ESC [ ? 2 l</code>, which also reset the charset state to
+its initial (in the case of Zutty, UTF-8 enabled) state.
+</p>
+
+<p>
+Successful tests:
+</p>
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 3.8 Test VT100 Character Sets</li>
+<li class="on"><code>[X]</code> 3.9 Test Shift In/Shift Out (SI/SO)</li>
+<li class="on"><code>[X]</code> 3.10 Test VT220 Locking Shifts</li>
+<li class="on"><code>[X]</code> 3.11 Test VT220 Single Shifts</li>
+<li class="on"><code>[X]</code> 3.13 Test Keyboard Layout with G0 Selection</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-4.%20Test%20of%20double-sized%20characters" class="outline-2">
+<h2 id="4.%20Test%20of%20double-sized%20characters">4. Test of double-sized characters</h2>
+<div class="outline-text-2" id="text-4.%20Test%20of%20double-sized%20characters">
+<p>
+Adding support for this is not planned at this time.
+</p>
+</div>
+</div>
+
+<div id="outline-container-5.%20Test%20of%20keyboard" class="outline-2">
+<h2 id="5.%20Test%20of%20keyboard">5. Test of keyboard</h2>
+<div class="outline-text-2" id="text-5.%20Test%20of%20keyboard">
+<ul class="org-ul">
+<li class="trans"><code>[-]</code> 5.1 LED Lights</li>
+<li class="trans"><code>[-]</code> 5.2 Auto Repeat</li>
+<li class="on"><code>[X]</code> 5.3 Keyboard Layout</li>
+<li class="on"><code>[X]</code> 5.4 Cursor Keys</li>
+<li class="on"><code>[X]</code> 5.5 Numeric Keypad</li>
+<li class="on"><code>[X]</code> 5.6 Editing Keypad</li>
+<li class="on"><code>[X]</code> 5.7 Function Keys</li>
+<li class="trans"><code>[-]</code> 5.8 AnswerBack</li>
+<li class="on"><code>[X]</code> 5.9 Control Keys</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-6.%20Test%20of%20terminal%20reports" class="outline-2">
+<h2 id="6.%20Test%20of%20terminal%20reports">6. Test of terminal reports</h2>
+<div class="outline-text-2" id="text-6.%20Test%20of%20terminal%20reports">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 6.1 &lt;ENQ&gt; (AnswerBack Message)</li>
+<li class="on"><code>[X]</code> 6.2 Set/Reset Mode - LineFeed / Newline</li>
+<li class="on"><code>[X]</code> 6.3 Device Status Report 5 &amp; 6</li>
+<li class="on"><code>[X]</code> 6.4 Primary Device Attributes</li>
+<li class="on"><code>[X]</code> 6.5 Secondary Device Attributes</li>
+<li class="trans"><code>[-]</code> 6.6 Tertiary Device Attributes</li>
+<li class="trans"><code>[-]</code> 6.7 Request Terminal Parameters
+
+<ul class="org-ul">
+<li>This seems not to be implemented by xterm either.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-7.%20Test%20of%20VT52%20mode" class="outline-2">
+<h2 id="7.%20Test%20of%20VT52%20mode">7. Test of VT52 mode</h2>
+<div class="outline-text-2" id="text-7.%20Test%20of%20VT52%20mode">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> The screen should be cleared &#x2026;</li>
+<li class="on"><code>[X]</code> Character sets: normal and special graphics</li>
+<li class="on"><code>[X]</code> Response to IDENTIFY; Operating level awareness</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-8.%20Test%20of%20VT102%20features%20%28Insert%2FDelete%20Char%2FLine%29" class="outline-2">
+<h2 id="8.%20Test%20of%20VT102%20features%20%28Insert%2FDelete%20Char%2FLine%29">8. Test of VT102 features (Insert/Delete Char/Line)</h2>
+<div class="outline-text-2" id="text-8.%20Test%20of%20VT102%20features%20%28Insert%2FDelete%20Char%2FLine%29">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> Screen accordion test (Insert &amp; Delete Line).</li>
+<li class="on"><code>[X]</code> Top line: A's, bottom line: X's, this line, nothing more.</li>
+<li class="on"><code>[X]</code> Test of 'Insert Mode'. The top line should be 'A*** &#x2026; ***B'.</li>
+<li class="on"><code>[X]</code> Test of 'Delete Character'. The top line should be 'AB'.</li>
+<li class="on"><code>[X]</code> The right column should be staggered by one.</li>
+<li>[?] The right column should be staggered by one. (double-width mode)</li>
+<li class="on"><code>[X]</code> If your terminal has the ANSI 'Insert Character' function &#x2026;</li>
+</ul>
+
+<p>
+The second half of tests match the above results, minus the fact that
+132 column mode is not supported. (Can be confirmed by manually setting
+zutty to 132 columns wide and re-running the tests.)
+</p>
+</div>
+</div>
+
+<div id="outline-container-9.%20Test%20of%20known%20bugs" class="outline-2">
+<h2 id="9.%20Test%20of%20known%20bugs">9. Test of known bugs</h2>
+<div class="outline-text-2" id="text-9.%20Test%20of%20known%20bugs">
+<p>
+Zutty produces mostly identical results to xterm, discounting the fact
+that double-width lines are not supported.
+</p>
+</div>
+</div>
+
+<div id="outline-container-10.%20Test%20of%20reset%20and%20self-test" class="outline-2">
+<h2 id="10.%20Test%20of%20reset%20and%20self-test">10. Test of reset and self-test</h2>
+<div class="outline-text-2" id="text-10.%20Test%20of%20reset%20and%20self-test">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 1. Reset to Initial State (RIS)</li>
+<li class="trans"><code>[-]</code> 2. Invoke Terminal Test (DECTST)</li>
+<li class="on"><code>[X]</code> 3. Soft Terminal Reset (DECSTR)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-11.%20Test%20non-VT100%20%28e.g.%2C%20VT220%2C%20XTERM%29%20terminals" class="outline-2">
+<h2 id="11.%20Test%20non-VT100%20%28e.g.%2C%20VT220%2C%20XTERM%29%20terminals">11. Test non-VT100 (e.g., VT220, XTERM) terminals</h2>
+<div class="outline-text-2" id="text-11.%20Test%20non-VT100%20%28e.g.%2C%20VT220%2C%20XTERM%29%20terminals">
+</div>
+<ul class="org-ul">
+<li><a id="11.1.%20Test%20of%20VT220%20features"></a>11.1. Test of VT220 features<br />
+<div class="outline-text-3" id="text-11.1.%20Test%20of%20VT220%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 11.1.2.1 Test Send/Receive mode (SRM)</li>
+<li class="on"><code>[X]</code> 11.1.2.2 Test Visible/Invisible Cursor (DECTCEM)</li>
+<li class="on"><code>[X]</code> 11.1.2.3 Test Erase Char (ECH)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.2.%20Test%20of%20VT320%20features"></a>11.2. Test of VT320 features<br />
+<div class="outline-text-3" id="text-11.2.%20Test%20of%20VT320%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 11.2.2.1 Test Pan Down (SU)</li>
+<li class="on"><code>[X]</code> 11.2.2.2 Test Pan Up (SD)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.3.%20Test%20of%20VT420%20features"></a>11.3. Test of VT420 features<br />
+<div class="outline-text-3" id="text-11.3.%20Test%20of%20VT420%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 11.3.2.7 Test Back Index (BI)</li>
+<li class="on"><code>[X]</code> 11.3.2.8 Test Forward Index (FI)</li>
+<li class="on"><code>[X]</code> 11.3.2.9 Test cursor movement within margins</li>
+<li class="on"><code>[X]</code> 11.3.2.10 Test other movement (CR/HT/LF/FF) within margins</li>
+<li class="on"><code>[X]</code> 11.3.3.9 Test insert/delete column (DECIC, DECDC)</li>
+<li class="on"><code>[X]</code> 11.3.3.10 Test vertical scrolling (IND, RI)</li>
+<li class="on"><code>[X]</code> 11.3.3.11 Test insert/delete line (IL, DL)</li>
+<li class="on"><code>[X]</code> 11.3.3.12 Test insert/delete char (ICH, DCH)</li>
+<li class="on"><code>[X]</code> 11.3.3.13 Test ASCII formatting (BS, CR, TAB)</li>
+<li class="on"><code>[X]</code> 11.3.4.1 Test Backarrow key (DECBKM)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.4.%20Test%20of%20VT520%20features"></a>11.4. Test of VT520 features<br />
+<div class="outline-text-3" id="text-11.4.%20Test%20of%20VT520%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 11.4.2.7 Test Character-Position-Absolute (HPA)</li>
+<li class="on"><code>[X]</code> 11.4.2.8 Test Cursor-Back-Tab (CBT)</li>
+<li class="on"><code>[X]</code> 11.4.2.9 Test Cursor-Character-Absolute (CHA)</li>
+<li class="on"><code>[X]</code> 11.4.2.10 Test Cursor-Horizontal-Index (CHT)</li>
+<li class="on"><code>[X]</code> 11.4.2.11 Test Horizontal-Position-Relative (HPR)</li>
+<li class="on"><code>[X]</code> 11.4.2.12 Test Line-Position-Absolute (VPA)</li>
+<li class="on"><code>[X]</code> 11.4.2.13 Test Next-Line (CNL)</li>
+<li class="on"><code>[X]</code> 11.4.2.14 Test Previous-Line (CPL)</li>
+<li class="on"><code>[X]</code> 11.4.2.15 Test Vertical-Position-Relative (VPR)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.6.%20ISO%206429%20colors"></a>11.6. ISO 6429 colors<br />
+<div class="outline-text-3" id="text-11.6.%20ISO%206429%20colors">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 11.6.2 Display color test-pattern</li>
+<li class="on"><code>[X]</code> 11.6.3 Test SGR-0 color reset</li>
+<li class="on"><code>[X]</code> 11.6.4 Test BCE-style clear line/display (ED, EL)</li>
+<li class="on"><code>[X]</code> 11.6.5 Test BCE-style clear line/display (ECH, Indexing)</li>
+<li class="on"><code>[X]</code> 11.6.6 Test VT102-style features with BCE</li>
+<li class="on"><code>[X]</code> 11.6.7 Test other ISO-6429 features with BCE
+
+<ul class="org-ul">
+<li>All OK except for 11.6.7.1 (Protected-Area Tests) that is unsupported.</li>
+</ul></li>
+<li>[?] 11.6.8 Test screen features with BCE
+
+<ul class="org-ul">
+<li>Small rendering differences as above, see 2. Screen features</li>
+</ul></li>
+<li>[?] 11.6.9 Test screen features with ISO 6429 SGR 22-27 codes
+
+<ul class="org-ul">
+<li>Small rendering differences as above, see 2. Screen features</li>
+</ul></li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.7.%20Miscellaneous%20ISO-6429%20%28ECMA-48%29%20Tests"></a>11.7. Miscellaneous ISO-6429 (ECMA-48) Tests<br />
+<div class="outline-text-3" id="text-11.7.%20Miscellaneous%20ISO-6429%20%28ECMA-48%29%20Tests">
+<ul class="org-ul">
+<li class="trans"><code>[-]</code> 1. Protected-Area Tests</li>
+<li class="on"><code>[X]</code> 2. Test Repeat (REP)</li>
+<li class="on"><code>[X]</code> 3. Test Scroll-Down (SD)</li>
+<li class="on"><code>[X]</code> 4. Test Scroll-Left (SL)</li>
+<li class="on"><code>[X]</code> 5. Test Scroll-Right (SR)</li>
+<li class="on"><code>[X]</code> 6. Test Scroll-Up (SU)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="11.8.%20XTERM%20special%20features"></a>11.8. XTERM special features<br />
+<div class="outline-text-3" id="text-11.8.%20XTERM%20special%20features">
+<ul class="org-ul">
+<li class="on"><code>[X]</code> 3. Set window title</li>
+<li class="on"><code>[X]</code> 5. Mouse features</li>
+<li class="on"><code>[X]</code> 7. Alternate-Screen features</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
