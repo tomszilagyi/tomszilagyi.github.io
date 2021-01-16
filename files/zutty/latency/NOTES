@@ -1,0 +1,26 @@
+latency <- read.csv ("typometer.csv")
+summary (latency)
+
+lat1 <- cbind (subset (latency, select=gnome.terminal), factor ("gnome-terminal"))
+lat2 <- cbind (subset (latency, select=st), factor ("st"))
+lat3 <- cbind (subset (latency, select=urxvt), factor ("urxvt"))
+lat4 <- cbind (subset (latency, select=Alacritty), factor ("Alacritty"))
+lat5 <- cbind (subset (latency, select=Kitty), factor ("Kitty"))
+lat6 <- cbind (subset (latency, select=Zutty), factor ("Zutty"))
+lat7 <- cbind (subset (latency, select=xterm), factor ("xterm"))
+
+names (lat1) <- c ("latency", "program")
+names (lat2) <- c ("latency", "program")
+names (lat3) <- c ("latency", "program")
+names (lat4) <- c ("latency", "program")
+names (lat5) <- c ("latency", "program")
+names (lat6) <- c ("latency", "program")
+names (lat7) <- c ("latency", "program")
+
+all <- rbind (lat1, lat2, lat3, lat4, lat5, lat6, lat7)
+#boxplot (latency ~ program, data=all)
+
+png ("latency.png", width=800, height=450, pointsize=16, res=72)
+par (mar=c (5, 7.5, 3, 2))
+boxplot (latency ~ program, data=all, col="antiquewhite2", border="gray16", main="Typing latency of various terminal emulators", xlab="Latency [ms]", ylab="", horizontal=TRUE, las=1)
+dev.off ()

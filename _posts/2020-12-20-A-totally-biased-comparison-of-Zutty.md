@@ -44,7 +44,7 @@ emulator ecosystem is not necessarily a problem in itself, but fresh
 blood certainly makes for better diversity than endless recycling.
 
 At the same time, one could argue that Zutty is not for everyone: it
-runs on Linux only [update: also on FreeBSD and OpenBSD], and is tied
+runs on Linux ~~only~~ [update: plus FreeBSD and OpenBSD], and is tied
 to the X client API (if only for creating a window and receiving
 events). It has relatively little in the "fancy features" department,
 even though it is quite configurable (for the things I care about,
@@ -53,7 +53,8 @@ should eventually be supported, but are currently missing.
 
 Comparison criteria will be grouped into three broad categories:
 Features and correctness; performance and resource usage; and finally
-miscellaneous (developer-oriented) metrics.
+miscellaneous (developer-oriented) metrics. For measurements of typing
+latency, check out my [follow-up article](/2021/01/Typing-latency-of-Zutty).
 
 
 # Programs included in this comparison
@@ -851,7 +852,8 @@ To level the playing field, scrollback has been disabled in all terminals:
 
 All programs were manually verified to ensure that the changes have
 taken effect.  Since st and Zutty do not (currently) support
-scrollback, no adjustments to them were necessary.
+scrollback, no adjustments to them were necessary.  [Update: Zutty has
+since gained support for scrollback.]
 
 
 ## The dumb terminal test
@@ -963,6 +965,13 @@ estimated to be about 10 per second. That is a slide-show relative to
 the action movie played by the others! I have no explanation for this,
 but it is very apparent on visual inspection.
 
+As a final note on performance: high throughput is nice, but not
+especially relevant for interactive use. Round-trip latency (from
+keypress, through processing, to screen update) is arguably more
+important, as it determines the (subjective) level of responsiveness.
+I have a separate article on the
+[typing latency of these programs](/2021/01/Typing-latency-of-Zutty).
+
 
 ## On memory usage
 
@@ -993,7 +1002,8 @@ favour Alacritty, while Zutty will be faster with more complex
 workloads. Practically, both terminals are *blazing fast*, and the
 difference between them is of no practical importance. (The same
 cannot be said of their levels of VT support: VT102 and VT520 are
-*very* different targets.)
+*very* different targets. And let's not even
+[compare their latency](/2021/01/Typing-latency-of-Zutty).)
 
 As a trivial real-world test, I ran Alacritty and Zutty side-by-side,
 in identically sized windows, started at the same time with identical
@@ -1010,14 +1020,13 @@ terminals are tasked with virtually identical workloads.
 
 After a good couple minutes, I captured the above screenshot. It shows
 that Alacritty consumed 27.12 seconds of CPU time, while Zutty used
-only 7.93 seconds: a difference of 3.4x in favour of Zutty.
+only 7.93 seconds: a difference of well over 3x in favour of Zutty.
 
 Still, I would be hesitant to declare Zutty "the fastest terminal
 emulator in existence". It might be more than three times faster than
 Alacritty on this particular test, on my particular machine. But
-terminals are diverse and complex, the computing stack they sit on top
-of is even more complex, and performance measurements are extremely
-tricky.
+terminals are diverse, the computing stack they sit on top of is even
+more complex, and performance measurements are notoriously tricky.
 
 
 # Miscellaneous: Source code volume
@@ -1080,6 +1089,10 @@ useful in some circumstances, and you should feel free to keep using
 the one you already have, like, and trust. Or maybe [give Zutty a
 try](/zutty/doc/USAGE.html), in case you have now gotten curious about
 it.
+
+[Update: since the publication of this, I also wrote a follow-up
+article on the [typing latency of Zutty](/2021/01/Typing-latency-of-Zutty)].
+
 
 [Zutty]:                   /zutty
 [How Zutty works]:         /2020/11/How-Zutty-works

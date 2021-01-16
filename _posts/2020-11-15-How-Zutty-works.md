@@ -188,8 +188,9 @@ essence of it, and the complete truth is in fact not much more
 complicated.
 
 If you are interested in how this architecture allows Zutty to perform
-in comparison to other terminal emulators, read my follow-up post
-[A totally biased comparison of Zutty].
+in comparison to other terminal emulators, read my follow-up posts
+[A totally biased comparison of Zutty] as well as
+[Measured: Typing latency of Zutty].
 
 
 [Alacritty]:          https://en.wikipedia.org/wiki/Alacritty
@@ -203,3 +204,4 @@ in comparison to other terminal emulators, read my follow-up post
 [later post]:         /2020/12/A-totally-biased-comparison-of-Zutty
 [fairly capable]:     /2020/12/A-totally-biased-comparison-of-Zutty
 [A totally biased comparison of Zutty]: /2020/12/A-totally-biased-comparison-of-Zutty
+[Measured: Typing latency of Zutty]: /2021/01/Typing-latency-of-Zutty
