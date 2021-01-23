@@ -75,11 +75,10 @@ similar to several other X terminal emulators such as <code>xterm</code>, <code>
 and countless others. It is also similar to other, much more modern,
 GPU-accelerated terminal emulators such as Alacritty and Kitty. What
 really sets Zutty apart is its radically simple, yet extremely
-efficient rendering implementation, enabling it to perform seamlessly
-in resource-constrained environments where others struggle or fail.
-At the same time, Zutty aims to implement a sufficiently complete
-feature set to make it useful for a wide range of users, and strives
-to conform to relevant (actual or de-facto) standards.
+efficient rendering implementation, coupled with a sufficiently
+complete feature set to make it useful for a wide range of users.
+Zutty offers high throughput with low latency, and strives to conform
+to relevant (published or de-facto) standards.
 </p>
 
 <p>
@@ -104,8 +103,8 @@ Core documentation (bundled with the Zutty sources):
 </p>
 
 <ul class="org-ul">
-<li><a href="./doc/USAGE.html">Usage guide</a>: guide and reference for all users</li>
-<li><a href="./doc/HACKING.html">Development guide</a>: internals, debugging, testing</li>
+<li><a href="./doc/USAGE.html">User guide</a>: guide and reference for all users</li>
+<li><a href="./doc/HACKING.html">Developer guide</a>: internals, debugging, testing, contributing</li>
 <li><a href="./doc/KEYS.html">Key mapping sequences</a>: reference on keyboard-induced sequences</li>
 <li><a href="./doc/VTTEST.html">Vttest results</a>: documents the level of conformance against Vttest</li>
 </ul>
@@ -144,11 +143,11 @@ as a terminal emulator.
 </p>
 
 <p>
-There is, however, a long list of ancillary features that Zutty does
-not presently implement. Completing these is more or less a matter of
-straightforward implementation work within the already existing
-architecture of Zutty, and work will be spent on these in proportion
-to popular user demand.
+There is, however, a list of ancillary features that Zutty does not
+presently implement. Completing the ones in scope is more or less a
+matter of straightforward implementation work within the already
+existing architecture of Zutty, and time will be spent on these in
+proportion to popular user demand.
 </p>
 </div>
 </div>
@@ -206,18 +205,24 @@ further extension). We have an automated regression testing setup to
 run VTTEST in Zutty and verify that the output is a pixel-perfect
 match of the pre-approved video output. You can thus expect the
 terminal output to be <i>correct</i> &#x2013; be it driven by tmux, emacs (with
-org-mode, helm, magit, etc.) or whatever else. Zutty handles several
-corner cases (escape sequences) which, sadly enough, several popular
-terminal emulators do not correctly support. Zutty also boasts mouse
-support (substantially modeled after xterm) to make the user
-experience of many terminal applications more interactive.
+org-mode, helm, magit, etc.) or whatever else. Zutty handles corner
+cases (escape sequences) which, sadly enough, several popular terminal
+emulators do not correctly support.
 </p>
 
 <p>
-In a perfect world, this should not have to be listed as such a
-prominent feature, but unfortunately, it is rather the exception
-than the norm among widely used terminal emulators (especially the
-more modern ones).
+Zutty implements xterm's de-facto standard method (<code>modifyOtherKeys</code>)
+to expose non-trivial modifier key combinations to programs such as
+Emacs and Vim. Zutty also boasts mouse support (again, modeled after
+xterm's capabilities) to make the user experience of many terminal
+applications more interactive.
+</p>
+
+<p>
+In a perfect world, these would not be highlighted as such prominent
+features, but unfortunately, our focus on correctness is rather the
+exception than the norm among widely used terminal emulators
+(including more modern ones).
 </p>
 </div>
 </div>
@@ -229,9 +234,9 @@ more modern ones).
 Zutty supports both fixed size (bitmap) and scaled (TTF, OTF) fonts.
 Up to four variants of a font are supported (Regular, Bold, Italic /
 Oblique, plus BoldItalic) with automatic, sensible fallbacks in case
-any of these is missing. Zutty tries to locate the font files itself
-under a configured font search path, and loads them on its own
-(without any support from the windowing system).
+any of them (apart from Regular) is missing. Zutty tries to locate the
+font files itself under a configured font search path, and loads them
+on its own, without any support from the windowing system.
 </p>
 </div>
 </div>
@@ -240,11 +245,11 @@ under a configured font search path, and loads them on its own
 <h3 id="True%20color%20support">True color support</h3>
 <div class="outline-text-3" id="text-True%20color%20support">
 <p>
-In each grid cell in the virtual video memory emulated via OpenGL,
-three bytes are reserved for the foreground color as well as the
-background color. As such, Zutty natively supports true color (24
-million colors) on each cell's foreground and background, completely
-independent of each other and all other cells.
+Each grid cell in the virtual video memory emulated via OpenGL has
+three bytes reserved for the foreground color as well as the
+background color. As such, Zutty naturally supports true color (24
+bits / 16 million colors) on each cell's foreground and background,
+completely independent of each other and all other cells.
 </p>
 </div>
 </div>
@@ -255,9 +260,7 @@ independent of each other and all other cells.
 <p>
 Zutty supports the traditional method of "copy-paste" based on the X
 Selection API, and is accessible via the same GUI mechanisms that
-long-time <code>xterm</code> users are familiar with. Zutty can be configured to
-use whichever selection target you prefer (it defaults to the PRIMARY
-selection, but you might want to use CLIPBOARD instead).
+long-time <code>xterm</code> users are familiar with.
 </p>
 
 <p>
@@ -270,8 +273,25 @@ user-adjustable definitions of character classes).
 </p>
 
 <p>
-Paste the selection into the terminal via middle click or
-Shift-Insert, like in <code>xterm</code>.
+It is possible to adjust the selection while navigating scrollback.
+Thus, the complete content of the screen buffer (page history plus
+on-screen lines), or any part of it, can be copied as a single
+selection. No need to switch back and forth between source and
+destination programs when copying large amounts of terminal output!
+</p>
+
+<p>
+Selecting a region with the mouse will set the primary selection, and
+pressing Control+Shift+C will copy that to the clipboard. This
+mechanism is useful because it allows holding two separate pieces of
+selection data at once. Zutty can also be configured to automatically
+copy the primary to the clipboard each time a selection is done.
+</p>
+
+<p>
+Paste the primary selection into the terminal via middle click or
+Shift+Insert, like in <code>xterm</code>. Paste the clipboard via
+Control+Shift+V.
 </p>
 
 <p>
@@ -308,11 +328,10 @@ The radical simplicity of our rendering technology allows for a
 straightforward virtual terminal implementation that happens to be
 extremely performant despite the lack of any fancy optimizations on
 the source code level.  This also allows the codebase of Zutty to be
-very small (well under ten thousand lines, including comments and
-empty lines) and highly readable. Therefore, Zutty lends itself
-towards educational use and as a vehicle for hacking on terminals. If
-you've always wanted to learn how a terminal emulator works from the
-inside out, consider studying the Zutty codebase (and associated
+fairly small and understandable. Therefore, Zutty lends itself towards
+educational use and as a vehicle for hacking on terminals. If you've
+always wanted to learn how a terminal emulator works from the inside
+out, consider studying the Zutty codebase (and associated developer
 documentation)!
 </p>
 </div>
@@ -324,21 +343,13 @@ documentation)!
 <div class="outline-text-2" id="text-Omissions%20and%20limitations">
 <p>
 There are things that Zutty does not implement compared to other, more
-commonly used X terminal emulators (<code>xterm</code> being the gold standard of
-completeness here). The below list gives an overview of what is
-missing.  Some of them are considered out of scope for Zutty, but some
-are marked as possibly being implemented in the future.
+established X terminal emulators (<code>xterm</code> being the gold standard of
+completeness here). The below list gives an overview of what might be
+considered missing.  Some of them are clearly out of scope for Zutty,
+but some will possibly be implemented in the future.
 </p>
 
 <ul class="org-ul">
-<li>Zutty currently does not support scroll-back. It is easy and
-straightforward to use programs such as <code>screen</code> or <code>tmux</code> if you
-want persistent tty sessions with scrollback and lots of other bells
-and whistles, and Zutty supports this kind of usage very well.
-Therefore, scrollback has always been low on the list of priorities.
-However, we are not ideological about this and there might come a
-time when scroll-back will be implemented.</li>
-
 <li>Zutty is opinionated about the primacy of UTF-8, which means that
 non-UTF-8 interaction is generally not supported, not even via
 bridges such as <code>luit</code>.  DEC builtin character sets (such as the DEC
@@ -356,8 +367,9 @@ Basic Multilingual Pane);</li>
 <li>Bidirectional (right-to-left) text;</li>
 <li>Composing characters (things that can only be represented as a
 base glyph plus one or more composing glyphs superimposed, even in
-Unicode NFC representation). This might possibly be implemented
-later if there is sufficient interest.</li>
+Unicode NFC representation). Do not confuse this with using the
+<i>compose key</i> to input accented or special characters missing from
+your keyboard; that works fine!</li>
 <li>Possibly more esoteric features.</li>
 </ul></li>
 
@@ -366,7 +378,7 @@ not supported. Double-height lines are likewise not supported.</li>
 
 <li>Rectangular area operations (introduced by the DEC VT400 series) are
 not supported. However, this set of features is optional and the
-terminal's self-identification message clearly states the absence of
+terminal's self-identification response clearly states the absence of
 this support, so conforming client applications should not run into
 any trouble. No fundamental technical reasons here other than the
 lack of pressing need.</li>
@@ -380,9 +392,9 @@ the conventional five (three buttons plus scroll wheel up/down) are
 discarded.</li>
 
 <li>Blinking in general (blinking text driven by the SGR attribute 5,
-and blinking cursor mode turned on/off by VT100 "private" set/reset
-mode escape sequences) are not (yet) supported. Certain more
-esoteric text attributes, such as the "concealed" bit, are also not
+and blinking cursor mode turned on/off by DEC-private set/reset
+escape sequences) are not (yet) supported. Certain more esoteric
+text attributes, such as the "concealed" bit, are also not
 implemented. This is purely due to lack of bandwidth, and will most
 likely be added in the future.</li>
 </ul>

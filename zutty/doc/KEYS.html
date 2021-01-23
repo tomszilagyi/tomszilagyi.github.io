@@ -716,18 +716,430 @@ Modifiers are not applied in VT52 mode.
 </div>
 </div>
 
-<div id="outline-container-Alt%20sends%20Escape" class="outline-2">
-<h2 id="Alt%20sends%20Escape">Alt sends Escape</h2>
-<div class="outline-text-2" id="text-Alt%20sends%20Escape">
+<div id="outline-container-Special%20key%20combinations" class="outline-2">
+<h2 id="Special%20key%20combinations">Special key combinations</h2>
+<div class="outline-text-2" id="text-Special%20key%20combinations">
 <p>
-Hitting any ordinary key (letters, punctuation symbols, etc.) not
-shown in the above tables while holding Alt will result in the key
-being prefixed by the ESC character. This is consistent with the "Meta
-sends Escape" setting of xterm, and allows programs such as Emacs to
-recognize keyboard bindings containing Alt (or Meta). However, this
-will probably need to be made configurable (to be able to turn it off)
-in case Zutty gains a more diverse userbase.
+The resource settings <code>altSendsEscape</code> and <code>modifyOtherKeys</code> (modeled
+after xterm) control how <i>other</i> key combinations (not specified in the
+above tables) are encoded.
 </p>
+
+<p>
+The encoding rules are, by and large, meant to be the same as that of
+xterm; please refer to its extensive documentation for details. As a
+complement, below we present several example key encodings for
+different values of <code>modifyOtherKeys</code> (columns 0, 1 and 2), with an
+<code>altSendsEscape</code> setting of true (the default).
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Key</th>
+<th scope="col" class="org-left">0</th>
+<th scope="col" class="org-left">1</th>
+<th scope="col" class="org-left">2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Shift-a</td>
+<td class="org-left">A</td>
+<td class="org-left">A</td>
+<td class="org-left">CSI 27 ; 2 ; 65 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Shift-Space</td>
+<td class="org-left">Space</td>
+<td class="org-left">Space</td>
+<td class="org-left">CSI 27 ; 2 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Shift-TAB</td>
+<td class="org-left">CSI Z</td>
+<td class="org-left">CSI Z</td>
+<td class="org-left">CSI 27 ; 2 ; 9 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Shift-Return</td>
+<td class="org-left">Return</td>
+<td class="org-left">CSI 27 ; 2 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 2 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Space</td>
+<td class="org-left">^@</td>
+<td class="org-left">^@</td>
+<td class="org-left">CSI 27 ; 5 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-Space</td>
+<td class="org-left">ESC ^@</td>
+<td class="org-left">ESC ^@</td>
+<td class="org-left">CSI 27 ; 7 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Shift-Space</td>
+<td class="org-left">^@</td>
+<td class="org-left">^@</td>
+<td class="org-left">CSI 27 ; 6 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-Shift-Space</td>
+<td class="org-left">ESC ^@</td>
+<td class="org-left">ESC ^@</td>
+<td class="org-left">CSI 27 ; 8 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-TAB</td>
+<td class="org-left">TAB</td>
+<td class="org-left">CSI 27 ; 5 ; 9 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 9 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Return</td>
+<td class="org-left">Return</td>
+<td class="org-left">CSI 27 ; 5 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-Return</td>
+<td class="org-left">ESC Return</td>
+<td class="org-left">CSI 27 ; 7 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 7 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-Shift-Return</td>
+<td class="org-left">ESC Return</td>
+<td class="org-left">CSI 27 ; 8 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 8 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-0</td>
+<td class="org-left">0</td>
+<td class="org-left">CSI 27 ; 5 ; 48 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 48 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-1</td>
+<td class="org-left">1</td>
+<td class="org-left">CSI 27 ; 5 ; 49 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 49 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-2</td>
+<td class="org-left">^@</td>
+<td class="org-left">^@</td>
+<td class="org-left">CSI 27 ; 5 ; 50 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-3</td>
+<td class="org-left">ESC</td>
+<td class="org-left">ESC</td>
+<td class="org-left">CSI 27 ; 5 ; 51 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-4</td>
+<td class="org-left">^\</td>
+<td class="org-left">^\</td>
+<td class="org-left">CSI 27 ; 5 ; 52 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-5</td>
+<td class="org-left">^]</td>
+<td class="org-left">^]</td>
+<td class="org-left">CSI 27 ; 5 ; 53 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-6</td>
+<td class="org-left">^^</td>
+<td class="org-left">^^</td>
+<td class="org-left">CSI 27 ; 5 ; 54 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-7</td>
+<td class="org-left">^_</td>
+<td class="org-left">^_</td>
+<td class="org-left">CSI 27 ; 5 ; 55 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-8</td>
+<td class="org-left">DEL</td>
+<td class="org-left">DEL</td>
+<td class="org-left">CSI 27 ; 5 ; 56 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-9</td>
+<td class="org-left">9</td>
+<td class="org-left">CSI 27 ; 5 ; 57 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 57 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-! (Control-Shift-1)</td>
+<td class="org-left">!</td>
+<td class="org-left">CSI 27 ; 6 ; 33 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 33 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-@ (Control-Shift-2)</td>
+<td class="org-left">^@</td>
+<td class="org-left">^@</td>
+<td class="org-left">CSI 27 ; 6 ; 64 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-# (Control-Shift-3)</td>
+<td class="org-left">#</td>
+<td class="org-left">CSI 27 ; 6 ; 35 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 35 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-$ (Control-Shift-4)</td>
+<td class="org-left">$</td>
+<td class="org-left">CSI 27 ; 6 ; 36 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 36 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-% (Control-Shift-5)</td>
+<td class="org-left">%</td>
+<td class="org-left">CSI 27 ; 6 ; 37 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 37 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-^ (Control-Shift-6)</td>
+<td class="org-left">^^</td>
+<td class="org-left">^^</td>
+<td class="org-left">CSI 27 ; 6 ; 94 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-&amp; (Control-Shift-7)</td>
+<td class="org-left">&amp;</td>
+<td class="org-left">CSI 27 ; 6 ; 38 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 38 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-* (Control-Shift-8)</td>
+<td class="org-left">*</td>
+<td class="org-left">CSI 27 ; 6 ; 42 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 42 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-( (Control-Shift-9)</td>
+<td class="org-left">(</td>
+<td class="org-left">CSI 27 ; 6 ; 40 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 40 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-) (Control-Shift-0)</td>
+<td class="org-left">)</td>
+<td class="org-left">CSI 27 ; 6 ; 41 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 41 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-c</td>
+<td class="org-left">^C</td>
+<td class="org-left">^C</td>
+<td class="org-left">CSI 27 ; 5 ; 99 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-d</td>
+<td class="org-left">^D</td>
+<td class="org-left">^D</td>
+<td class="org-left">CSI 27 ; 5 ; 100 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-i</td>
+<td class="org-left">TAB</td>
+<td class="org-left">TAB</td>
+<td class="org-left">CSI 27 ; 5 ; 105 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Shift-I</td>
+<td class="org-left">TAB</td>
+<td class="org-left">TAB</td>
+<td class="org-left">CSI 27 ; 6 ; 73 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-x</td>
+<td class="org-left">^X</td>
+<td class="org-left">^X</td>
+<td class="org-left">CSI 27 ; 5 ; 120 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-x</td>
+<td class="org-left">ESC ^X</td>
+<td class="org-left">ESC ^X</td>
+<td class="org-left">CSI 27 ; 7 ; 120 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Shift-D</td>
+<td class="org-left">^D</td>
+<td class="org-left">^D</td>
+<td class="org-left">CSI 27 ; 6 ; 68 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-Alt-Shift-D</td>
+<td class="org-left">ESC ESC</td>
+<td class="org-left">ESC ESC</td>
+<td class="org-left">CSI 27 ; 8 ; 68 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-;</td>
+<td class="org-left">;</td>
+<td class="org-left">CSI 27 ; 5 ; 59 ~</td>
+<td class="org-left">CSI 27 ; 5 ; 59 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-: (Control-Shift-;)</td>
+<td class="org-left">:</td>
+<td class="org-left">CSI 27 ; 6 ; 58 ~</td>
+<td class="org-left">CSI 27 ; 6 ; 58 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-\</td>
+<td class="org-left">^\</td>
+<td class="org-left">^\</td>
+<td class="org-left">CSI 27 ; 5 ; 92 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-¦ (Control-Shift-\)</td>
+<td class="org-left">^\</td>
+<td class="org-left">^\</td>
+<td class="org-left">CSI 27 ; 6 ; 124 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-`</td>
+<td class="org-left">^@</td>
+<td class="org-left">^@</td>
+<td class="org-left">CSI 27 ; 5 ; 96 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Control-~ (Control-Shift-`)</td>
+<td class="org-left">^^</td>
+<td class="org-left">^^</td>
+<td class="org-left">CSI 27 ; 6 ; 126 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Space</td>
+<td class="org-left">ESC Space</td>
+<td class="org-left">ESC Space</td>
+<td class="org-left">CSI 27 ; 3 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Shift-Space</td>
+<td class="org-left">ESC Space</td>
+<td class="org-left">ESC Space</td>
+<td class="org-left">CSI 27 ; 4 ; 32 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-TAB</td>
+<td class="org-left">ESC TAB</td>
+<td class="org-left">ESC TAB</td>
+<td class="org-left">CSI 27 ; 3 ; 9 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Return</td>
+<td class="org-left">ESC Return</td>
+<td class="org-left">CSI 27 ; 3 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 3 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Shift-Return</td>
+<td class="org-left">ESC Return</td>
+<td class="org-left">CSI 27 ; 4 ; 13 ~</td>
+<td class="org-left">CSI 27 ; 4 ; 13 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-d</td>
+<td class="org-left">ESC d</td>
+<td class="org-left">ESC d</td>
+<td class="org-left">CSI 27 ; 3 ; 100 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Shift-d</td>
+<td class="org-left">ESC D</td>
+<td class="org-left">ESC D</td>
+<td class="org-left">CSI 27 ; 4 ; 68 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-x</td>
+<td class="org-left">ESC x</td>
+<td class="org-left">ESC x</td>
+<td class="org-left">CSI 27 ; 3 ; 120 ~</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt-Shift-X</td>
+<td class="org-left">ESC X</td>
+<td class="org-left">ESC X</td>
+<td class="org-left">CSI 27 ; 4 ; 88 ~</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Zutty usage guide</title>
+<title>Zutty user guide</title>
 <meta name="generator" content="Org mode" />
 <link rel="stylesheet" type="text/css" href="org.css"/>
 <script type="text/javascript">
@@ -57,7 +57,7 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Zutty usage guide</h1>
+<h1 class="title">Zutty user guide</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -71,25 +71,40 @@ for the JavaScript code in this tag.
 <li><a href="#5.%20Install%20Zutty">5. Install Zutty</a></li>
 </ul>
 </li>
+<li><a href="#Usage%20reference">Usage reference</a>
+<ul>
+<li><a href="#User%20interface%20actions">User interface actions</a></li>
+<li><a href="#Environment%20variables">Environment variables</a></li>
+</ul>
+</li>
 <li><a href="#Configuration">Configuration</a>
 <ul>
 <li><a href="#Basic%20configuration%20and%20mode%20switches">Basic configuration and mode switches</a></li>
 <li><a href="#General%20appearance">General appearance</a></li>
+<li><a href="#Shell%2Fcommand%20specification">Shell/command specification</a></li>
 <li><a href="#Font%20selection">Font selection</a>
 <ul>
 <li><a href="#Recommended%20fonts">Recommended fonts</a></li>
+<li><a href="#Making%20fonts%20discoverable">Making fonts discoverable</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#Persistent%20configuration">Persistent configuration</a></li>
+<li><a href="#Persistent%20configuration">Persistent configuration</a>
+<ul>
+<li><a href="#Extra%20resources">Extra resources</a>
+<ul>
+<li><a href="#altSendsEscape">altSendsEscape</a></li>
+<li><a href="#modifyOtherKeys">modifyOtherKeys</a></li>
+<li><a href="#Base%20palette%20colors">Base palette colors</a></li>
+</ul>
+</li>
+<li><a href="#Removing%20and%20overriding%20persistent%20configuration">Removing and overriding persistent configuration</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<p>
-This document is aimed at all levels of users: experts and non-experts
-alike.
-</p>
 
 <div id="outline-container-Installation" class="outline-2">
 <h2 id="Installation">Installation</h2>
@@ -105,9 +120,10 @@ a relatively small program.
 <h3 id="1.%20Install%20build%20dependencies">1. Install build dependencies</h3>
 <div class="outline-text-3" id="text-1.%20Install%20build%20dependencies">
 <p>
-On a recent (stable or testing) Debian, or a Debian-derivative such as
-Ubuntu, the following command will make sure everything you need to
-build Zutty is in place.
+On a current (stable or testing) Debian, or a Debian-derivative such
+as Ubuntu, the following command will make sure everything you need to
+build Zutty is in place. It also gives you an idea of what you need to
+install Zutty on other flavours of Linux.
 </p>
 
 <pre class="example">
@@ -115,6 +131,14 @@ sudo apt-get install \
    build-essential pkg-config python3 \
    libegl-dev libfreetype-dev libgles-dev libxmu-dev
 </pre>
+
+
+<p>
+Hint: You might need to substitute <code>libfreetype6-dev</code> for
+<code>libfreetype-dev</code> and <code>libgles2-mesa-dev</code> for <code>libgles-dev</code>.
+When in doubt, use your distribution's package manager along with your
+favourite Internet search engine.
+</p>
 </div>
 </div>
 
@@ -157,13 +181,19 @@ working directory. Issue this command:
 <p>
 You should see some output with a confirmation of the Zutty version
 you are going to build, and whether you are creating a Debug build (it
-should say "no" at this point; read the <a href="./HACKING.html">Development guide</a> if you are
+should say "no" at this point; read the <a href="./HACKING.html">Developer guide</a> if you are
 interested in debugging Zutty).
 </p>
 
 <p>
-You should also see checks for the presence of the build
-dependencies. If anything is missing, the configure script will
+By default, g++ (the gcc compiler for C++) will be used to compile
+Zutty. To use clang instead, pass <code>--check-cxx-compiler=clang++</code> to
+the above script.
+</p>
+
+<p>
+In the configure output, you will see checks for the presence of the
+build dependencies. If anything is missing, the configure script will
 terminate with an error. Otherwise, the configure output will finish
 with a line like this:
 </p>
@@ -222,8 +252,7 @@ own right). A successful compile ends with a line like this:
 At this point, the <code>zutty</code> executable is complete and ready to be run
 at <code>build/src/zutty</code> and you might want to launch it just to see if it
 works. You can run it without arguments to start it up with defaults,
-or add <code>-h</code> (or <code>-help</code>) to learn about available options. (Don't
-worry, those will be covered in detail below.)
+or add <code>-h</code> (or <code>-help</code>) to learn about available options.
 </p>
 </div>
 </div>
@@ -273,11 +302,143 @@ terminal!
 </div>
 </div>
 
+<div id="outline-container-Usage%20reference" class="outline-2">
+<h2 id="Usage%20reference">Usage reference</h2>
+<div class="outline-text-2" id="text-Usage%20reference">
+</div>
+<div id="outline-container-User%20interface%20actions" class="outline-3">
+<h3 id="User%20interface%20actions">User interface actions</h3>
+<div class="outline-text-3" id="text-User%20interface%20actions">
+<p>
+The following list summarizes user-triggered actions. Note that these
+are hooks handled by the terminal itself, and will not reach the
+program running in the terminal. For the specification of how the
+terminal encodes keypresses to the program running inside it, see the
+<a href="./KEYS.html">Key mapping sequences</a> reference.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Trigger</th>
+<th scope="col" class="org-left">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Shift+PageUp, Shift+PageDown</td>
+<td class="org-left">Page screen upwards (into earlier scrollback history) or downwards by half the page height. If on the alternate screen with <code>-altScroll</code> enabled, emit synthetic arrow key events to move up/down half the screen height.</td>
+</tr>
+
+<tr>
+<td class="org-left">Scroll wheel up/down</td>
+<td class="org-left">Page screen up/down by 5 lines; if on the alternate screen with <code>-altScroll</code> enabled, emit a single synthetic up/down arrow key event.</td>
+</tr>
+
+<tr>
+<td class="org-left">Left mouse button press (and hold)</td>
+<td class="org-left">Start a new selection. Adjust by moving the mouse with the button held down.</td>
+</tr>
+
+<tr>
+<td class="org-left">Right mouse button press (and hold)</td>
+<td class="org-left">Adjust current selection (will grab the edge closest to the pointer); adjust by moving the mouse with the button held down.</td>
+</tr>
+
+<tr>
+<td class="org-left">Quickly release and re-engage left/right mouse button</td>
+<td class="org-left">While a selection is in progress, this will cycle between snap-to-char, snap-to-word and snap-to-line. (In rectangular selection mode, only snap-to-char exists.)</td>
+</tr>
+
+<tr>
+<td class="org-left">Space key while left/right mouse button is held</td>
+<td class="org-left">Toggle between <i>regular</i> and <i>rectangular</i> selection mode.</td>
+</tr>
+
+<tr>
+<td class="org-left">Middle mouse button, Shift+Insert</td>
+<td class="org-left">Paste the current content of the primary selection into the terminal.</td>
+</tr>
+
+<tr>
+<td class="org-left">Control+Shift+C</td>
+<td class="org-left">Copy the current content of the primary selection into the clipboard selection. (With <code>-autoCopy</code> enabled, this happens automatically whenever the primary selection is set.)</td>
+</tr>
+
+<tr>
+<td class="org-left">Control+Shift+V</td>
+<td class="org-left">Paste the current content of the clipboard selection into the terminal.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-Environment%20variables" class="outline-3">
+<h3 id="Environment%20variables">Environment variables</h3>
+<div class="outline-text-3" id="text-Environment%20variables">
+<p>
+Zutty sets or alters the below environment variables in the process
+spawned to run the shell. All other environment variables accessible
+to Zutty will be passed unaltered to the shell program.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Environment variable</th>
+<th scope="col" class="org-left">Treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>DISPLAY</code></td>
+<td class="org-left">Set to the current X display.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>SHELL</code></td>
+<td class="org-left">Set to the full (resolved) pathname of the shell being run; unset if the program is not a valid shell as per <code>/etc/shells</code>.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>TERM</code></td>
+<td class="org-left">Set to <code>xterm-256color</code>.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>WINDOWID</code></td>
+<td class="org-left">Set to the current X window id of the Zutty window.</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ZUTTY_VERSION</code></td>
+<td class="org-left">Set to the build version of Zutty.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="outline-container-Configuration" class="outline-2">
 <h2 id="Configuration">Configuration</h2>
 <div class="outline-text-2" id="text-Configuration">
 <p>
-<code>zutty</code> has a set of configuration options, all of which have:
+Zutty has a set of configuration options, all of which have:
 </p>
 <ul class="org-ul">
 <li>a command line option;</li>
@@ -287,10 +448,15 @@ terminal!
 
 <p>
 For each option, the above list defines the order of preference.  That
-is, the command line can be used to define a setting in a transient
-way; Xrdb entries may be used to persistently alter the default value
-for an option; and lastly, without any input from the user, <code>zutty</code>
-should still have a workable default.
+is, the command line can be used to define or override a setting in a
+transient way; Xrdb entries may be used to persistently alter the
+default value for an option; and lastly, without any option or
+configuration, Zutty will still have a workable default.
+</p>
+
+<p>
+There is also a set of <a href="#Extra%20resources">Extra resources</a> available for persistent
+configuration, but not settable via command line options.
 </p>
 
 <p>
@@ -302,24 +468,31 @@ Usage:
   zutty [-option ...] [shell]
 
 Options:
-  -altScroll   Alternate scroll mode
-  -bg          Background color (default: 000000)
-  -border      Border width in pixels (default: 2)
-  -display     Display to connect to
-  -fg          Foreground color (default: ffffff)
-  -font        Font to use (default: 9x18)
-  -fontsize    Font size (default: 16)
-  -fontpath    Font search path (default: /usr/share/fonts)
-  -geometry    Terminal size in chars (default: 80x24)
-  -glinfo      Print OpenGL information
-  -help        Print usage information
-  -rv          Reverse video
-  -selection   Selection target (default: primary)
-  -shell       Shell program to run (default: /bin/bash)
-  -title       Window title (default: Zutty)
-  -quiet       Silence logging output
-  -verbose     Output info messages
-  -e           Command line to run
+  -altScroll    Alternate scroll mode
+  -autoCopy     Sync primary to clipboard
+  -bg           Background color (default: #000)
+  -boldColors   Enable bright for bold
+  -border       Border width in pixels (default: 2)
+  -cr           Cursor color
+  -display      Display to connect to
+  -fg           Foreground color (default: #fff)
+  -font         Font to use (default: 9x18)
+  -fontsize     Font size (default: 16)
+  -fontpath     Font search path (default: /usr/share/fonts)
+  -geometry     Terminal size in chars (default: 80x24)
+  -glinfo       Print OpenGL information
+  -help         Print usage listing and quit
+  -listres      Print resource listing and quit
+  -login        Start shell as a login shell
+  -name         Instance name for Xrdb and WM_CLASS
+  -rv           Reverse video
+  -saveLines    Lines of scrollback history (default: 500)
+  -shell        Shell program to run
+  -showWraps    Show wrap marks at right margin
+  -title        Window title (default: Zutty)
+  -quiet        Silence logging output
+  -verbose      Output info messages
+  -e            Command line to run
 </pre>
 
 
@@ -330,11 +503,20 @@ it's fine to write <code>-d</code> short for <code>-display</code>, <code>-gl</c
 </p>
 
 <p>
-Boolean options (<code>-altScroll</code>, <code>-glinfo</code>, <code>-help</code>, <code>-rv</code>, <code>-quiet</code>,
-<code>-verbose</code>) do not expect an argument; the presence of these options
-amounts to a setting of "true". Other options expect exactly one
-argument, with the exception of <code>-e</code>, which must be the last option,
-to be followed by the command line to run.
+Boolean options (<code>-altScroll</code>, <code>-autoCopy</code>, <code>-boldColors</code>, <code>-glinfo</code>,
+<code>-login</code>, <code>-rv</code>, <code>-showWraps</code>, <code>-quiet</code>, <code>-verbose</code>) do not expect an
+argument; the mere presence of these options amounts to a setting of
+"true". To set them to "false", change the leading dash to a plus
+sign. For example, <code>+boldColors</code> will <i>disable</i> the "boldColors"
+option (which is enabled by default). This might also be useful to
+override an option that is by default false, but has been set to true
+in the X resource database (see <a href="#Persistent%20configuration">Persistent configuration</a>).
+</p>
+
+<p>
+All other options expect exactly one argument, with the exception of
+<code>-e</code>, which must be the last option, to be followed by the command
+line to run.
 </p>
 
 <p>
@@ -348,29 +530,54 @@ the next section <a href="#Persistent%20configuration">Persistent configuration<
 <h3 id="Basic%20configuration%20and%20mode%20switches">Basic configuration and mode switches</h3>
 <div class="outline-text-3" id="text-Basic%20configuration%20and%20mode%20switches">
 <pre class="example">
--altScroll   Alternate scroll mode [boolean]
+-altScroll    Alternate scroll mode [boolean]
 </pre>
 
 
 <p>
-If enabled, scroll up and down events (generated by the mouse scroll
-wheel) are converted to virtual up- and down-arrow keypresses. This
-might prove to be a convenient method of moving up/down one at a
-time in programs where one usually navigates with the keyboard arrows.
+If enabled, mouse scroll up and down events while on the alternate
+screen buffer are translated into synthetic up- and down-arrow key
+events. This might prove to be a convenient way of moving up/down
+one-by-one in programs usually navigated with the keyboard arrows.
+</p>
+
+<p>
+Another, similar effect (also on the alternate screen) is that the
+keys normally used to page through the screen buffer (Shift+PageUp,
+Shift+PageDown) will generate the same synthetic up- and down-arrow
+key events as above, but in multiples, to scroll half the amount of
+scrollable lines. This might be convenient in the same situations,
+only for larger jumps.
 </p>
 
 <pre class="example">
--display     Display to connect to
+-autoCopy     Sync primary to clipboard [boolean]
+</pre>
+
+
+<p>
+By enabling this option, Zutty will automatically propagate the
+primary selection to the clipboard each time a selection is completed,
+acting as if you pressed Control+Shift+C immediately after each
+selection. This might be convenient if you do not wish to use the dual
+selection capability (primary plus clipboard), and expect to be able
+to paste into other programs that source the data from the clipboard.
+</p>
+
+<pre class="example">
+-display      Display to connect to
 </pre>
 
 
 <p>
 The X display to connect to. By default, the value of the environment
-variable DISPLAY is used.
+variable DISPLAY is used. This option is exceptional in that (for
+obvious reasons) it cannot be configured via the X resource database,
+only the command line.
 </p>
 
 <pre class="example">
--glinfo      Print OpenGL information [boolean]
+-glinfo       Print OpenGL information
 </pre>
 
 
@@ -380,11 +587,11 @@ startup. These include EGL_VERSION, EGL_VENDOR, EGL_EXTENSIONS, as
 well as GL_RENDERER, GL_VERSION, GL_VENDOR, GL_EXTENSIONS, and numeric
 limits on the Compute Shader implementation. This is mostly a
 debugging aid. The output is not affected by any verbosity changes
-made via <code>-v</code> / <code>-q</code>.
+made via <code>-v</code> or <code>-q</code>.
 </p>
 
 <pre class="example">
--help        Print usage information [boolean]
+-help         Print usage listing and quit
 </pre>
 
 
@@ -394,79 +601,76 @@ and quit.
 </p>
 
 <pre class="example">
--selection   Selection target (default: primary)
+-listres      Print resource listing and quit
 </pre>
 
 
 <p>
-Set the X Selection to use as the target of copy (and the source of
-paste) operations. There are three options: <code>primary</code>, <code>secondary</code> and
-<code>clipboard</code>. Only the first character of the argument is used (<code>'p'</code>,
-<code>'s'</code>, <code>'c'</code>) to discriminate between these.
+Print a listing of configurable <a href="#Extra%20resources">Extra resources</a> and quit.
 </p>
 
 <pre class="example">
--shell       Shell program to run (default: /bin/bash)
+-name         Instance name for Xrdb and WM_CLASS
 </pre>
 
 
 <p>
-Specify the shell program to run in the terminal. As a bit of special
-syntax, this option can be passed both as a regular option (<code>-shell
-bash</code> anywhere among other options), or just the shell itself (<code>bash</code>)
-at the end of the command line, mutually exclusive with using the <code>-e</code>
-option. If both forms are present, the last item on the command line
-will take precedence over the value supplied after <code>-shell</code>.
+This option specifies the application instance name, which will be
+used to look up resources in the X resource database, and reported to
+the window manager as part of the <code>WM_CLASS</code> property (the other part
+being the application class name, hardcoded as <code>Zutty</code>).  The
+specified name should not contain "." (dot) or "*" (asterisk), as
+those characters have special meanings within Xrdb entries.
 </p>
 
 <p>
-The algorithm to determine the actual shell program to spawn closely
-resembles Xterm behaviour and follows these steps:
+If this option is not present, but the environment variable
+<code>RESOURCE_NAME</code> is set, that will be used instead. If none of these
+are available, the hard default value of <code>Zutty</code> will be used.
 </p>
 
-<ol class="org-ol">
-<li>Start with the <code>shell</code> value (the last argument given after all
-valid options, if present, or the value supplied after <code>-shell</code>).</li>
-<li>Try to construct an absolute path taking <code>$PATH</code> into account;
-this includes resolving relative paths and trying elements of the
-list of <code>$PATH</code> entries until it resolves to an existing file.</li>
-<li>Fall back on <code>$SHELL</code>, then the user's <code>/etc/passwd</code> shell entry,
-if the above did not result in any candidate.</li>
-<li>Use <code>/bin/sh</code> as a last resort.</li>
-<li>Validate the outcome of the above steps against the permitted shell
-entries found in <code>/etc/shells</code>; proceed, but clear <code>$SHELL</code> from
-the spawned program's environment if the program is not listed as a
-valid shell.</li>
-</ol>
-
 <p>
-In accordance with the general precedence of configuration lookups, in
-case a <code>shell</code> argument is <b>not</b> given, the <code>zutty.shell</code> resource is
-consulted; if that is not set, the built-in default of <code>/bin/bash</code> is
-assumed as the result of step 0 (and then steps 1-4 carried out as
-above).
+This option is exceptional in that (for obvious reasons) it cannot be
+configured via the X resource database, only the command line.
 </p>
 
 <pre class="example">
--e           Command line to run
+-saveLines    Lines of scrollback history (default: 500)
 </pre>
 
 
 <p>
-This option specifies the command line (program and arguments) to be
-run in the Zutty terminal window. It also sets the window title to the
-basename of the program to be executed.
+Set the number of lines to keep in off-screen page history, viewable
+via paging the terminal up/down by Shift+PageUp and Shift+PageDown
+(jumping half a page-height at once), or the mouse scrollwheel (moving
+in units of 5 lines). The set amount of saved lines is in addition to
+the lines visible in the terminal window.
 </p>
 
 <p>
-Note that this must be the last option on the command line, as
-everything after it will be passed verbatim to the spawned child
-process.
+The default value is 500 lines, which should be enough for everyday
+use (the occasional peek at the output of a command that rolled off
+the screen). The minimum setting is 0 (no scrollback), the maximum
+allowed value is 50,000. Note that while the performance of scrolling
+itself (and Zutty in general) will <i>not</i> degrade with a larger
+setting, the screen buffer <i>will</i> consume proportional amounts of
+memory.  With very large settings, this will dominate the total memory
+usage of Zutty! For example, 1024 buffered lines (24 lines on-screen
+and 1000 lines of scrollback) with 80 columns will consume 960 KiB;
+this will balloon to 10 MiB with 10,000 lines of scrollback.
+Adjusting the column width will have a similar (proportional) effect;
+50,000 lines at a width of 120 columns will consume a whopping 70 MiB!
+</p>
+
+<p>
+Note that the alternate screen buffer does not have scrollback; this
+is by design and in conformance with the relevant specs (but see
+<code>-altScroll</code> for enabling synthetic up- and down-arrow key events).
 </p>
 
 <pre class="example">
--quiet       Silence logging output [boolean]
--verbose     Output info messages [boolean]
+-quiet        Silence logging output [boolean]
+-verbose      Output info messages [boolean]
 </pre>
 
 
@@ -491,7 +695,7 @@ I [charvdev.cc:377] Resize to 935 x 771 pixels, 103 x 42 chars
 The first letter is an indication of the log level or "severity"; <code>E</code>
 means Error, <code>W</code> stands for Warning, <code>I</code> is Info and <code>T</code> is Trace.
 Trace will only be output if you compile Zutty into a debug build; see
-the <a href="./HACKING.html">Development guide</a> for details. Next, the origin of the log message
+the <a href="./HACKING.html">Developer guide</a> for details. Next, the origin of the log message
 is shown in square brackets, indicating the source code location
 (filename and line number) where the message was printed. Then comes
 the actual message.
@@ -511,7 +715,7 @@ wins.
 <h3 id="General%20appearance">General appearance</h3>
 <div class="outline-text-3" id="text-General%20appearance">
 <pre class="example">
--geometry    Terminal size in chars (default: 80x24)
+-geometry     Terminal size in chars (default: 80x24)
 </pre>
 
 
@@ -523,51 +727,100 @@ directly.)
 </p>
 
 <p>
-This is just a request to the window manager; <code>zutty</code> will accept and
+This is just a request to the window manager; Zutty will accept and
 work with whatever final window size it gets. Setting this will in no
-way interfere with your ability to resize <code>zutty</code> once it is up and
+way interfere with your ability to resize Zutty once it is up and
 running.
 </p>
 
 <pre class="example">
--bg          Background color (default: 000000)
--fg          Foreground color (default: ffffff)
+-bg           Background color (default: #000)
+-fg           Foreground color (default: #fff)
+-cr           Cursor color
 </pre>
 
 
 <p>
-These options accept a hexadecimal RRGGBB color specification, similar
-to how you can define a color in many other places, e.g., CSS.
-Both lower- and uppercase hexadecimals (a-f, A-F) are accepted, but
-note that names (e.g., "red" instead of "ff0000") are <b>not</b> supported.
+These options accept a hexadecimal RGB or RRGGBB color specification,
+similar to how you can define a color in many other places, e.g., CSS.
+The leading <code>#</code> is optional (supported mainly to provide compatibility
+with established conventions); take care to protect it from the shell
+when passing it on the command line. Both lower- and uppercase
+hexadecimal digits (a-f, A-F) are accepted, but note that names (e.g.,
+<code>red</code> instead of <code>#f00</code>) are <i>not</i> supported.
+</p>
+
+<p>
+If not explicitly set, the cursor color defaults to the foreground
+color. In case the cursor is placed on a cell with a background color
+set to the cursor color, the cursor color is automatically inverted to
+ensure it stays visible.
 </p>
 
 <pre class="example">
--rv          Reverse video [boolean]
+-rv           Reverse video [boolean]
 </pre>
 
 
 <p>
 Using this option will swap the effective foreground and background
-color, specified either via <code>-fg</code> and <code>-bg</code>, or the corresponding
-resources, or the defaults. It will <b>not</b> swap the meaning of color
-codes and such; if a program explicitly specifies the color green, it
-will be rendered green with and without <code>-rv</code>.
+color, regardless of whether their values originate from <code>-fg</code> and
+<code>-bg</code>, or the corresponding resources, or the defaults. It will <i>not</i>
+swap the meaning of color codes and such; if a program explicitly
+specifies the color green, it will be rendered green with and without
+<code>-rv</code>.
 </p>
 
 <pre class="example">
--border      Border width in pixels (default: 2)
+-boldColors   Enable bright for bold [boolean]
 </pre>
 
 
 <p>
-Specify the border width, specifically, the border that is part of the
-client area of the Zutty window and not part of any window decoration
-itself (this is equivalent to what Xterm calls internal border width).
+This option enables combining the bold attribute with a brightening of
+base colors. That is, when printing bold text, colors 0 through 7 will
+be mapped to colors 8 through 15 by adding 8 to the color number.
+These normally correspond to the brighter variants of the same colors.
+This is enabled by default; supply <code>+boldColors</code> on the command line
+to turn it off.
 </p>
 
 <pre class="example">
--title       Window title (default: Zutty)
+-border       Border width in pixels (default: 2)
+</pre>
+
+
+<p>
+Specify the border width; specifically, the border that is part of the
+client area of the Zutty window and not part of any window decoration
+outside of the program's direct control. (This is equivalent to what
+Xterm calls internal border width.)
+</p>
+
+<pre class="example">
+-showWraps    Show wrap marks at right margin [boolean]
+</pre>
+
+
+<p>
+Specify whether to draw a vertical mark on the right edge of cells
+having the <code>wrap</code> bit set. This bit is set in case an auto-wrap occurs
+just after the given position, so it only gets set on the right
+margin.  However, following an increase of the window size, cells with
+a set <code>wrap</code> bit might reside inside the right margin.
+</p>
+
+<p>
+When selecting text, line breaks are suppressed depending on the
+<code>wrap</code> bit (wrapped text is copied without the breaks introduced by
+the wraps), so a visual indicator of this status bit might be useful
+to better understand (or predict) behaviour. It might also be useful
+to see this when debugging Zutty or an application writing text at the
+right margin.
+</p>
+
+<pre class="example">
+-title        Window title (default: Zutty)
 </pre>
 
 
@@ -576,6 +829,97 @@ Set the title of the Zutty window. This might be overridden by usage
 of the <code>-e</code> option (setting the title to the basename of the program
 to be run), or at any later time by escape sequences output by the
 shell (or any program executed by it).
+</p>
+</div>
+</div>
+
+<div id="outline-container-Shell%2Fcommand%20specification" class="outline-3">
+<h3 id="Shell%2Fcommand%20specification">Shell/command specification</h3>
+<div class="outline-text-3" id="text-Shell%2Fcommand%20specification">
+<pre class="example">
+-login        Start shell as a login shell [boolean]
+</pre>
+
+
+<p>
+When this option is enabled, the shell started by Zutty will be a
+login shell. This will be signalled to the shell process by setting
+its <code>argv [0]</code> to begin with a dash (<code>-</code>). Shells evaluate different
+sets of startup files depending on this (e.g., <code>bash</code> sources
+<code>/etc/profile</code> and <code>~/.bash_profile</code> if started as a login shell, but
+sources <code>~/.bashrc</code> otherwise). Please consult the documentation of
+your shell for accurate details.
+</p>
+
+<p>
+When using the <code>-e</code> option, this option will be ignored, because <code>-e</code>
+is supposed to be used to launch non-shell text-mode programs in a
+terminal window, and manipulating the <code>argv [0]</code> of such programs
+might interfere with their operation.
+</p>
+
+<pre class="example">
+-shell        Shell program to run
+</pre>
+
+
+<p>
+Specify the shell program to run in the terminal. As a bit of special
+syntax, this option can be passed both as a regular option (<code>-shell
+bash</code> anywhere among a list of other options), or just the shell
+itself (<code>bash</code>) as the last item on the command line. Either way, this
+option is mutually exclusive with using the <code>-e</code> option. If both forms
+are present, the last item on the command line will take precedence
+over the value supplied after <code>-shell</code>.
+</p>
+
+<p>
+The algorithm to resolve the executable to spawn resembles the
+behaviour of <code>xterm</code>, and follows these steps:
+</p>
+
+<ol class="org-ol">
+<li>Start with the value of <code>shell</code> (the last argument given after all
+valid options, if present, or the value supplied after <code>-shell</code>).
+In case no <code>shell</code> argument is given, the <code>Zutty.shell</code> resource is
+consulted; if that is not set, the value of the <code>SHELL</code> environment
+variable is used; if that is not set, the built-in default of
+<code>bash</code> is assumed.</li>
+<li>If not already an absolute path, resolve this to an absolute path
+taking <code>PATH</code> into account, trying elements of the list of <code>PATH</code>
+entries until the given shell resolves to an existing file at that
+path.</li>
+<li>Fall back on the <code>SHELL</code> environment variable, then the user's
+<code>/etc/passwd</code> shell entry, if the above did not result in any
+candidate.</li>
+<li>Use <code>/bin/sh</code> as a last resort.</li>
+<li>Validate the outcome of the above steps against the permitted shell
+entries found in <code>/etc/shells</code>. Proceed, but clear <code>SHELL</code> from the
+environment if the program is not listed as a valid shell.  Else,
+set <code>SHELL</code> to the resolved full program path.</li>
+</ol>
+
+<pre class="example">
+-e            Command line to run
+</pre>
+
+
+<p>
+This option specifies the command line (program and arguments) to be
+run in the Zutty terminal window. It also sets the window title to the
+basename of the program to be executed.
+</p>
+
+<p>
+Note that this must be the last option on the command line, as
+everything after it will be passed verbatim to the spawned child
+process.
+</p>
+
+<p>
+Using this option is mutually exclusive with the <code>-shell</code> option, and
+will silently override it, as well as discarding the <code>-login</code> option,
+if any of those are also present.
 </p>
 </div>
 </div>
@@ -619,9 +963,9 @@ sought after.
 
 <p>
 For example, the default font is <code>9x18</code>. This is one of the "misc
-fixed" fonts. After seeing that the font name is "9x18", Zutty will
+fixed" fonts. After seeing that the font name is <code>9x18</code>, Zutty will
 search under the font path <code>/usr/share/fonts</code> for files starting with
-"9x18". It will find <code>9x18.pcf.gz</code> and <code>9x18B.pcf.gz</code>, both under
+<code>9x18</code>. It will find <code>9x18.pcf.gz</code> and <code>9x18B.pcf.gz</code>, both under
 <code>/usr/share/fonts/X11/misc</code>. Based on the filenames, Zutty will
 recognize the first file as the regular variant, and the second file
 as the bold variant. Other variants are absent; use of text attributes
@@ -645,9 +989,9 @@ respective variants of the chosen font.
 
 <p>
 For scaled fonts, such as Liberation Mono above, this setting controls
-the height, measured in pixels, to rasterize the glyphs to. The actual
-character grid size will almost always be more, due to the fact that
-typefaces have some spacing around the actual glyphs.
+the height, measured in integer pixels, to rasterize the glyphs to.
+The actual character grid size will almost always be more, due to the
+fact that typefaces have some spacing around the glyphs themselves.
 </p>
 
 <p>
@@ -674,22 +1018,29 @@ files will be searched. It is seldom necessary to change this, but
 might be useful to try some new font you downloaded from the Internet
 (and have not yet installed to a system-wide location).
 </p>
+
+<p>
+Hint: you can specify more than one root, separated by colons. These
+will be searched in order (left to right) until the specified font is
+found.
+</p>
 </div>
 
 <div id="outline-container-Recommended%20fonts" class="outline-4">
 <h4 id="Recommended%20fonts">Recommended fonts</h4>
 <div class="outline-text-4" id="text-Recommended%20fonts">
 <p>
-The author of Zutty prefers the so-called "misc fixed" fonts that were
-created in the '80s in an era of much inferior computer displays.
-These are the original fonts designed to be used with the X Window
-System, and their availability is universal &#x2013; you probably have them
-already installed. These fonts are highly optimized for readability at
-low resolutions. There is a convenient range of sizes, several fonts
-have bold variants and support thousands of international characters
-and symbols outside ASCII. Zutty will work best with any of misc-fixed
-6x13, 7x13, 7x14, 8x13, 9x15 and 9x18 (there are more, but the ones
-listed have a bold-face variant as well).
+The author of Zutty prefers the so-called <a href="https://www.cl.cam.ac.uk/~mgk25/ucs-fonts.html">misc-fixed</a> fonts. These are
+upgraded, extended versions of the bitmap fonts originally designed
+for the X Window System, created in the '80s in an era of much
+inferior computer displays. Their availability is universal; you
+probably have them installed already. These fonts are highly optimized
+for readability at low resolutions. There is a convenient range of
+sizes, several fonts have bold variants and support thousands of
+international characters and symbols outside ASCII. Zutty will work
+best with any of misc-fixed 6x13, 7x13, 7x14, 8x13, 9x15 and 9x18
+(there are more, but the ones listed have a bold-face variant as
+well).
 </p>
 
 <p>
@@ -701,7 +1052,7 @@ Liberation Mono, Source Code Pro, and possibly many more.
 </p>
 
 <p>
-On Debian (and derived) distributions, the following list of package
+On Debian (and derived distributions), the following list of package
 names might serve as a useful starting point to obtain some usable
 fonts. For each package, install it and pass the specified name(s) to
 <code>-font</code> to check them out:
@@ -723,6 +1074,43 @@ value with a space, e.g.: <code>zutty -font "Anonymous Pro"</code>
 </p>
 </div>
 </div>
+
+<div id="outline-container-Making%20fonts%20discoverable" class="outline-4">
+<h4 id="Making%20fonts%20discoverable">Making fonts discoverable</h4>
+<div class="outline-text-4" id="text-Making%20fonts%20discoverable">
+<p>
+Zutty has a simple heuristic to identify the font files to load for
+each variant of a given size of a requested font face. This will work
+for lots of fonts (see above), but inevitably, certain fonts will have
+naming schemes that evade this mechanism. In such a case, manually
+renaming the files on your system will help. An even better method is
+to create symlinks (symbolic links) to the font files with alternative
+names that Zutty will be able to correctly identify. This has the
+advantage of preserving the original files.
+</p>
+
+<p>
+For example, <a href="https://people.mpi-inf.mpg.de/~uwe/misc/uw-ttyp0/">UW ttyp0</a> is a family of freely available monospace bitmap
+fonts that works well with Zutty. You might want to consider it as an
+alternative to the "misc fixed" family. However, installing these
+fonts will yield names such as (for the 18-point, Unicode encoded
+variant): <code>t0-18-uni.pcf.gz</code> (regular), <code>t0-18b-uni.pcf.gz</code> (bold),
+<code>t0-18i-uni.pcf.gz</code> (italic). The solution is to add symlinks such as:
+</p>
+
+<ul class="org-ul">
+<li><code>t0-18.pcf.gz -&gt; t0-18-uni.pcf.gz</code></li>
+<li><code>t0-18b.pcf.gz -&gt; t0-18b-uni.pcf.gz</code></li>
+<li><code>t0-18i.pcf.gz -&gt; t0-18i-uni.pcf.gz</code></li>
+</ul>
+
+<p>
+These symlinks will allow you to use this font in Zutty by starting it
+via <code>-font t0-18</code>. Add a similar set of symlinks for each point size
+you want to be able to use.
+</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -739,54 +1127,79 @@ to your X resource database (Xrdb).
 
 <p>
 Open the file <code>.Xresources</code> in your home directory, or create it if
-you do not have one. Use the following snippet as a starting point;
-feel free to remove any lines with options you do not want to change
-from the hard default, and add lines for any further options you do
-want to change.
+you do not have one. Use the following snippet merely as a starting
+point; its purpose is to help you with enough examples to get what you
+want, with the right syntax. Hint: you will <i>not</i> want to set exactly
+these options.
 </p>
 
 <pre class="example">
-Zutty.title:                   Zero Cost TTY
+Zutty.title:                   The Big Zutty
 Zutty.geometry:                120x45
 Zutty.altScroll:               true
-Zutty.selection:               clipboard
-Zutty.font:                    SourceCodePro
+Zutty.boldColors:              false
+Zutty.font:                    Inconsolata
 Zutty.fontsize:                18
-Zutty.fontpath:                /home/tom/doc/fonts
-Zutty.fg:                      00ff80
-Zutty.bg:                      203040
+Zutty.fontpath:                /home/tom/root/share/fonts:/usr/share/fonts
+Zutty.fg:                      #00ff80
+Zutty.bg:                      #234
+Zutty.cr:                      #0f0
 </pre>
 
 
 <p>
 As you can see, the general pattern is simple: one setting per line,
-starting with a key that looks like <code>Zutty.&lt;option-name&gt;</code>, a colon,
-and the desired value in a second column. The option names are exactly
-as documented in the previous chapter.
+starting with a key that looks like <code>Zutty.&lt;option&gt;</code>, a colon, and the
+desired value in a second column. The option names are exactly as
+documented in the previous chapter.
 </p>
 
 <p>
 Note that no quoting is necessary around string values containing a
-space, and that the value <code>true</code> is explicit unlike on the command
+space, and that boolean values are explicit, unlike on the command
 line.
 </p>
 
 <p>
-Once you are satisfied with your settings, save your <code>~/.Xresources</code>
-and run the command <code>xrdb -merge ~/.Xresources</code> to instruct Xrdb to
-merge the new settings from your file to the in-memory resource
-database. Alternatively, just restart your X session (log out and back
-in to your graphics desktop).
+The program's resource lookup key <code>Zutty</code> is configurable via the
+<code>-name</code> option and the <code>RESOURCE_NAME</code> environment variable (with the
+former taking precedence over the latter), making it possible to have
+various configuration sets activated by different instance names.  For
+example, copy the above example snippet to something like this:
+</p>
+
+<pre class="example">
+MyCustomZutty.title:           The Custom Zutty
+MyCustomZutty.geometry:        135x54
+...
+</pre>
+
+
+<p>
+Then, this custom configuration can be activated by starting Zutty via
+<code>zutty -name MyCustomZutty</code> or <code>RESOURCE_NAME=MyCustomZutty zutty</code>.
+Also, the WM_CLASS window property will be set to contain the
+configured instance name, which might be useful for window management
+(identification). Note: there is no fallback to the default instance
+name <code>Zutty</code>; for each custom instance name, you need to duplicate all
+the settings you care about.
 </p>
 
 <p>
-The configured values will show up in the output of <code>zutty -h</code>, to
+After saving your <code>~/.Xresources</code>, run the command <code>xrdb -merge
+~/.Xresources</code> to merge the new settings from your file to the
+in-memory resource database. Alternatively, just restart your X
+session (log out and back in to your graphical desktop).
+</p>
+
+<p>
+The configured values will show up in the output of <code>zutty -h</code> to
 confirm that your settings have taken effect. For example, if you were
 following along, you should now see
 </p>
 
 <pre class="example">
--title       Window title (configured: Zero Cost TTY)
+-title        Window title (configured: The Big Zutty)
 </pre>
 
 
@@ -795,23 +1208,188 @@ instead of the original version that read
 </p>
 
 <pre class="example">
--title       Window title (default: Zutty)
+-title        Window title (default: Zutty)
+</pre>
+</div>
+
+<div id="outline-container-Extra%20resources" class="outline-3">
+<h3 id="Extra%20resources">Extra resources</h3>
+<div class="outline-text-3" id="text-Extra%20resources">
+<p>
+Zutty can be configured via some extra resources not available as
+command line options. To get a printout of all these extra resources
+available for configuration, pass the <code>-listres</code> option to Zutty. The
+result will look like this:
+</p>
+
+<pre class="example">
+Resources:
+  altSendsEscape    Encode Alt key as ESC prefix (default: true)
+  modifyOtherKeys   Key modifier encoding level; 0..2 (default: 1)
+  color0            Palette color 0 (default: #000000)
+  color1            Palette color 1 (default: #cd0000)
+  ...
+  color15           Palette color 15 (default: #ffffff)
 </pre>
 
 
 <p>
-Removing a configuration is a bit tricky. Even if you remove a setting
-from <code>~/.Xresources</code> and merge that into Xrdb, the previous setting
-will still persist in-memory until you restart your X session. To get
-around this, you might issue <code>xrdb -remove Zutty.title</code> (change
-<code>title</code> to the name of the option you want to reset to its default).
+To customize <code>&lt;resource&gt;</code>, put an entry into <code>~/.Xresources</code> under the
+key <code>Zutty.&lt;resource&gt;</code>. For example:
+</p>
+
+<pre class="example">
+Zutty.altSendsEscape:          false
+Zutty.modifyOtherKeys:         0
+</pre>
+
+
+<p>
+After merging into Xrdb, the above output will reflect the configured
+values, similar to the output of <code>zutty -h</code> for options as shown
+above.
+</p>
+</div>
+
+<div id="outline-container-altSendsEscape" class="outline-4">
+<h4 id="altSendsEscape">altSendsEscape</h4>
+<div class="outline-text-4" id="text-altSendsEscape">
+<p>
+The resource setting <code>altSendsEscape</code> controls how key combinations
+containing the Alt modifier are encoded. The setting can be toggled
+dynamically at runtime via DEC set/reset 1036/1039 (both numbers are
+equivalent).  This is an xterm extension. The default value is true
+(enabled).
+</p>
+
+<p>
+When enabled, hitting any ordinary key (letters, punctuation symbols,
+etc.) while holding Alt will result in the key being prefixed by the
+ESC character. This is also applied to some special keys, e.g.,
+Alt-Tab sends <code>ESC TAB</code> and Alt-Backspace sends <code>ESC DEL</code> or <code>ESC \b</code>
+depending on the current DECBKM mode setting.  This allows programs
+such as terminal-mode Emacs to recognize keyboard bindings containing
+Alt (or Meta).
+</p>
+
+<p>
+If <code>altSendsEscape</code> is disabled (set to false), Alt will cause the
+characters to be shifted by adding 128 (setting the 8-th bit). This is
+then sent UTF-8 encoded to the shell.
+</p>
+
+<p>
+Notes:
+</p>
+<ul class="org-ul">
+<li>Unlike XTerm, Zutty does not distinguish between Alt and
+Meta.</li>
+<li>In case <code>modifyOtherKeys</code> is non-zero (see below), the effects of
+that will take precedence over this setting and produce a uniform
+encoding for selected (if set to 1) or all (if set to 2) modified
+key combinations.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-modifyOtherKeys" class="outline-4">
+<h4 id="modifyOtherKeys">modifyOtherKeys</h4>
+<div class="outline-text-4" id="text-modifyOtherKeys">
+<p>
+Zutty supports the <code>modifyOtherKeys</code> setting, which further affects
+how special keys (modifier combinations) are encoded into control
+sequences. It corresponds to xterm's identically named option (another
+xterm extension; see its <a href="https://invisible-island.net/xterm/manpage/xterm.html#VT100-Widget-Resources:modifyOtherKeys">documentation</a> and <a href="https://dickey.his.com/xterm/xterm.faq.html#xterm_modother">this FAQ entry</a>).
+</p>
+
+<p>
+This setting can be altered dynamically at runtime via the control
+sequence <code>CSI &gt; 4 ; P m</code> where <code>P</code> can be 0, 1 or 2 (or omitted, which
+is equivalent to 0). This is typically done by programs such as Vim to
+be able to distinguish between e.g., <code>TAB</code> and <code>^I</code>.
+</p>
+
+<p>
+The default value of modifyOtherKeys can be configured via the Xrdb
+resource with the same name. In the absence of any configuration, it
+defaults to 1 when Zutty is started. This enables e.g., terminal-mode
+Emacs to correctly recognize most key combinations, while preserving
+the ability to generate raw control characters (such as <code>NUL</code> via
+Control-2, <code>ESC</code> via Control-3, etc).  See the relevant table in the
+<a href="./KEYS.html#Special key combinations">key mapping reference</a> for several examples.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Base%20palette%20colors" class="outline-4">
+<h4 id="Base%20palette%20colors">Base palette colors</h4>
+<div class="outline-text-4" id="text-Base%20palette%20colors">
+<p>
+The default 256-color palette of Zutty is identical to <code>xterm</code>'s
+default colors. You may override the base 16 colors via the resources
+<code>color0</code> to <code>color15</code>.  Feel free to configure none, a couple, or all
+of them.  Here is an example configuration for installing the colors
+of the <a href="https://srcery-colors.github.io">Srcery</a> palette:
+</p>
+
+<pre class="example">
+Zutty.color0:                  #1c1b19
+Zutty.color1:                  #ef2f27
+Zutty.color2:                  #519f50
+Zutty.color3:                  #fbb829
+Zutty.color4:                  #2c78bf
+Zutty.color5:                  #e02c6d
+Zutty.color6:                  #0aaeb3
+Zutty.color7:                  #d0bfa1
+Zutty.color8:                  #918175
+Zutty.color9:                  #f75341
+Zutty.color10:                 #98bc37
+Zutty.color11:                 #fed06e
+Zutty.color12:                 #68a8e4
+Zutty.color13:                 #ff5c8f
+Zutty.color14:                 #53fde9
+Zutty.color15:                 #fce8c3
+</pre>
+
+
+<p>
+Note that the default foreground and background colors are separate
+from the palette: resetting the text color (via SGR 39) will set it to
+the default foreground color (configurable via <code>fg</code>), which might or
+might not be identical to <code>color15</code>. The same is true when resetting
+the background color (via SGR 49): the default background color (via
+<code>bg</code>) will be used, which might or might not be identical to <code>color0</code>.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-Removing%20and%20overriding%20persistent%20configuration" class="outline-3">
+<h3 id="Removing%20and%20overriding%20persistent%20configuration">Removing and overriding persistent configuration</h3>
+<div class="outline-text-3" id="text-Removing%20and%20overriding%20persistent%20configuration">
+<p>
+Removing a piece of configuration is a bit tricky. If you remove a
+setting from <code>~/.Xresources</code> and merge that into Xrdb, it will have no
+immediate effect, since the existing setting will still persist
+in-memory until you restart your X session.
+</p>
+
+<p>
+To get around this, you might issue <code>xrdb -remove</code> to drop all your
+customizations (and then reload them from file). Another solution is
+to use <code>xrdb ~/.Xresources</code> (without the <code>-merge</code>) to load exactly
+what is in that file (as opposed to merging). Useful if you have no
+other sources of configuration!
 </p>
 
 <p>
 Now that you have a tailored baseline of how you expect Zutty to start
 up without any explicit options, remember that you can still override
-any of these on the command line!
+all options on the command line! For example, if you have
+<code>Zutty.altScroll: true</code> in your config, you might start Zutty with the
+<code>+altScroll</code> option to turn it off only in that instance.
 </p>
+</div>
 </div>
 </div>
 </div>

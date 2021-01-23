@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Zutty development guide</title>
+<title>Zutty developer guide</title>
 <meta name="generator" content="Org mode" />
 <link rel="stylesheet" type="text/css" href="org.css"/>
 <script type="text/javascript">
@@ -57,7 +57,7 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Zutty development guide</h1>
+<h1 class="title">Zutty developer guide</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -68,6 +68,7 @@ for the JavaScript code in this tag.
 <li><a href="#The%20Step%20Debugger">The Step Debugger</a></li>
 <li><a href="#Automated%20testing">Automated testing</a>
 <ul>
+<li><a href="#CAVEATs">CAVEATs</a></li>
 <li><a href="#Anatomy%20of%20a%20test%20script">Anatomy of a test script</a></li>
 <li><a href="#Common%20test%20script%20options">Common test script options</a></li>
 <li><a href="#Correctness%20tests">Correctness tests</a></li>
@@ -96,7 +97,13 @@ for the JavaScript code in this tag.
 <li><a href="#Output%20image%20texture">Output image texture</a></li>
 </ul>
 </li>
-<li><a href="#Frame">Frame</a></li>
+<li><a href="#Frame">Frame</a>
+<ul>
+<li><a href="#The%20base%20case%3A%20no%20scrollback%20history">The base case: no scrollback history</a></li>
+<li><a href="#The%20complete%20truth%3A%20in%20the%20presence%20of%20scrollback">The complete truth: in the presence of scrollback</a></li>
+<li><a href="#Exercising%20scrollback%20--%20defining%20what%20is%20visible">Exercising scrollback &#x2013; defining what is visible</a></li>
+</ul>
+</li>
 <li><a href="#Renderer">Renderer</a></li>
 <li><a href="#Vterm%20%28virtual%20terminal%29">Vterm (virtual terminal)</a></li>
 </ul>
@@ -149,14 +156,21 @@ Then, compile Zutty as usual:
 
 
 <p>
+The build will produce an executable named <code>zutty.dbg</code> (as opposed to
+<code>zutty</code> for normal builds). This allows you to keep a normal build and
+a debug build from the same source side by side each other, which
+might prove useful while working on some debugging-intensive problem.
+</p>
+
+<p>
 Normally, you will not want to install the development build
-system-wide. Run it from an existing terminal as <code>./build/src/zutty
+system-wide. Run it from an existing terminal as <code>build/src/zutty.dbg
 -v</code> (plus any other options) to receive verbose debugging logs in the
 console.
 </p>
 
 <p>
-As stated in the <a href="./USAGE.html">Usage guide</a>, by default (if neither <code>-quiet</code> nor
+As stated in the <a href="./USAGE.html">User guide</a>, by default (if neither <code>-quiet</code> nor
 <code>-verbose</code> is given), Zutty will print errors and warnings, but not
 info messages. Those have to be enabled with <code>-verbose</code>, and in case
 of a debug build, that will enable Trace messages as well.
@@ -207,16 +221,16 @@ will trigger the Debug Stop, and the log will look similar to this:
 </p>
 
 <pre class="example">
-T [vterm.icc:392] pty write (mod=0): 'k' (1 bytes)
-T [vterm.icc:439] pty read: 'k' (1 bytes)
-T [vterm.icc:683] hideCursor []         p(0,48)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)  cur=48  head=0
-T [vterm.icc:109] Inserted: 'k' (1 bytes)
-T [vterm.icc:670] showCursor []         p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)  cur=49  head=0
-T [vterm.icc:428] pty write: '\x7f' (1 bytes)
-T [vterm.icc:439] pty read: '\b\e[K' (4 bytes)
-T [vterm.icc:683] hideCursor []         p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)  cur=49  head=0
-T [vterm.icc:983] csi_CUB []    p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)  cur=49  head=0
-T [vterm.icc:1229] csi_EL [0]   p(0,48)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)  cur=48  head=0
+T [vterm.icc:366] pty write (mod=0): 'k' (1 bytes)
+T [vterm.icc:400] pty read: 'k' (1 bytes)
+T [vterm.icc:617] hideCursor []         p(0,48)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)
+T [vterm.icc:108] Inserted: 'k' (1 bytes)
+T [vterm.icc:605] showCursor []         p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)
+T [vterm.icc:389] pty write: '\x7f' (1 bytes)
+T [vterm.icc:400] pty read: '\b\e[K' (4 bytes)
+T [vterm.icc:617] hideCursor []         p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)
+T [vterm.icc:914] csi_CUB []    p(0,49)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)
+T [vterm.icc:1144] csi_EL [0]   p(0,48)  d(42,103)  mgn[0,42)  hmgn:0 [0,103)
 T [vterm.icc: 50] *** DEBUG STOP (step=1), 4 bytes since last:
         '\b\e[K' (4 bytes)
 T [vterm.icc: 55] Issue 'kill -CONT 5429' or 'fg' to continue.
@@ -254,10 +268,9 @@ argument.
 Also worth noting is that on each trace point (such as <code>hideCursor</code>,
 <code>showCursor</code>, <code>csi_CUB</code>, etc.) several state variables are printed.
 These include the current cursor position <code>(0,49)</code>, the dimensions
-<code>(42,103)</code>, the horizontal scrolling margin top and bottom <code>[0,42)</code>
+<code>(42,103)</code>, and the scrolling area top and bottom margins <code>[0,42)</code>
 (the mismatched brackets denote that the top row of scrolling is
 inclusive of the scrolling range, while the bottom row is exclusive).
-Also dumped are Frame-internal offsets <code>cur</code> and <code>head</code>.
 </p>
 
 <p>
@@ -349,7 +362,7 @@ Make a screenshot of the window via the window id
 xwd -nobdrs -id &lt;id&gt; | convert xwd:- png:- &gt; &lt;shot-name&gt;.png
 </pre></li>
 <li><p>
-Generate a digest of the screen content, to be compared against a reference value:
+Generate a signature of the screen content, to be compared against a reference value:
 </p>
 <pre class="example">
 identify -verbose &lt;shot-name&gt;.png | grep signature | awk '{print $2}' | cut -32
@@ -370,6 +383,25 @@ scripts under the <code>test/</code> subdirectory. These scripts all source the
 </p>
 </div>
 
+<div id="outline-container-CAVEATs" class="outline-4">
+<h4 id="CAVEATs">CAVEATs</h4>
+<div class="outline-text-4" id="text-CAVEATs">
+<p>
+While Zutty itself compiles and runs on Linux as well as BSD
+platforms, the test toolkit assumes a specific development environment
+(most notably: Linux platform with <code>bash</code> as the default shell, and
+the presence of a window manager with certain standard capabilities).
+</p>
+
+<p>
+Please also note that the reference signatures of screen captures are
+valid for ImageMagick version 6 only; version 7 has altered the image
+signature hash algorithm, which breaks the hashes included in the
+tests.
+</p>
+</div>
+</div>
+
 <div id="outline-container-Anatomy%20of%20a%20test%20script" class="outline-4">
 <h4 id="Anatomy%20of%20a%20test%20script">Anatomy of a test script</h4>
 <div class="outline-text-4" id="text-Anatomy%20of%20a%20test%20script">
@@ -383,7 +415,7 @@ reproduced below:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sh">#!/bin/bash
+<pre class="src src-sh">#!/usr/bin/env bash
 
 cd $(dirname $0)
 source testbase.sh
@@ -419,8 +451,8 @@ keypress.
 
 <p>
 The subsequent <code>SNAP</code> will capture the resulting terminal window
-content under the name <code>truecolor_01</code> and generate a digest (hash) of
-it, comparing it with the supplied value. If the digest matches, the
+content under the name <code>truecolor_01</code>, generate a signature (hash) of
+it, and compare that with the supplied value. If there is a match, the
 output is verified to be correct; else a test failure is reported.
 </p>
 
@@ -463,6 +495,7 @@ omitted.
 Option             Default
 --------------------------
 --ci-mode          no
+--debug            no
 --profile          zutty
 --step             no
 --update-sig       no
@@ -553,6 +586,18 @@ exit with a nonzero code on a verification failure.
 </p>
 </div>
 </li>
+
+<li><a id="%3D--debug%3D"></a><code>--debug</code><br />
+<div class="outline-text-5" id="text-%3D--debug%3D">
+<p>
+The <code>--debug</code> option sets the variable <code>DEBUG</code> to <code>yes</code> (instead of
+its default value <code>no</code>). This is used by the <code>zutty</code> test profile to
+ensure that the correct UUT executable (<code>zutty</code> vs. <code>zutty.dbg</code>) is
+launched. This option is currently not used by any other profile, nor
+for any other, more general purpose.
+</p>
+</div>
+</li>
 </ul>
 </div>
 
@@ -568,6 +613,7 @@ The list of correctness tests (automatically run in sequence by
 <li><code>keys.sh</code>: Keyboard input handling (see <a href="./KEYS.html">Key mapping sequences</a> for
 further documentation). Note: This test might fail if your computer
 is configured to use a non-US keyboard.</li>
+<li><code>scrollback.sh</code>: Scrollback (page history) support</li>
 <li><code>title.sh</code>: Setting the window title from within the terminal via
 escape sequences</li>
 <li><code>truecolor.sh</code>: True color support</li>
@@ -581,11 +627,11 @@ message, and you should be good to go.</li>
 
 <p>
 Apart from running all the tests via <a href="#The%20CI%20test%20script">The CI test script</a> (which you
-should routinely run during development, and especially before opening
-a pull request), it is also possible to run any of the above tests
-manually. For example, to run the test automating a traversal of
-Vttest's menu system (and in case of running against Zutty, also
-verifying that results are as expected):
+should routinely run during development, and especially before sending
+a patch or opening a pull request), it is also possible to run any of
+the above tests manually. For example, to run the test automating a
+traversal of Vttest's menu system (and in case of running against
+Zutty, also verifying that results are as expected):
 </p>
 
 <pre class="example">
@@ -632,11 +678,15 @@ be otherwise idle.
 </p>
 
 <p>
-Another consideration is that instead of the usual (debug) build used
-for running tests, make sure to reconfigure and recompile Zutty to
-obtain a regular (production) build to run the performance tests with,
-otherwise the results will be meaningless due to excessive logging and
+While correctness tests should ideally be run on both the debug build
+(do this by passing <code>--debug</code> to the test scripts) and the normal
+build, it does not make sense to run performance tests on the debug
+build. The results would be meaningless due to excessive logging and
 hitting other debug-only code paths.
+</p>
+
+<p>
+Current performance tests:
 </p>
 
 <ul class="org-ul">
@@ -671,15 +721,17 @@ throughput is measured and calculated.</li>
 <div class="outline-text-4" id="text-The%20CI%20test%20script">
 <p>
 The script <code>test/run_ci.sh</code> will run all automated <a href="#Correctness%20tests">Correctness tests</a>
-in sequence with the <code>=--ci-mode</code> option, stopping and exiting with a
+in sequence with the <code>--ci-mode</code> option, stopping and exiting with a
 nonzero return code if any of them exits with an error, and concluding
 with a confirmatory message and zero return code otherwise.
 </p>
 
 <p>
 You should always run this at a convenient time (it will occupy your
-screen for about 20 minutes) and observe the successful result before
-opening a pull request with your changes.
+screen for about 25 minutes) and observe the successful result before
+sending a patch or submitting a pull request with your changes. For
+extra confidence, build Zutty both with and without debug, and run the
+CI script both with and without the <code>--debug</code> option.
 </p>
 </div>
 </div>
@@ -731,8 +783,8 @@ check the script files for details.
 </p>
 
 <p>
-Note that validation against the stored image hashes does not make too
-much sense, unless preparations are made to ensure that the terminal
+Note that validation against the stored image hashes does not make
+sense, unless preparations are made to ensure that the terminal
 settings (size, font, etc.) are perfectly identical. Even then,
 differences from the valid output stored for Zutty do not necessarily
 constitute bugs in any other terminal, unless the rendered screen
@@ -755,9 +807,16 @@ differences with red.
 <div class="outline-text-3" id="text-Contribution%20guide">
 <p>
 There is no commercial entity behind Zutty. It is a volunteer effort
-with extremely limited resources. Your contributions are welcome.
-However, to make them actually useful, please keep the following in
-mind:
+with extremely limited resources. Your contributions will be duly
+considered, but please discuss your plans with us before starting out.
+Otherwise, you run the risk of being ignored after having put time and
+effort into the preparation of a patch.
+</p>
+
+<p>
+Not every aspect of what makes a good contribution can be codified (we
+believe having good taste plays an important role), but as a minimum,
+please keep the following in mind:
 </p>
 </div>
 
@@ -868,12 +927,13 @@ rendering pipeline.</li>
 an atlas texture for the CharVdev to load into graphics memory.</li>
 <li><code>fontpack</code>: Locates the font name's variants (regular, bold, &#x2026;)
 under a search path and provides a unified point of contact to deal
-with the whole bunch.</li>
-<li><code>frame</code>: A Frame represents a snapshot of the content to be rendered
-by the CharVdev, and is the rendering target of the Vterm. It
-provides an abstraction based on character grid coordinates on top
-of the raw cell storage, plus support for passing around said
-storage cheaply via reference-counted pointers.</li>
+with all of them.</li>
+<li><code>frame</code>: The interface between Vterm and CharVdev, providing a
+rendering target to the former, and acting as a data source to the
+latter. It provides an abstraction based on character grid
+coordinates on top of the raw cell storage, supports efficient
+scrollback buffering, plus support for cheaply passing around the
+underlying cell storage via reference-counted pointers.</li>
 <li><code>gl</code>: Low level GL utils.</li>
 <li><code>log</code>: Logging facility.</li>
 <li><code>main</code>: Main module for top-level tasks such as instantiating the
@@ -883,22 +943,22 @@ servicing events on the file descriptors, handling X events
 (mainly around the keyboard, mouse and selection) as well as feeding
 the stream of output bytes from the shell subprocess into the Vterm.</li>
 <li><code>options</code>: Unified handling and support for command line switches
-and X resource database entries (the former take precedence over
-the latter).</li>
+and X resource database entries (with the former taking precedence
+over the latter).</li>
 <li><code>pty</code>: Code for spawning a pseudo-terminal and communicating resize
 events to it.</li>
 <li><code>renderer</code>: The Renderer runs a separate thread to feed the CharVdev
 with Frames handed off by the Vterm.</li>
-<li><code>selmgr</code>: The Selection Manager contains all code that glues
-together the Vterm (which is completely agnostic of any windowing
-system) and the X Selection API.</li>
+<li><code>selmgr</code>: The Selection Manager contains code interfacing between
+the Vterm (which is completely agnostic of any windowing system) and
+the X Selection API.</li>
 <li><code>utf8</code>: Support for producing and consuming UTF-encoded Unicode code
 points.</li>
 <li><code>vterm</code>: The Vterm implements the Virtual Terminal itself. That is,
 it consumes a stream of bytes output by the shell. The Vterm
 interprets the stream of text destined for the screen, interspersed
-with escape sequences to control the terminal, and produces Frames
-that are handed off to the Renderer.</li>
+with escape sequences to control the terminal, and produces
+snapshots captured as Frame updates handed off to the Renderer.</li>
 </ul>
 
 <p>
@@ -1120,7 +1180,11 @@ encoding the ringbuffer state are <code>marginTop</code>, <code>marginBottom</co
 by multiplying them with the number of characters in each row
 (<code>nCols</code>).
 </p>
+</div>
 
+<div id="outline-container-The%20base%20case%3A%20no%20scrollback%20history" class="outline-4">
+<h4 id="The%20base%20case%3A%20no%20scrollback%20history">The base case: no scrollback history</h4>
+<div class="outline-text-4" id="text-The%20base%20case%3A%20no%20scrollback%20history">
 <p>
 To understand the memory layout of cells mapped to the screen grid,
 consider the below figure:
@@ -1173,20 +1237,181 @@ that starts with the row <code>marginTop</code>, ending with the last row above
 When a new row is appended to the scrolling area, <code>scrollHead</code> is
 moved down, unless it would become equal to <code>marginBottom</code>, in which
 case it jumps back up to <code>marginTop</code>. In any case, newly written
-content will overwrite the logically-topmost scrolling row, which has
-conceptually dropped off the top of the scrolling area.
+content will overwrite the row marked by the original position of
+<code>scrollHead</code>, which has conceptually dropped off the top of the
+scrolling area.
 </p>
 
 <p>
-The method <code>Frame::copyCells ()</code> copies all the cell content from a
-frame, in logical order <code>(1)(2)(3)(4)</code>, into linear (straight) storage
-elsewhere.  This is employed by <code>Frame::linearizeCellStorage ()</code>,
-which in turn is used to reset the logical-to-physical mapping, e.g.,
-when the scrolling limits <code>marginTop</code> or <code>marginBottom</code> are
-changed. In the reset state, <code>scrollHead</code> equals <code>marginTop</code>, which
-means area <code>(2)</code> fills the space between <code>(1)</code> and <code>(4)</code>, while <code>(3)</code>
-is empty.
+Due to this storage scheme, lines on the screen (logically numbered
+from 0 to <code>nRows - 1</code> will not always be physically stored in
+consecutive order.  The method <code>Frame::unwrapCellStorage ()</code> resets
+(straightens out) this logical-to-physical mapping, which is necessary
+before the scrolling limits <code>marginTop</code> and <code>marginBottom</code> can be
+changed or the frame can be resized. In the reset state, <code>scrollHead</code>
+equals <code>marginTop</code>, which means area <code>(2)</code> fills the space between
+<code>(1)</code> and <code>(4)</code>, while <code>(3)</code> is empty.
 </p>
+</div>
+</div>
+
+<div id="outline-container-The%20complete%20truth%3A%20in%20the%20presence%20of%20scrollback" class="outline-4">
+<h4 id="The%20complete%20truth%3A%20in%20the%20presence%20of%20scrollback">The complete truth: in the presence of scrollback</h4>
+<div class="outline-text-4" id="text-The%20complete%20truth%3A%20in%20the%20presence%20of%20scrollback">
+<p>
+The above scheme is a special case with the number of off-screen lines
+(defined by the <code>saveLines</code> configuration value) being zero.  In
+reality, the buffer allocated for the frame contains space for a total
+of (visible) <code>nRows</code> plus an additional (off-screen) <code>saveLines</code> rows'
+worth of cells. Apart from that, operational aspects of filling the
+buffer with data are exactly as described above: the scrolling area is
+delimited by <code>marginTop</code> and <code>marginBottom</code>, and <code>scrollHead</code> points
+to the logically top-most row within the scrolling area (moved
+downwards as the content at the top edge scrolls out of the
+window). Note that this architecture guarantees that the computational
+complexity of scrolling is O(1) with respect to the size of the
+scrollback buffer.  Having a large scrollback buffer will certainly
+cost memory, but it will have zero impact on performance.
+</p>
+
+<p>
+If there are no top/bottom margins set, the whole storage acts as a
+(potentially very large) scrolling area, of which only <code>nRows</code> rows
+are visible (available to the Vterm via screen-based coordinates) at
+any point in time:
+</p>
+
+<pre class="example">
+                0 --&gt; +-----------------------+    &lt;
+                      |                       |    &lt;
+                      .          (3)          .    &lt; scrolling
+                      |     [off-screen]      |    &lt;   area
+                      +-----------------------+    &lt;
+       scrollHead --&gt; +-----------------------+    &lt;   &lt;--------- posY = 0
+                      |                       |    &lt;   &lt; active      ...
+                      .          (2)          .    &lt;   &lt;  area       ...
+                      |                       |    &lt;   &lt;             ...
+                      +-----------------------+    &lt;   &lt;--------- posY = nRows - 1
+scrollHead + nRows -&gt; +-----------------------+    &lt;
+                      |                       |    &lt;
+                      .          (2)          .    &lt;
+                      |     [off-screen]      |    &lt;
+                      +-----------------------+    &lt;
+nRows + saveLines --&gt;
+</pre>
+
+<p>
+The second part of area <code>(2)</code> and the entirety of area <code>(3)</code> contain
+off-screen lines. The number of saved history rows with valid data is
+maintained in the private counter <code>historyRows</code>, so that scrolling the
+view up into any still unused, blank buffer area can be avoided.
+</p>
+
+<p>
+The Vterm continues to "see" the active area as if it was the whole
+buffer, its topmost row having <code>posY = 0</code>. Naturally, the active area
+might wrap around the end of the buffer. In this case, it is the
+second part of area <code>(3)</code> that contains saved (off-screen) lines:
+</p>
+
+<pre class="example">
+                0 --&gt; +-----------------------+    &lt;   &lt;
+                      |                       |    &lt;   &lt; active      ...
+                      .          (3)          .    &lt;   &lt;  area       ...
+                      |                       |    &lt;   &lt; (pt. 2)     ...
+                      +-----------------------+    &lt;   &lt;--------- posY = nRows - 1
+scrollHead + nRows -&gt; +-----------------------+    &lt;
+(mod buffer length)   |                       |    &lt;
+                      .          (3)          .    &lt; scrolling
+                      |     [off-screen]      |    &lt;   area
+                      +-----------------------+    &lt;
+       scrollHead --&gt; +-----------------------+    &lt;   &lt;--------- posY = 0
+                      |                       |    &lt;   &lt; active      ...
+                      .          (2)          .    &lt;   &lt;  area       ...
+                      |                       |    &lt;   &lt; (pt. 1)     ...
+                      +-----------------------+    &lt;   &lt;
+nRows + saveLines --&gt;
+</pre>
+
+<p>
+Note that internally, <code>marginTop</code> will be 0 and <code>marginBottom</code> will be
+<code>nRows + saveLines</code> (reflecting the physical extent of the buffer).
+The externally reported value of <code>marginBottom</code> will continue to be
+<code>nRows</code>, so Vterm can continue to use the margin settings in its own
+logic, mostly to establish whether the cursor position is within
+the margins.
+</p>
+
+<p>
+In case the Vterm sets top/bottom margins (meaning that at least one
+of them differs from its reset value of 0 / <code>nRows</code>, respectively),
+the Frame will rearrange its storage so that the physical start of the
+buffer contains the active area with parts <code>(1)</code> to <code>(4)</code>, and the
+rest contains the lines of saved history. This has the advantage that
+<code>marginTop</code>, <code>marginBottom</code> and <code>scrollHead</code> continue to be valid with
+the active area as a frame of reference (pun not intended), without
+having to apply offsets to them.
+</p>
+
+<pre class="example">
+                0 --&gt; +-----------------------+    &lt;
+                      |                       |    &lt;  active
+                      .          (1)          .    &lt;   area
+                      |                       |    &lt;
+                      +-----------------------+    &lt;
+        marginTop --&gt; +-----------------------+    &lt;    &lt;
+                      |                       |    &lt;    &lt;
+                      .          (3)          .    &lt;    &lt;
+                      |                       |    &lt;    &lt;
+                      +-----------------------+    &lt;    &lt; scrolling
+       scrollHead --&gt; +-----------------------+    &lt;    &lt;   area
+                      |                       |    &lt;    &lt;
+                      .          (2)          .    &lt;    &lt;
+                      |                       |    &lt;    &lt;
+                      +-----------------------+    &lt;    &lt;
+     marginBottom --&gt; +-----------------------+    &lt;
+                      |                       |    &lt;
+                      .          (4)          .    &lt;
+                      |                       |    &lt;
+                      +-----------------------+    &lt;
+            nRows --&gt; +-----------------------+
+                      |                       |
+                      .          (0)          .
+                      |     [off-screen]      |
+                      +-----------------------+
+nRows + saveLines --&gt;
+</pre>
+
+<p>
+The initial status of the above layout is when <code>scrollHead</code> equals
+<code>marginTop</code>, meaning that area <code>(3)</code> is empty. This is the layout that
+calling <code>unwrapCellStorage ()</code> will set up, and is done every time
+prior to the frame being resized, or the top/bottom margins adjusted.
+</p>
+</div>
+</div>
+
+<div id="outline-container-Exercising%20scrollback%20--%20defining%20what%20is%20visible" class="outline-4">
+<h4 id="Exercising%20scrollback%20--%20defining%20what%20is%20visible">Exercising scrollback &#x2013; defining what is visible</h4>
+<div class="outline-text-4" id="text-Exercising%20scrollback%20--%20defining%20what%20is%20visible">
+<p>
+Given the above defined memory layouts, it is easy to see how the
+screen can be directed to display something other than the active
+area. The view position is defined by a single row offset
+<code>viewOffset</code> that can take values from 0 (display the active area)
+up to and including <code>saveLines</code> (display the top of history).
+</p>
+
+<p>
+Essentially, when copying frame data into the CharVdev for display,
+<code>viewOffset</code> has to be subtracted from the start of the frame
+(<code>scrollHead</code> in case of no margins, or 0 if there are margins),
+wrapping around the buffer limits as necessary. Then, the data has to
+be copied from that starting point in order, following the numbering
+of data sections <code>(0)</code> through <code>(4)</code>, until <code>nRows</code> rows have been
+copied.
+</p>
+</div>
 </div>
 </div>
 
@@ -1221,17 +1446,18 @@ laptops).
 <h3 id="Vterm%20%28virtual%20terminal%29">Vterm (virtual terminal)</h3>
 <div class="outline-text-3" id="text-Vterm%20%28virtual%20terminal%29">
 <p>
-The Vterm module is the actual virtual terminal implementation. That
-is, its task is to convert a stream of incoming characters containing
-visual characters to display as well as control characters and escape
-sequences to interpret, and alter the screen content according to the
-relevant standards and specifications.
+The Vterm module is the actual virtual terminal implementation. It
+consumes a stream of incoming characters containing printable
+characters to place on-screen as well as control characters and escape
+sequences to interpret according to the relevant standards and
+specifications, and alter the screen content.
 </p>
 
 <p>
-The stream of input characters are written by the pseudoterminal (pty)
-slave running in a process spawned by Zutty. This is most commonly a
-shell program (unless Zutty was instructed otherwise).
+The stream of input characters is read from the pseudoterminal,
+written by the pty slave running in an inferior process spawned by
+Zutty. This process is most commonly running a shell program (unless
+Zutty was instructed otherwise).
 </p>
 
 <p>
@@ -1264,6 +1490,8 @@ the Vterm implementation.
 <li><a href="https://vt100.net/docs/vt220-rm/contents.html">VT220rm</a>: VT220 Programmer Reference Manual</li>
 <li><a href="https://manx-docs.org/collections/mds-199909/cd3/term/vt420rm2.pdf">VT420rm</a> [pdf]: VT420 Programmer Reference Manual</li>
 <li><a href="http://www.bitsavers.org/pdf/dec/terminal/vt5xx/EK-VT520-RM_VT520_VT525_Programmer_Information_Jul94.pdf">VT520rm</a> [pdf]: VT520/VT525 Video Terminal Programmer Information</li>
+<li><a href="http://www.bitsavers.org/pdf/dec/standards/EL-SM070-00_DEC_STD_070_Video_Systems_Reference_Manual_Dec91.pdf">DEC STD 070</a> [pdf]: DEC-internal standards document going into more
+technical detail than user-oriented product manuals.</li>
 <li><a href="https://vt100.net/emu/dec_ansi_parser">VT500-series parser</a>: A parser for DEC’s ANSI-compatible video
 terminals (not used by Zutty, but interesting!)</li>
 </ul>
